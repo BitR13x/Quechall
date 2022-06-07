@@ -1,0 +1,123 @@
+$color-light: #fff;
+$header-text-color: whitesmoke;
+
+nav {
+  mix-blend-mode: difference;
+  z-index: 100;
+
+  ul {
+    position: fixed;
+    top: 60px;
+    right: 5px;
+    height: 100vh;
+    visibility: hidden;
+    pointer-events: none;
+    list-style: none;
+    width: 35px;
+    }
+
+  li {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0.75em 0;
+    writing-mode: vertical-lr;
+  }
+
+  &.active ul {
+    visibility: visible;
+    pointer-events: initial;
+    transition-delay: 0.2s;
+  }
+}
+
+// Inspired by: https://github.com/callmenick/Animating-Hamburger-Icons
+
+.nav-icon{
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-block;
+  height: 35px;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  transition: background 0.3s;
+  width: 35px;
+  border: none;
+}
+
+.navbarSpan {
+    position: absolute;
+    top: 15px;
+    left: 5px;
+    background: $color-light;
+    display: block;
+    height: 3px;
+    right: 5px;
+    transition: transform 0.3s;
+
+    &:before,
+    &:after {
+      width: 100%;
+      height: 3px;
+      background: $color-light;
+      content: '';
+      display: block;
+      left: 0;
+      position: absolute;
+    }
+
+    &:before {
+      top: -8px;
+    }
+    &:after {
+      bottom: -8px;
+    }
+
+  .active & .navbarSpan {
+    transform: rotate(90deg);
+   }
+}
+
+.headerIcon {
+  width: 50px;
+  height: 50px;
+  -webkit-clip-path: url(#shape);
+  clip-path: url(#shape);
+  pointer-events: none;
+}
+
+.logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  -ms-flex: 0 0 20%;
+  flex: 0 0 20%;
+  max-width: 20%;
+  margin-left: 1vw;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .headerIcon {
+    animation: headerIcon-spin infinite 20s linear;
+  }
+}
+
+@keyframes headerIcon-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: $header-text-color;
+}
+
+a:hover {
+  text-decoration: none;
+  color: rgba($header-text-color, 0.6);
+}

@@ -1,0 +1,17 @@
+{
+   "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "moduleResolution": "node",
+      "allowJs": true,
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "./build",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "sourceMap": true
+   },
+        "include": [
+        "./api/src/**/*"
+    ]
+}
