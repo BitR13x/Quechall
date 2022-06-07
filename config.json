@@ -1,0 +1,8 @@
+{
+   "HOST": "0.0.0.0",
+   "PORT": 8000,
+   "REFRESH_TOKEN_SECRET": "1585836604b33b6010fc591cd8569730a2ad7329d945e614ca8ac7c448f17df0",
+   "ACCESS_TOKEN_SECRET": "bf281c0ae09c06ca0cf75423bc64ecf1bf1a3e7b9ee2d8a6916d11d44f891b8c",
+   "saltRounds": 10,
+   "production": false
+}
