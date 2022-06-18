@@ -18,8 +18,15 @@
 }
 
 .AppName {
-  padding-top: 20vh;
-  font-size: 8vw;
+  padding-top: 10vh;
+  font-size: 10rem;
+  @media screen and (max-width: 750px) {
+    font-size: 12vw;
+  }
+}
+
+p {
+  font-size: 12px;
 }
 
 .features {

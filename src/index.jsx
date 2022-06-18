@@ -9,13 +9,13 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import App from './App';
 import Dashboard from "./components/Dashboard";
-import Ticket from "./components/Ticket";
-import Question from "./components/Question";
-import NoMatch from "./components/NoMatch";
+import Question from "./pages/Question";
+import NoMatch from "./pages/NoMatch";
 import './scss/index.scss';
 
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('Failed to find the root element');
+const root = ReactDOM.createRoot(rootElement);
 
 const theme = createTheme({
   palette: {
@@ -41,7 +41,6 @@ root.render(
         <Routes>
           <Route exact path="/" element={<App />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/ticket" element={<Ticket />} />
           <Route path="/question" element={<Question />} />
           <Route path="*" element={<NoMatch />} status={404}/>
         </Routes>

@@ -1,17 +1,17 @@
 import React from "react";
-import NavbarComponent from "./navbar";
+import NavbarComponent from "../components/header/navbar";
 import axios from "axios";
 import { TextField, Button } from "@mui/material";
 
 const Question = () => {
-    let Ticketfield = React.useRef<HTMLInputElement>();
+    let Questionfield = React.useRef<HTMLInputElement>();
     const sendData = () => {
         axios.post('/api/question/get')
             .then((data)=> {
                 
             })
 
-    console.log(Ticketfield.current.value)
+    // console.log(Ticketfield.current.value)
     }
 
     return (
@@ -25,7 +25,8 @@ const Question = () => {
                     Hello This is Dashboard
                     
                     <div>
-                        <TextField inputRef={Ticketfield} id="outlined-name" color="secondary" label="Answer" variant="outlined" margin="normal" />
+                        <TextField inputRef={Questionfield} id="outlined-name" color="secondary" label="Your question?"
+                         variant="outlined" margin="normal" helperText="We will answer you question." />
                     </div>
                     <Button variant="contained" color="primary" onClick={sendData}>
                         Submit

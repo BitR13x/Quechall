@@ -11,8 +11,7 @@
       "experimentalDecorators": true,
       "sourceMap": true
    },
-        "include": [
-        "./api/src/**/*",
-        "./src/types/custom.d.ts"
-    ]
+   "include": [
+      "./api/src/**/*",
+   ]
 }
