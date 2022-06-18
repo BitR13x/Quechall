@@ -12,6 +12,7 @@
       "sourceMap": true
    },
         "include": [
-        "./api/src/**/*"
+        "./api/src/**/*",
+        "./src/types/custom.d.ts"
     ]
 }

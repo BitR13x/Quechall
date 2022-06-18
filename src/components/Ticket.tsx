@@ -1,11 +1,12 @@
+import React from "react";
 import NavbarComponent from "./navbar";
 import { TextField, Button } from "@mui/material";
 import axios from "axios";
 
 const Ticket = () => {
-
-    const sendData = () => {
-        let ticket = document.getElementById("outlined-name").value;
+    let ticketRef = React.useRef<HTMLInputElement>();
+    const sendData = () => {     
+        let ticket = ticketRef.current.value;
         if (!ticket || ticket.length < 3) return
         axios.post('/api/question/get')
             .then((data)=> {
@@ -18,7 +19,7 @@ const Ticket = () => {
             <NavbarComponent />
             
             <div>
-                <TextField id="outlined-name" color="secondary" label="Ticket" variant="outlined" margin="normal" helperText="Please enter your ticket"/>
+                <TextField inputRef={ticketRef} id="outlined-name" color="secondary" label="Ticket" variant="outlined" margin="normal" helperText="Please enter your ticket"/>
             </div>
             <div>
                 <Button variant="contained" color="primary" onClick={sendData}>

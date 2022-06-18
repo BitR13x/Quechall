@@ -4,12 +4,14 @@ import axios from "axios";
 import { TextField, Button } from "@mui/material";
 
 const Question = () => {
-
+    let Ticketfield = React.useRef<HTMLInputElement>();
     const sendData = () => {
         axios.post('/api/question/get')
             .then((data)=> {
                 
             })
+
+    console.log(Ticketfield.current.value)
     }
 
     return (
@@ -23,7 +25,7 @@ const Question = () => {
                     Hello This is Dashboard
                     
                     <div>
-                        <TextField id="outlined-name" color="secondary" label="Answer" variant="outlined" margin="normal" />
+                        <TextField inputRef={Ticketfield} id="outlined-name" color="secondary" label="Answer" variant="outlined" margin="normal" />
                     </div>
                     <Button variant="contained" color="primary" onClick={sendData}>
                         Submit
