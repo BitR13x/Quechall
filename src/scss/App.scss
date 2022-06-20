@@ -13,9 +13,9 @@
   display: flex;
 }
 
-.App {
-  text-align: center;
-}
+// .App {
+//   text-align: center;
+// }
 
 .AppName {
   padding-top: 10vh;
@@ -25,8 +25,12 @@
   }
 }
 
+.AppCenter {
+  text-align: center;
+}
+
 p {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .features {

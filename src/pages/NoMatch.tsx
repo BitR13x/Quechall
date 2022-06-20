@@ -1,5 +1,6 @@
 import React from "react";
 import NavbarComponent from "../components/header/navbar";
+import CirclesAnimation from "../components/animation/circles";
 
 const NoMatch = () => {
     return (
@@ -13,6 +14,7 @@ const NoMatch = () => {
                     <h1>There is nothing.</h1>
                 </main>
             </div>
+            <CirclesAnimation/>
         </React.Fragment>
     );
 };

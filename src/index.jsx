@@ -11,6 +11,8 @@ import App from './App';
 import Dashboard from "./components/Dashboard";
 import Question from "./pages/Question";
 import NoMatch from "./pages/NoMatch";
+import LoginPage from './pages/user/login';
+import RegisterPage from './pages/user/register';
 import './scss/index.scss';
 
 const rootElement = document.getElementById('root');
@@ -42,6 +44,8 @@ root.render(
           <Route exact path="/" element={<App />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/question" element={<Question />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<NoMatch />} status={404}/>
         </Routes>
       </BrowserRouter>

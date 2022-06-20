@@ -22,7 +22,16 @@ nav {
     padding: 0.75em 0;
     writing-mode: vertical-lr;
   }
-
+  a {
+    text-decoration: none;
+    color: $header-text-color;
+  }
+  
+  a:hover {
+    text-decoration: none;
+    color: rgba($header-text-color, 0.6);
+  }
+  
   &.active ul {
     visibility: visible;
     pointer-events: initial;
@@ -112,12 +121,3 @@ nav {
   }
 }
 
-a {
-  text-decoration: none;
-  color: $header-text-color;
-}
-
-a:hover {
-  text-decoration: none;
-  color: rgba($header-text-color, 0.6);
-}

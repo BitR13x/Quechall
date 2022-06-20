@@ -2,34 +2,44 @@ import './scss/App.scss';
 import NavbarComponent from "./components/header/navbar";
 import CirclesAnimation from "./components/animation/circles";
 import FeatureCard from "./components/FeatureCard";
-import { Grid, Container } from '@mui/material';
+import { Grid, Container, Button, Stack, Divider } from '@mui/material';
 
 const App = () => {
   return (
     <div className="App">
       <NavbarComponent/>
-      <h1 className='AppName'>QueChall</h1>
-      <div className='AppDescription'>
-        <p>Challange your self and have a better passwords</p>
-      </div>
+      <div className='AppCenter'>
+        <h1 className='AppName'>QueChall</h1>
+        <div className='AppDescription'>
+          <p>Challange your self and have a better passwords</p>
+        </div>
+        
+        <div style={{ paddingTop: "7vh" }}>
+          <Container>
+            <Stack direction="row" spacing={2}
+            divider={<Divider orientation="vertical" flexItem />} 
+            alignItems="center" justifyContent="center">
+              <Button variant="contained" href='/login'>log in</Button>
+              <Button variant="contained" href='/register'>Sign up</Button>
+            </Stack>
+          </Container>
+        </div>
 
-      <div className='features'>
-        <h3>Simple registration, We don't sell any data, secure</h3>
+        <div className='features'>
+          <h3>Simple registration, We don't sell any data, secure</h3>
+        </div>
       </div>
       
       <Container>
         <Grid container direction="row" justifyContent="center" alignItems="center" spacing={3}>
             <Grid item xs={12} sm={6} md={3}>
-              <FeatureCard feature={{ title: "Simple to use"}} />
+              <FeatureCard feature={{ title: "he", subheader: "Sub", content: "HELLO" }} />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <FeatureCard feature={{title: "Secured", subheader: "Sub", content: "HELLO"}}/>
+              <FeatureCard feature={{ title: "Secured", subheader: "Sub", content: "HELLO" }}/>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <FeatureCard feature={{title: "Home", subheader: "Sub", content: "HELLO"}}/>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <FeatureCard feature={{title: "Home", subheader: "Sub", content: "HELLO"}}/>
+              <FeatureCard feature={{ title: "Home", subheader: "Sub", content: "HELLO" }}/>
             </Grid>
           </Grid>
         </Container>

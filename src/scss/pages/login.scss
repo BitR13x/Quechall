@@ -1,0 +1,34 @@
+.LoginMain {
+    margin-top: 10vh;
+    background-color: #131515;
+    width: 600px;
+    padding-bottom: 80px;
+    padding-top: 80px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #131515, #101212);
+    box-shadow:  18px 18px 36px #101212,
+             -18px -18px 36px #131515;
+    text-align: center;
+}
+
+.Main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.outside-link-container {
+    text-align: left;
+    margin-top: 10px;
+    
+}
+
+.outside-link {
+    color: #1e88e5;
+    text-decoration: none;
+}
+
+.outside-link:hover {
+    color: #1e2be5;
+    cursor: pointer;
+}
