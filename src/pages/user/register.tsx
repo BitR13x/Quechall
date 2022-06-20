@@ -1,22 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import NavbarComponent from "../../components/header/navbar";
 import CirclesAnimation from "../../components/animation/circles";
-import { TextField, Button, Grid, Box, Typography, InputAdornment } from "@mui/material";
+import VerticalNavbar from "../../components/header/verticalnavbar";
+import { TextField, Button, Grid, Box, Typography, InputAdornment, Alert, Container } from "@mui/material";
 import { AccountCircle, Password } from '@mui/icons-material';
 import "../../scss/pages/login.scss";
+import { alertObj } from "../../types/global";
 import axios from "axios";
 
 const RegisterPage = () => {
     let UserField = React.useRef<HTMLInputElement>();
     let PasswdField = React.useRef<HTMLInputElement>();
     let rePasswdField = React.useRef<HTMLInputElement>();
+
+    let [alert, setAlert] = useState<alertObj>();
     const sendData = () => {
-        axios.post("/login")
-             .then(response => console.log(response))
+        //? warning, success
+        axios.post("/register")
+        //@ts-ignore
+             .then(response => response.json())
+             .then(data => setAlert(data))
     };
     return (
         <React.Fragment>
             <NavbarComponent />
+            <Container>
+                <div className="alertContainer">
+                    { (alert && alert.severity && alert.message) &&
+                    // @ts-ignore
+                    <Alert sx={{ width: 600 }} severity={alert.severity}>{alert.message}</Alert>}
+                </div>
+            </Container>
             <div className="Main">
                 <div className="LoginMain">
                     <Typography variant="h4">
@@ -76,6 +90,7 @@ const RegisterPage = () => {
 
                 </div>
             </div>
+            <VerticalNavbar/>
             <CirclesAnimation />
         </React.Fragment>
     );

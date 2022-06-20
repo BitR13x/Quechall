@@ -12,7 +12,7 @@ $color-light: #fff;
 $color-dark: #111;
 
 html, body {
-    height: 100%;
+    min-height: 100vh;
     font-size: medium;
     //overflow: auto;
     
@@ -35,7 +35,7 @@ body {
     color: whitesmoke;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(to left top, #000029 0%,#020217 50%,#000029 100% ), linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+    background: linear-gradient(to left top, #050538 0%,#020217 50%,#050538 100% ), linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
     background-color: #020217;
 }
 
@@ -52,4 +52,14 @@ body {
 
 .App-link {
     color: #0e6d88; //#61dafb
+}
+
+.outside-link {
+    color: #1e88e5;
+    text-decoration: none;
+}
+
+.outside-link:hover {
+    color: #1e2be5;
+    cursor: pointer;
 }

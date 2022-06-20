@@ -1,0 +1,39 @@
+.glitch-text {
+    text-shadow: red -2px 0,
+                 cyan 2px 0;
+}
+
+.NotFoundMain {
+    margin-top: 20vh;
+}
+
+.giveMeSpace {
+    margin-top: 10vh;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@keyframes cursor-blink {
+  0% {
+    opacity: 0;
+  }
+}
+
+.box h1::after {
+  content: "";
+  width: 10px;
+  height: 30px;
+  background: #bbbbbb;
+  display: inline-block;
+  animation: cursor-blink 1.5s steps(2) infinite;
+}

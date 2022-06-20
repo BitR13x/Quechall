@@ -1,6 +1,7 @@
 import './scss/App.scss';
 import NavbarComponent from "./components/header/navbar";
 import CirclesAnimation from "./components/animation/circles";
+import VerticalNavbar from "./components/header/verticalnavbar";
 import FeatureCard from "./components/FeatureCard";
 import { Grid, Container, Button, Stack, Divider } from '@mui/material';
 
@@ -19,8 +20,8 @@ const App = () => {
             <Stack direction="row" spacing={2}
             divider={<Divider orientation="vertical" flexItem />} 
             alignItems="center" justifyContent="center">
-              <Button variant="contained" href='/login'>log in</Button>
-              <Button variant="contained" href='/register'>Sign up</Button>
+              <Button sx={{ width: 200 }} variant="contained" href='/login'>log in</Button>
+              <Button sx={{ width: 200 }} variant="contained" href='/register'>Sign up</Button>
             </Stack>
           </Container>
         </div>
@@ -32,17 +33,18 @@ const App = () => {
       
       <Container>
         <Grid container direction="row" justifyContent="center" alignItems="center" spacing={3}>
-            <Grid item xs={12} sm={6} md={3}>
-              <FeatureCard feature={{ title: "he", subheader: "Sub", content: "HELLO" }} />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <FeatureCard feature={{ title: "Secured", subheader: "Sub", content: "HELLO" }}/>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <FeatureCard feature={{ title: "Home", subheader: "Sub", content: "HELLO" }}/>
-            </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <FeatureCard feature={{ title: "he", subheader: "Sub", content: "HELLO" }} />
           </Grid>
-        </Container>
+          <Grid item xs={12} sm={6} md={3}>
+            <FeatureCard feature={{ title: "Secured", subheader: "Sub", content: "HELLO" }}/>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <FeatureCard feature={{ title: "Home", subheader: "Sub", content: "HELLO" }}/>
+          </Grid>
+        </Grid>
+      </Container>
+      <VerticalNavbar/>
       <CirclesAnimation />
     </div>
   );
