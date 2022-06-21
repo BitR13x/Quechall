@@ -1,9 +1,10 @@
 import NavbarComponent from "../components/header/navbar";
 import CirclesAnimation from "../components/animation/circles";
 import NotesCard from "../components/NotesCard";
+import DialogPass from "../components/DialogPass";
 import { Pagination, Container, Button, 
     Divider, Stack, FormControl, InputLabel, 
-    MenuItem, Select, Grid } from "@mui/material";
+    MenuItem, Select, Grid, Box } from "@mui/material";
 import VerticalNavbar from "./header/verticalnavbar";
 import "../scss/pages/dashboard.scss";
 import React, { useEffect, useState } from "react";
@@ -12,8 +13,19 @@ import axios from "axios";
 const Dashboard = () => {
     const [notes, setNotes] = useState([]);
     const [passwords, setPasswords] = useState([]);
+    const [open, setOpen] = React.useState(false);
     const [filter, setFilter] = useState("Everything");
 
+    const handleClickOpenDialog = () => {
+        setOpen(true);
+      };
+    
+    const handleCloseDialog = (value: string) => {
+      setOpen(false);
+    };
+    //? use of modulo
+    //? const colorName = ["aqua", "blue", "green", "lime", "maroon", "navy", "olive",
+    //? "purple", "red", "silver", "teal", "white", "yellow"]
     // useEffect(() => {
     //     axios.post("/notes")
     //     axios.post("/passwords")
@@ -35,8 +47,18 @@ const Dashboard = () => {
                         <Stack direction="row" spacing={2}
                         divider={<Divider orientation="vertical" flexItem />} 
                         alignItems="center" justifyContent="center">
-                            <Button sx={{ width: 250 }} variant="contained">Create a password</Button>
-                            <Button sx={{ width: 250 }} variant="contained">Create a note</Button>
+                            <Box>
+                                <Button sx={{ width: 250 }} onClick={handleClickOpenDialog} variant="contained">
+                                    Create a password
+                                </Button>
+                                <DialogPass
+                                  open={open}
+                                  handleClose={handleCloseDialog}
+                                />
+                            </Box>
+                            <Box>
+                                <Button sx={{ width: 250 }} variant="contained">Create a note</Button>
+                            </Box>
                         </Stack>
                     </Container>
                 </div>
@@ -65,10 +87,10 @@ const Dashboard = () => {
                     <div className="giveMeSpace">
                         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
                             <Grid item >
-                                <NotesCard note={{ title: "he", subheader: "Sub", link: "/", id: 1 }} />
+                                <NotesCard note={{ title: "he", subheader: "Sub", link: "/", color: "red", id: 1 }} />
                             </Grid>
                             <Grid item >
-                                <NotesCard note={{ title: "he", subheader: "Sub", link: "/", id: 2 }} />
+                                <NotesCard note={{ title: "he", subheader: "Sub", link: "/", color: "blue", id: 2 }} />
                             </Grid>
                         </Grid>
                     </div>

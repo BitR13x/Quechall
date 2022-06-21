@@ -1,18 +1,28 @@
-import { Card, CardHeader, IconButton, Avatar, Typography } from "@mui/material";
-import { DeleteOutlined } from "@mui/icons-material";
+import { Card, CardHeader, IconButton, Avatar, Typography, Box, Menu, MenuItem } from "@mui/material";
+import { DeleteOutlined, ContentCopy } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import React from "react";
 import axios from "axios";
 
 const NotesCard = ({ note }) => {
-    const colorName = ["aqua", "blue", "green", "lime", "maroon", "navy", "olive",
-    "purple", "red", "silver", "teal", "white", "yellow"]
-    let colorRandom = colorName[Math.floor(Math.random()*colorName.length)];
-    
+    //? Menu
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+    //? Delete
     const handleDelete = () => {
         axios.post("/delete/password" + note.id)
              .then(response => console.log(response))
-    }
+    };
+    const handleCopy = () => {
+        
+    };
+    
     return (
         <Card variant="elevation" sx={{width: 600}}>
             <CardHeader title={
@@ -26,12 +36,32 @@ const NotesCard = ({ note }) => {
             </Typography>
             } 
             avatar={
-                <Avatar sx={{ bgcolor: colorRandom }} alt="Alias">{note.title.substring(0,2)}</Avatar>
+                <Avatar sx={{ bgcolor: note.color }} alt="Alias">{note.title.substring(0,2)}</Avatar>
             }  
             action={
-                <IconButton onClick={handleDelete}>
-                    <DeleteOutlined />
-                </IconButton>
+                <Box>
+                    <Box>
+                        <IconButton onClick={handleClick}>
+                            <ContentCopy/>
+                        </IconButton>
+                        <Menu
+                          id="basic-menu"
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                          }}
+                        >
+                          <MenuItem onClick={handleCopy}>Copy password</MenuItem>
+                          <MenuItem onClick={handleCopy}>Copy identifier</MenuItem>
+                        </Menu>
+                    </Box>
+
+                    <IconButton onClick={handleDelete}>
+                        <DeleteOutlined />
+                    </IconButton>
+                </Box>
             } />
         </Card>
     );
