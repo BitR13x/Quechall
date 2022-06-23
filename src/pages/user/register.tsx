@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import NavbarComponent from "../../components/header/navbar";
-import CirclesAnimation from "../../components/animation/circles";
-import VerticalNavbar from "../../components/header/verticalnavbar";
-import { TextField, Button, Grid, Box, Typography, InputAdornment, Alert, Container } from "@mui/material";
+import { TextField, Button, Grid, Box, Typography,
+     InputAdornment, Alert, Container, Backdrop, CircularProgress } from "@mui/material";
 import { AccountCircle, Password } from '@mui/icons-material';
 import "../../scss/pages/login.scss";
 import { alertObj } from "../../types/global";
@@ -12,10 +10,12 @@ const RegisterPage = () => {
     let UserField = React.useRef<HTMLInputElement>();
     let PasswdField = React.useRef<HTMLInputElement>();
     let rePasswdField = React.useRef<HTMLInputElement>();
+    const [openBackDrop, setOpenBackDrop] = useState(false);
 
     let [alert, setAlert] = useState<alertObj>();
     const sendData = () => {
         //? warning, success
+        setOpenBackDrop(true);
         axios.post("/register")
         //@ts-ignore
              .then(response => response.json())
@@ -23,7 +23,6 @@ const RegisterPage = () => {
     };
     return (
         <React.Fragment>
-            <NavbarComponent />
             <Container>
                 <div className="alertContainer">
                     { (alert && alert.severity && alert.message) &&
@@ -67,7 +66,12 @@ const RegisterPage = () => {
                                         )
                                     }} />
                                 <TextField fullWidth type={"password"} inputRef={rePasswdField} id="outlined-name" color="secondary" label="Password"
-                                    variant="filled" margin="dense" helperText="Choose strong password." InputProps={{
+                                    variant="filled" margin="dense" helperText="Choose strong password." onKeyDown={e => {
+                                        if (e.key === "Enter") {
+                                            sendData();
+                                        }}
+                                    }
+                                    InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
                                                 <Password />
@@ -82,6 +86,12 @@ const RegisterPage = () => {
                                 variant="contained" color="primary" onClick={sendData}>
                                 Register
                             </Button>
+                            <Backdrop
+                              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                              open={openBackDrop}
+                            >
+                                <CircularProgress color="inherit" />
+                            </Backdrop>
                             <div className="outside-link-container">
                                 <a href="/login" className="outside-link">Already have an account?</a>
                             </div>
@@ -90,8 +100,6 @@ const RegisterPage = () => {
 
                 </div>
             </div>
-            <VerticalNavbar/>
-            <CirclesAnimation />
         </React.Fragment>
     );
 };

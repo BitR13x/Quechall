@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import NavbarComponent from "../../components/header/navbar";
-import CirclesAnimation from "../../components/animation/circles";
-import VerticalNavbar from "../../components/header/verticalnavbar";
 import { TextField, Button, Grid, Box, Typography,
-        InputAdornment, Alert, Container } from "@mui/material";
+        InputAdornment, Alert, Container, Backdrop, 
+        CircularProgress } from "@mui/material";
 import { AccountCircle, Password } from '@mui/icons-material';
 import "../../scss/pages/login.scss";
 import { alertObj } from "../../types/global";
@@ -11,12 +9,14 @@ import axios from "axios";
 
 
 const LoginPage = () => {
-    let UserField = React.useRef<HTMLInputElement>();
-    let PasswdField = React.useRef<HTMLInputElement>();
-    let [alert, setAlert] = useState<alertObj>();
+    const UserField = React.useRef<HTMLInputElement>();
+    const PasswdField = React.useRef<HTMLInputElement>();
+    const [alert, setAlert] = useState<alertObj>();
+    const [openBackDrop, setOpenBackDrop] = useState(false);
 
     const sendData = () => {
         //? warning, success
+        setOpenBackDrop(true);
         axios.post("/login")
         //@ts-ignore
              .then(response => response.json())
@@ -25,7 +25,6 @@ const LoginPage = () => {
 
     return (
         <div className="App">
-            <NavbarComponent />
             <Container>
                 <div className="alertContainer">
                     { (alert && alert.severity && alert.message) &&
@@ -63,7 +62,12 @@ const LoginPage = () => {
                                     width: 350,
                                     maxWidth: '100%',
                                 }}>
-                                <TextField fullWidth type={"password"} inputRef={PasswdField} id="outlined-name" color="secondary" label="Password"
+                                <TextField fullWidth type={"password"} inputRef={PasswdField} onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        sendData();
+                                    }
+                                }} 
+                                id="outlined-name" color="secondary" label="Password"
                                     variant="filled" margin="dense" InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -79,6 +83,12 @@ const LoginPage = () => {
                                 variant="contained" color="primary" onClick={sendData}>
                                 Login
                             </Button>
+                            <Backdrop
+                              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                              open={openBackDrop}
+                            >
+                                <CircularProgress color="inherit" />
+                            </Backdrop>
                             <div className="outside-link-container">
                                 <a href="/register" className="outside-link">Need an account?</a>
                             </div>
@@ -87,8 +97,6 @@ const LoginPage = () => {
 
                 </div>
             </div>
-            <VerticalNavbar/>
-            <CirclesAnimation />
         </div>
     );
 };

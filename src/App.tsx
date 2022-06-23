@@ -1,14 +1,10 @@
 import './scss/App.scss';
-import NavbarComponent from "./components/header/navbar";
-import CirclesAnimation from "./components/animation/circles";
-import VerticalNavbar from "./components/header/verticalnavbar";
 import FeatureCard from "./components/FeatureCard";
 import { Grid, Container, Button, Stack, Divider } from '@mui/material';
 
 const App = () => {
   return (
     <div className="App">
-      <NavbarComponent/>
       <div className='AppCenter'>
         <h1 className='AppName'>QueChall</h1>
         <div className='AppDescription'>
@@ -44,8 +40,6 @@ const App = () => {
           </Grid>
         </Grid>
       </Container>
-      <VerticalNavbar/>
-      <CirclesAnimation />
     </div>
   );
 };

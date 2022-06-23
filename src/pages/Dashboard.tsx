@@ -1,11 +1,9 @@
-import NavbarComponent from "../components/header/navbar";
-import CirclesAnimation from "../components/animation/circles";
+import PasswordCard from "../components/PasswordCard";
 import NotesCard from "../components/NotesCard";
 import DialogPass from "../components/DialogPass";
 import { Pagination, Container, Button, 
     Divider, Stack, FormControl, InputLabel, 
-    MenuItem, Select, Grid, Box } from "@mui/material";
-import VerticalNavbar from "./header/verticalnavbar";
+    MenuItem, Select, Grid, Box, Typography } from "@mui/material";
 import "../scss/pages/dashboard.scss";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -16,13 +14,12 @@ const Dashboard = () => {
     const [open, setOpen] = React.useState(false);
     const [filter, setFilter] = useState("Everything");
 
-    const handleClickOpenDialog = () => {
-        setOpen(true);
-      };
-    
-    const handleCloseDialog = (value: string) => {
-      setOpen(false);
-    };
+    //? Dialog handlers for password gen
+    const handleClickOpenDialog = () => setOpen(true);
+    const handleCloseDialog = () => setOpen(false);
+    //? Filter value
+    const handleChange = event => setFilter(event.target.value);
+
     //? use of modulo
     //? const colorName = ["aqua", "blue", "green", "lime", "maroon", "navy", "olive",
     //? "purple", "red", "silver", "teal", "white", "yellow"]
@@ -31,12 +28,9 @@ const Dashboard = () => {
     //     axios.post("/passwords")
     // }, []);
 
-    const handleChange = event => {
-        setFilter(event.target.value);
-    }
+
     return (
         <div className="App">
-            <NavbarComponent/>
             <div className="DashboardMain">
                 <div className="DashboardText">
                     <h1>Dashboard</h1>
@@ -52,12 +46,16 @@ const Dashboard = () => {
                                     Create a password
                                 </Button>
                                 <DialogPass
+                                  identifierContent={""}
+                                  PasswdContent={""}
                                   open={open}
                                   handleClose={handleCloseDialog}
                                 />
                             </Box>
                             <Box>
-                                <Button sx={{ width: 250 }} variant="contained">Create a note</Button>
+                                <Button sx={{ width: 250 }} href='/create/notes' variant="contained">
+                                    Create a note
+                                </Button>
                             </Box>
                         </Stack>
                     </Container>
@@ -68,9 +66,8 @@ const Dashboard = () => {
                 <Container>
                     <div className="centerMe">
                         <FormControl sx={{width: 600}}>
-                            <InputLabel id="demo-simple-select-label">Filter</InputLabel>
+                            <InputLabel>Filter</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={filter}
                                 label="Filter"
@@ -83,24 +80,51 @@ const Dashboard = () => {
                         </FormControl>
                     </div>
                 </Container>
+
                 <Container>
-                    <div className="giveMeSpace">
+                    <div className={filter === "Notes" ? 'hidden' : undefined}>
                         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
+                            <div className="giveMeSpace" style={{textAlign: "center"}}>
+                                <Typography variant="h4">
+                                    Passwords
+                                </Typography>
+                                <Divider variant="middle" sx={{width: 400}} />
+                            </div>
+                            {/* //! map Loop */}
                             <Grid item >
-                                <NotesCard note={{ title: "he", subheader: "Sub", link: "/", color: "red", id: 1 }} />
+                                <PasswordCard password={{ title: "he", subheader: "Sub", link: "/", color: "red", id: 1, pswd: "HELLO", identifier: "HELLO" }} />
                             </Grid>
+                            <Grid item >
+                                <PasswordCard password={{ title: "he", subheader: "Sub", link: "/", color: "blue", id: 2, pswd: "HEL" }} />
+                            </Grid>
+                        </Grid>
+
+                        <div className="giveMeSpace centerMe">
+                            <Pagination count={10} color="primary" />
+                        </div>
+                    </div>
+
+                    <div className={filter === "Passwords" ? 'hidden' : undefined}>
+                        <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
+                            <div className="giveMeSpace" style={{textAlign: "center"}}>
+                                <Typography variant="h4">
+                                    Notes
+                                </Typography>
+                                <Divider variant="middle" sx={{width: 400}} />
+                            </div>
+                            {/* //! map Loop */}
                             <Grid item >
                                 <NotesCard note={{ title: "he", subheader: "Sub", link: "/", color: "blue", id: 2 }} />
                             </Grid>
                         </Grid>
+                        <div className="giveMeSpace centerMe">
+                            <Pagination count={10} color="primary" />
+                        </div>
                     </div>
+
                 </Container>
             </div>
-            <div className="giveMeSpace centerMe">
-                <Pagination count={10} color="primary" />
-            </div>
-            <VerticalNavbar/>
-            <CirclesAnimation/>
+
         </div>
     );
 };

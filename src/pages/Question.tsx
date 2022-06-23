@@ -1,5 +1,4 @@
 import React from "react";
-import NavbarComponent from "../components/header/navbar";
 import axios from "axios";
 import { TextField, Button } from "@mui/material";
 
@@ -16,7 +15,6 @@ const Question = () => {
 
     return (
         <React.Fragment>
-            <NavbarComponent />
             <div style={{ textAlign: "center" }}>
                 <header>
                     <h1>Dashboard</h1>

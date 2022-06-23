@@ -2,20 +2,19 @@ import { Dialog, DialogTitle, DialogContent,
     DialogContentText, TextField, DialogActions,
      Button, InputAdornment, IconButton } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import React, { useState } from "react";
-/* export interface SimpleDialogProps {
-    open: boolean;
-    selectedValue: string;
-    onClose: (value: string) => void;
-} */
+import React, { useEffect, useState } from "react";
 
-const DialogPass = ({ open, handleClose }) => {
+const DialogPass = ({ open, handleClose, PasswdContent, identifierContent }) => {
     const [showPassword, setShowPassword] = useState(false);
-    const [passValue, setPassValue] = useState("");    
+    const [passValue, setPassValue] = useState("");
+    const [identifierValue, setIdentifierValue] = useState("");   
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
+    useEffect(()=> {
+        if (PasswdContent) setPassValue(PasswdContent);
+        if (identifierContent) setIdentifierValue(identifierContent);
+    },[])
 
-    let GenPasswdField = React.useRef<HTMLInputElement>();
     const GenerateRandomPass = () => {
         let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         let numbers = "0123456789";
@@ -37,6 +36,7 @@ const DialogPass = ({ open, handleClose }) => {
                     </DialogContentText>
                     <TextField
                         autoFocus
+                        value={identifierValue}
                         margin="dense"
                         id="name"
                         label="Identifier"
@@ -44,6 +44,7 @@ const DialogPass = ({ open, handleClose }) => {
                         fullWidth
                         variant="standard"
                         color="secondary"
+                        onChange={(e) => setIdentifierValue(e.target.value)}
                     />
                     <TextField
                         InputProps={{

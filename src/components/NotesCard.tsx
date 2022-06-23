@@ -1,27 +1,22 @@
-import { Card, CardHeader, IconButton, Avatar, Typography, Box, Menu, MenuItem } from "@mui/material";
-import { DeleteOutlined, ContentCopy } from "@mui/icons-material";
+import DialogDelete from "./DialogDelete";
+import { Card, CardHeader, IconButton, Typography, Box } from "@mui/material";
+import { DeleteOutlined } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import React from "react";
 import axios from "axios";
 
 const NotesCard = ({ note }) => {
+    const [openDialog, setOpenDialog] = React.useState(false);
     //? Menu
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-    //? Delete
+
     const handleDelete = () => {
-        axios.post("/delete/password" + note.id)
+        axios.post("/delete/notes/" + note.id)
              .then(response => console.log(response))
     };
-    const handleCopy = () => {
-        
-    };
+
+    const handleOpenDialog = () => setOpenDialog(true);
+    const handleCloseDialog = () => setOpenDialog(false);
+
     
     return (
         <Card variant="elevation" sx={{width: 600}}>
@@ -34,33 +29,15 @@ const NotesCard = ({ note }) => {
             <Typography>
                 {note.subheader}
             </Typography>
-            } 
-            avatar={
-                <Avatar sx={{ bgcolor: note.color }} alt="Alias">{note.title.substring(0,2)}</Avatar>
-            }  
+            }
             action={
                 <Box>
-                    <Box>
-                        <IconButton onClick={handleClick}>
-                            <ContentCopy/>
-                        </IconButton>
-                        <Menu
-                          id="basic-menu"
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                          }}
-                        >
-                          <MenuItem onClick={handleCopy}>Copy password</MenuItem>
-                          <MenuItem onClick={handleCopy}>Copy identifier</MenuItem>
-                        </Menu>
-                    </Box>
-
-                    <IconButton onClick={handleDelete}>
+                    <IconButton onClick={handleOpenDialog}>
                         <DeleteOutlined />
                     </IconButton>
+                    <DialogDelete open={openDialog} 
+                    handleClose={handleCloseDialog} 
+                    handleDelete={handleDelete} />
                 </Box>
             } />
         </Card>

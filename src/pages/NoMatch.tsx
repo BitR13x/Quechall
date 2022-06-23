@@ -1,14 +1,10 @@
 import React from "react";
-import NavbarComponent from "../components/header/navbar";
-import CirclesAnimation from "../components/animation/circles";
-import VerticalNavbar from "../components/header/verticalnavbar";
 import { Container, Button, Divider } from "@mui/material";
 import "../scss/pages/NoMatch.scss";
 
 const NoMatch = () => {
     return (
         <React.Fragment>
-            <NavbarComponent />
             <div className="NotFoundMain" style={{ textAlign: "center" }}>
                 <Container>
                     <div className="container">
@@ -26,8 +22,6 @@ const NoMatch = () => {
                     <Button variant="outlined" color="secondary" href="/">Return Home</Button>
                 </div>
             </div>
-            <VerticalNavbar/>
-            <CirclesAnimation/>
         </React.Fragment>
     );
 };
