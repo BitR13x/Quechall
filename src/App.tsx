@@ -1,5 +1,6 @@
 import './scss/App.scss';
 import FeatureCard from "./components/FeatureCard";
+import CirclesAnimation from "./components/animation/circles";
 import { Grid, Container, Button, Stack, Divider } from '@mui/material';
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
           </Grid>
         </Grid>
       </Container>
+      <CirclesAnimation/>
     </div>
   );
 };

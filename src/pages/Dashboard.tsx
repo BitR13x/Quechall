@@ -33,7 +33,7 @@ const Dashboard = () => {
         <div className="App">
             <div className="DashboardMain">
                 <div className="DashboardText">
-                    <h1>Dashboard</h1>
+                    <Typography variant="h3">Dashboard</Typography>
                     <p>Create your highly secure password or note</p>
                 </div>
                 <div style={{ paddingTop: "7vh" }}>
@@ -68,7 +68,6 @@ const Dashboard = () => {
                         <FormControl sx={{width: 600}}>
                             <InputLabel>Filter</InputLabel>
                             <Select
-                                id="demo-simple-select"
                                 value={filter}
                                 label="Filter"
                                 onChange={handleChange}

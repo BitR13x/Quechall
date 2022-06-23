@@ -1,0 +1,34 @@
+.App {
+    margin-top: 10vh;
+}
+
+.CenterText {
+    text-align: center;
+}
+
+.centerMe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.giveMeSpace {
+    margin-top: 5vh;
+    padding-bottom: 5vh;
+}
+
+.giveMeSmallSpace {
+    margin-top: 2vh;
+    padding-bottom: 2vh;
+}
+
+.PassGeneratorPref {
+    width: 50%;
+}
+
+.alignBox {
+    display: flex;
+    align-items: right;
+    align-self: right;
+    justify-content: right;
+}

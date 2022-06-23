@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import logo from '../../logo.svg';
 import '../../scss/navbar.scss';
 
-const NavbarComponent = () => {
+const NavbarComponent = ({ login }) => {
     const toggleNav = () => {
         var nav = document.getElementById('nav');
         if (nav) (nav.classList.contains('active')) ? nav.classList.remove('active') : nav.classList.add('active');
@@ -18,12 +18,18 @@ const NavbarComponent = () => {
                 <button onClick={toggleNav} className="nav-icon" id="nav-icon">
                     <span className='navbarSpan'></span>
                 </button>
+                {login ?
                 <ul>
                     <li className="link-nav"><Link to="/">home</Link></li>
-                    <li className="link-nav"><Link to="#">about</Link></li>
-                    <li className="link-nav"><Link to="#">contact</Link></li>
-                    <li className="link-nav"><Link to="/question">question</Link></li>
+                    <li className="link-nav"><Link to="/dashboard">dashboard</Link></li>
+                    <li className="link-nav"><Link to="/profile">Profile settings</Link></li>
                 </ul>
+                :
+                <ul>
+                    <li className="link-nav"><Link to="/">home</Link></li>
+                    <li className="link-nav"><Link to="/login">log in</Link></li>
+                    <li className="link-nav"><Link to="/register">sign up</Link></li>
+                </ul>}
             </nav>
             </div>
         </header>

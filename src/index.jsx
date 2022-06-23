@@ -14,12 +14,12 @@ import NoMatch from "./pages/NoMatch";
 import Notes from './pages/Notes';
 import LoginPage from './pages/user/login';
 import RegisterPage from './pages/user/register';
+import ProfileSettings from './pages/profile/profileSettings';
 
 import './scss/index.scss';
 
 import NavbarComponent from "./components/header/navbar";
 import VerticalNavbar from "./components/header/verticalnavbar";
-import CirclesAnimation from "./components/animation/circles";
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Failed to find the root element');
@@ -54,10 +54,10 @@ root.render(
           <Route path="/create/notes" element={<Notes />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/profile" element={<ProfileSettings />} />
           <Route path="*" element={<NoMatch />} status={404}/>
         </Routes>
         <VerticalNavbar/>
-        <CirclesAnimation/>
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>
