@@ -74,6 +74,7 @@ const PasswordCard = ({ password }) => {
                         <DeleteOutlined />
                     </IconButton>
                     <DialogDelete open={openDialog} 
+                    text="this"
                     handleClose={handleCloseDialogDel} 
                     handleDelete={handleDelete} />
                     

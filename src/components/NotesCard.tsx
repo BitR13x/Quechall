@@ -35,7 +35,8 @@ const NotesCard = ({ note }) => {
                     <IconButton onClick={handleOpenDialog}>
                         <DeleteOutlined />
                     </IconButton>
-                    <DialogDelete open={openDialog} 
+                    <DialogDelete open={openDialog}
+                    text="this"
                     handleClose={handleCloseDialog} 
                     handleDelete={handleDelete} />
                 </Box>

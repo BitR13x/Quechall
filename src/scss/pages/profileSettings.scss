@@ -22,8 +22,11 @@
     padding-bottom: 2vh;
 }
 
-.PassGeneratorPref {
-    width: 50%;
+.alignText {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    align-self: left;
 }
 
 .alignBox {

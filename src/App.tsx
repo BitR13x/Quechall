@@ -41,6 +41,10 @@ const App = () => {
           </Grid>
         </Grid>
       </Container>
+
+      <div className='giveMeSpace centerMe'>
+          <Button sx={{ maxWidth: 300, width: "100%", marginTop: "2vh" }} variant="contained" href='/about'>About</Button>
+      </div>
       <CirclesAnimation/>
     </div>
   );

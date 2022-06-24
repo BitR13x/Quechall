@@ -2,14 +2,14 @@ import { Dialog, DialogTitle, DialogContent,
     DialogContentText, DialogActions, Button } from "@mui/material";
 import React from "react";
 
-const DialogDelete = ({ open, handleClose, handleDelete }) => {
+const DialogDelete = ({ open, handleClose, handleDelete, text }) => {
     return (
         <Dialog onClose={handleClose} open={open} fullWidth>
             <div style={{ backgroundColor: "#131515"}}>
                 <DialogTitle>Are you sure?</DialogTitle>
                 <DialogContent dividers>
                     <DialogContentText>
-                        If you delete this you can't get it back.
+                        If you delete {text} you can't get it back.
                     </DialogContentText>
 
                 </DialogContent>

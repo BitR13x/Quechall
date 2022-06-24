@@ -5,8 +5,6 @@ const VerticalNavbar = () => {
         <div className="menu">
             <div className="label">Hover Me</div>
             <div className="spacer"></div>
-            <div className="item"><span>About</span></div>
-            <div className="item"><span>Contact</span></div>
             <div className="item"><span>Questions</span></div>
             <div className="item"><span>Policy Privacy</span></div>
         </div>
