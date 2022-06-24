@@ -28,14 +28,14 @@ const PasswordCard = ({ password }) => {
              .then(response => console.log(response))
     };
 
-    const handleOpenDialogDel = () => setOpenDialog(true)
-    const handleCloseDialogDel = () => setOpenDialog(false)
+    const handleOpenDialogDel = () => setOpenDialog(true);
+    const handleCloseDialogDel = () => setOpenDialog(false);
 
-    const handleOpenDialogPass = () => setOpenDialogPass(true)
-    const handleCloseDialogPass = () => setOpenDialogPass(false)
+    const handleOpenDialogPass = () => setOpenDialogPass(true);
+    const handleCloseDialogPass = () => setOpenDialogPass(false);
     
     return (
-        <Card variant="elevation" sx={{width: 600}}>
+        <Card variant="elevation" sx={{ maxWidth: 600, width: "100%" }}>
             <CardHeader title={
             <Typography variant="h4">
                 <Link className="outside-link" to={"#"} onClick={handleOpenDialogPass}>{password.title}</Link>
@@ -59,7 +59,6 @@ const PasswordCard = ({ password }) => {
                         <ContentCopy/>
                     </IconButton>
                     <Menu
-                      id="basic-menu"
                       anchorEl={anchorEl}
                       open={openMenu}
                       onClose={handleCloseMenu}

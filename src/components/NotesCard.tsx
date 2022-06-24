@@ -19,7 +19,7 @@ const NotesCard = ({ note }) => {
 
     
     return (
-        <Card variant="elevation" sx={{width: 600}}>
+        <Card variant="elevation" sx={{maxWidth: 600, width: "100%"}}>
             <CardHeader title={
             <Typography variant="h4">
                 <Link className="outside-link" to={note.link}>{note.title}</Link>

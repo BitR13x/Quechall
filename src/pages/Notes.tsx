@@ -48,15 +48,15 @@ const Notes = ({ NoteTitle = "", markdownDef = ""}) => {
                     <Stack direction="row" spacing={2}
                         divider={<Divider orientation="vertical" flexItem />} 
                         alignItems="center" justifyContent="center">
-                      <Button sx={{ width: 300 }} variant="contained" onClick={() => setDisplay("Editor")} >Editor</Button>
-                      <Button sx={{ width: 300 }} variant="contained" onClick={() => setDisplay("Syntax")} >Syntax</Button>
-                      <Button sx={{ width: 300 }} variant="contained" onClick={() => setDisplay("Preview")} >Preview</Button>
+                      <Button sx={{ maxWidth: 300, width: "100%" }} variant="contained" onClick={() => setDisplay("Editor")} >Editor</Button>
+                      <Button sx={{ maxWidth: 300, width: "100%" }} variant="contained" onClick={() => setDisplay("Syntax")} >Syntax</Button>
+                      <Button sx={{ maxWidth: 300, width: "100%" }} variant="contained" onClick={() => setDisplay("Preview")} >Preview</Button>
                     </Stack>
                 </div>
                 
                 
                 <div className="giveMeSmallSpace">
-                    <TextField inputRef={NoteTitleField} sx={{ width: 300 }} 
+                    <TextField inputRef={NoteTitleField} sx={{ maxWidth: 300, width: "100%" }} 
                     color="secondary" label="Note title" variant="standard" defaultValue={NoteTitle}/>
                 </div>
                 
@@ -90,7 +90,7 @@ const Notes = ({ NoteTitle = "", markdownDef = ""}) => {
 
             <Container>
                 <div className="giveMeSmallSpace centerMe">
-                    <Button sx={{ width: 600 }} variant="contained" onClick={saveNote}>Save</Button>
+                    <Button sx={{ maxWidth: 600, width: "100%" }} variant="contained" onClick={saveNote}>Save</Button>
                     <Snackbar open={openSnackBar} autoHideDuration={4000} onClose={handleCloseSnacBar}>
                       <Alert onClose={handleCloseSnacBar} severity="success" sx={{ width: '100%' }}>
                         Note was saved sucessfully!

@@ -41,31 +41,28 @@ const Dashboard = () => {
                         <Stack direction="row" spacing={2}
                         divider={<Divider orientation="vertical" flexItem />} 
                         alignItems="center" justifyContent="center">
-                            <Box>
-                                <Button sx={{ width: 250 }} onClick={handleClickOpenDialog} variant="contained">
-                                    Create a password
-                                </Button>
-                                <DialogPass
-                                  identifierContent={""}
-                                  PasswdContent={""}
-                                  open={open}
-                                  handleClose={handleCloseDialog}
-                                />
-                            </Box>
-                            <Box>
-                                <Button sx={{ width: 250 }} href='/create/notes' variant="contained">
-                                    Create a note
-                                </Button>
-                            </Box>
+                            <Button sx={{ width: 250 }} onClick={handleClickOpenDialog} variant="contained">
+                                Create a password
+                            </Button>
+
+                            <Button sx={{ width: 250 }} href='/create/notes' variant="contained">
+                                Create a note
+                            </Button>
                         </Stack>
                     </Container>
+                    <DialogPass
+                      identifierContent={""}
+                      PasswdContent={""}
+                      open={open}
+                      handleClose={handleCloseDialog}
+                    />
                 </div>
                 <div className="giveMeSpace centerMe">
-                    <Divider variant="middle" sx={{width: 800}} />
+                    <Divider variant="middle" sx={{maxWidth: 800, width: "100%"}} />
                 </div>
                 <Container>
                     <div className="centerMe">
-                        <FormControl sx={{width: 600}}>
+                        <FormControl sx={{maxWidth: 600, width: "100%"}}>
                             <InputLabel>Filter</InputLabel>
                             <Select
                                 value={filter}
@@ -82,18 +79,20 @@ const Dashboard = () => {
 
                 <Container>
                     <div className={filter === "Notes" ? 'hidden' : undefined}>
-                        <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
-                            <div className="giveMeSpace" style={{textAlign: "center"}}>
-                                <Typography variant="h4">
-                                    Passwords
-                                </Typography>
-                                <Divider variant="middle" sx={{width: 400}} />
+                        <div className="giveMeSpace" style={{textAlign: "center"}}>
+                            <Typography variant="h4">
+                                Passwords
+                            </Typography>
+                            <div className="centerMe">
+                                <Divider variant="middle" sx={{maxWidth: 400, width: "100%"}} />
                             </div>
+                        </div>
+                        <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
                             {/* //! map Loop */}
-                            <Grid item >
+                            <Grid item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
                                 <PasswordCard password={{ title: "he", subheader: "Sub", link: "/", color: "red", id: 1, pswd: "HELLO", identifier: "HELLO" }} />
                             </Grid>
-                            <Grid item >
+                            <Grid item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
                                 <PasswordCard password={{ title: "he", subheader: "Sub", link: "/", color: "blue", id: 2, pswd: "HEL" }} />
                             </Grid>
                         </Grid>
@@ -104,15 +103,18 @@ const Dashboard = () => {
                     </div>
 
                     <div className={filter === "Passwords" ? 'hidden' : undefined}>
-                        <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
-                            <div className="giveMeSpace" style={{textAlign: "center"}}>
-                                <Typography variant="h4">
-                                    Notes
-                                </Typography>
-                                <Divider variant="middle" sx={{width: 400}} />
+                        <div className="giveMeSpace" style={{textAlign: "center"}}>
+                            <Typography variant="h4">
+                                Notes
+                            </Typography>
+                            <div className="centerMe">
+                                <Divider variant="middle" sx={{maxWidth: 400, width: "100%"}} />
                             </div>
+                        </div>
+                        <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
+
                             {/* //! map Loop */}
-                            <Grid item >
+                            <Grid item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
                                 <NotesCard note={{ title: "he", subheader: "Sub", link: "/", color: "blue", id: 2 }} />
                             </Grid>
                         </Grid>
