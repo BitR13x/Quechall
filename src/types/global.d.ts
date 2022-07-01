@@ -2,6 +2,5 @@
 
 
 export interface alertObj {
-    severity: string,
     message: string
 }

@@ -10,12 +10,12 @@ export const MyDataSource = new DataSource({
     "synchronize": true,
     "logging": true,
     "entities": [
-       "src/entity/**/*.ts"
+       "api/src/entity/**/*.ts"
     ],
     "migrations": [
-       "src/migration/**/*.ts"
+       "api/src/migration/**/*.ts"
     ],
     "subscribers": [
-       "src/subscriber/**/*.ts"
+       "api/src/subscriber/**/*.ts"
     ]
 })

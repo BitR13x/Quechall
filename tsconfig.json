@@ -12,6 +12,6 @@
       "sourceMap": true
    },
    "include": [
-      "./api/src/**/*",
+      "./api/**/**/*.ts",
    ]
 }

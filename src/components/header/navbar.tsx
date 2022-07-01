@@ -23,6 +23,7 @@ const NavbarComponent = ({ login }) => {
                     <li className="link-nav"><Link to="/">home</Link></li>
                     <li className="link-nav"><Link to="/dashboard">dashboard</Link></li>
                     <li className="link-nav"><Link to="/profile">Profile settings</Link></li>
+                    <li className="link-nav"><Link to="/logout">Log out</Link></li>
                 </ul>
                 :
                 <ul>

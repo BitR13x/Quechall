@@ -44,7 +44,7 @@ const Notes = ({ NoteTitle = "", markdownDef = ""}) => {
             </Container>}
             
             <Container>
-                <div className="giveMeSpace">
+                <div className="giveMeSmallSpace">
                     <Stack direction="row" spacing={2}
                         divider={<Divider orientation="vertical" flexItem />} 
                         alignItems="center" justifyContent="center">

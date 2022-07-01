@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import {
   BrowserRouter,
@@ -10,9 +10,12 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import App from './App';
 import Dashboard from "./pages/Dashboard";
 import Question from "./pages/Question";
+import About from './pages/About';
 import NoMatch from "./pages/NoMatch";
 import Notes from './pages/Notes';
+import SecretTSX from './pages/secret';
 import LoginPage from './pages/user/login';
+import Logout from "./pages/logout";
 import RegisterPage from './pages/user/register';
 import ProfileSettings from './pages/profile/profileSettings';
 
@@ -42,23 +45,32 @@ const theme = createTheme({
   }
 });
 
+const login = (localStorage.getItem("accessToken") || localStorage.getItem("jid") ) ? true : false
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <NavbarComponent/>
+  <ThemeProvider theme={theme}>
+    <BrowserRouter>
+      <NavbarComponent login={login} />
+        {login ?
         <Routes>
-          <Route exact path="/" element={<App />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/question" element={<Question />} />
           <Route path="/create/notes" element={<Notes />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
           <Route path="/profile" element={<ProfileSettings />} />
-          <Route path="*" element={<NoMatch />} status={404}/>
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/451121e2-f4c2-11ec-b939-0242ac120002" element={<SecretTSX />} />
         </Routes>
-        <VerticalNavbar/>
-      </BrowserRouter>
-    </ThemeProvider>
-  </React.StrictMode>
+        :
+        <Routes>
+          <Route exact path="/" element={<App />} />
+          <Route path="/login" element={<LoginPage  />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/451121e2-f4c2-11ec-b939-0242ac120002" element={<SecretTSX />} />
+          <Route path="*" element={<NoMatch />} status={404} />
+        </Routes>}
+      <VerticalNavbar/>
+    </BrowserRouter>
+  </ThemeProvider>
+</React.StrictMode>
 );

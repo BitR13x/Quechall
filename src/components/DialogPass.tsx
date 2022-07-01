@@ -2,18 +2,14 @@ import { Dialog, DialogTitle, DialogContent,
     DialogContentText, TextField, DialogActions,
      Button, InputAdornment, IconButton } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-const DialogPass = ({ open, handleClose, PasswdContent, identifierContent }) => {
+const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="" }) => {
     const [showPassword, setShowPassword] = useState(false);
-    const [passValue, setPassValue] = useState("");
-    const [identifierValue, setIdentifierValue] = useState("");   
+    const [passValue, setPassValue] = useState(PasswdContent);
+    const [identifierValue, setIdentifierValue] = useState(identifierContent);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
-    useEffect(()=> {
-        if (PasswdContent) setPassValue(PasswdContent);
-        if (identifierContent) setIdentifierValue(identifierContent);
-    },[])
 
     const GenerateRandomPass = () => {
         let UpperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

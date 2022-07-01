@@ -1,35 +1,45 @@
 import React, { useState } from "react";
 import { TextField, Button, Grid, Box, Typography,
         InputAdornment, Alert, Container, Backdrop, 
-        CircularProgress } from "@mui/material";
-import { AccountCircle, Password } from '@mui/icons-material';
+        CircularProgress, IconButton } from "@mui/material";
+import { AccountCircle, Password, VisibilityOff, Visibility } from '@mui/icons-material';
 import "../../scss/pages/login.scss";
 import { alertObj } from "../../types/global";
 import axios from "axios";
-
 
 const LoginPage = () => {
     const UserField = React.useRef<HTMLInputElement>();
     const PasswdField = React.useRef<HTMLInputElement>();
     const [alert, setAlert] = useState<alertObj>();
     const [openBackDrop, setOpenBackDrop] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
     const sendData = () => {
         //? warning, success
         setOpenBackDrop(true);
-        axios.post("/login")
-        //@ts-ignore
-             .then(response => response.json())
-             .then(data => setAlert(data))
+        axios.post("/api/login", {
+            username: UserField.current?.value,
+            password: PasswdField.current?.value
+        })
+            .then(response => {
+                if (response.data.message === "Success") {
+                    window.location.replace("/");
+                }
+            }, (error) => {
+               setAlert(error.response.data);
+               setOpenBackDrop(false);
+            })
     };
 
     return (
         <div className="App">
             <Container>
                 <div className="alertContainer">
-                    { (alert && alert.severity && alert.message) &&
+                    { (alert && alert.message) &&
                     // @ts-ignore
-                    <Alert sx={{ width: 600 }} severity={alert.severity}>{alert.message}</Alert>}
+                    <Alert sx={{ width: 600 }} severity="warning">{alert.message}</Alert>}
                 </div>
             </Container>
             <div className="Main">
@@ -62,7 +72,7 @@ const LoginPage = () => {
                                     width: 350,
                                     maxWidth: '100%',
                                 }}>
-                                <TextField fullWidth type={"password"} inputRef={PasswdField} onKeyDown={(e) => {
+                                <TextField fullWidth type={showPassword ? "text" : "password"} inputRef={PasswdField} onKeyDown={(e) => {
                                     if (e.key === "Enter") {
                                         sendData();
                                     }
@@ -73,6 +83,17 @@ const LoginPage = () => {
                                             <InputAdornment position="start">
                                                 <Password />
                                             </InputAdornment>
+                                        ),
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                            <IconButton
+                                              aria-label="toggle password visibility"
+                                              onClick={handleClickShowPassword}
+                                              onMouseDown={handleMouseDownPassword}
+                                            >
+                                              {showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                          </InputAdornment>
                                         )
                                     }} />
                             </Box>

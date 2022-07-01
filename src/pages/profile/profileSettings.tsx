@@ -99,7 +99,7 @@ const ProfileSettings = () => {
                                     Include Symbols (@#$%!?):
                                 </Typography>
                             </div>
-                            <div className='alignBox'>
+                            <div className='alignBoxRight'>
                                 <Checkbox
                                     
                                     checked={checkedIS}
@@ -116,7 +116,7 @@ const ProfileSettings = () => {
                                         Include Numbers (0-9):
                                     </Typography>
                                 </div>
-                                <div className='alignBox'>
+                                <div className='alignBoxRight'>
                                     <Checkbox
                                         checked={checkedIN}
                                         onChange={handleChangeIN}
@@ -133,7 +133,7 @@ const ProfileSettings = () => {
                                     </Typography>
                                 </div>
                             
-                                <div className='alignBox'>
+                                <div className='alignBoxRight'>
                                     <Checkbox
                                         checked={checkedILC}
                                         onChange={handleChangeILC}
@@ -149,7 +149,7 @@ const ProfileSettings = () => {
                                         Include Uppercase Characters (ABCDEFGHIJKLMNOPQRSTUVWXYZ):
                                     </Typography>
                                 </div>
-                                <div className='alignBox'>
+                                <div className='alignBoxRight'>
                                     <Checkbox
                                         checked={checkedIUC}
                                         onChange={handleChangeIUC}

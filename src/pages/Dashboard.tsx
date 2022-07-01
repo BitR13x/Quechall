@@ -51,8 +51,6 @@ const Dashboard = () => {
                         </Stack>
                     </Container>
                     <DialogPass
-                      identifierContent={""}
-                      PasswdContent={""}
                       open={open}
                       handleClose={handleCloseDialog}
                     />
