@@ -24,7 +24,7 @@ const PasswordCard = ({ password }) => {
     };
 
     const handleDelete = () => {
-        axios.post("/delete/password/" + password.id)
+        axios.post("/api/vault/passwd-delete/" + password.id)
              .then(response => console.log(response))
     };
 

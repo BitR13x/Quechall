@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Button, Divider } from "@mui/material";
 import "../scss/pages/NoMatch.scss";
 
-const NoMatch = () => {
+const NoMatch = ({ RetPath="/" }) => {
     return (
         <React.Fragment>
             <div className="NotFoundMain" style={{ textAlign: "center" }}>
@@ -19,7 +19,7 @@ const NoMatch = () => {
                     <Divider variant="middle" sx={{width: 800}} />
                 </div>
                 <div className="giveMeSpace">
-                    <Button variant="outlined" color="secondary" href="/">Return Home</Button>
+                    <Button variant="outlined" color="secondary" href={RetPath}>Return Home</Button>
                 </div>
             </div>
         </React.Fragment>

@@ -1,0 +1,1 @@
+export var VHOST = "http://localhost:8000";

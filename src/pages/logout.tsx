@@ -1,28 +1,37 @@
+import { Typography } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CirclesAnimation from "../components/animation/circles";
 import LoadingApp from "../components/animation/LoadingApp";
+import { VHOST } from "../vhost";
 
 const Logout = () => {
-    const [message, setMessage] = useState("");
-    const [loading, setLoading] = useState(true);
-    axios.post("/api/logout")
-         .then(response => {
-            setMessage(response.data.message);
-            setLoading(false);
-         }, (error) => {
-            setMessage(error.response.data.message);
-            setLoading(false);
-         });
+    const [status, setStatus] = useState({loading: true, message: ""});
+    useEffect(() => {
+        axios(VHOST+"/api/logout", {
+            method: "post",
+            withCredentials: true
+        })
+             .then(response => {
+                setStatus({loading: false, message: response.data.message})
+                localStorage.clear()
+             }, (error) => {
+                console.log(error)
+                setStatus({loading: false, message: error.response.data.message})
+             });
+    }, [])
     return (
         <div className="App">
-            {loading ? 
-            <React.Fragment>
-                <div style={{paddingTop: "15vh"}}>
-                    { (message) && <h2>{message}</h2>}
-                </div>
-                <CirclesAnimation />
-            </React.Fragment> : <LoadingApp/>}
+            {status.loading ? 
+            <LoadingApp/> 
+            : <React.Fragment>
+               <div style={{paddingTop: "15vh"}}>
+                   { (status.message) && <Typography textAlign={"center"} variant={"h3"}>
+                    {status.message}
+                   </Typography>}
+               </div>
+            </React.Fragment>}
+            <CirclesAnimation />
         </div>
     );
 }

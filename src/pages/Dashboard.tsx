@@ -3,14 +3,16 @@ import NotesCard from "../components/NotesCard";
 import DialogPass from "../components/DialogPass";
 import { Pagination, Container, Button, 
     Divider, Stack, FormControl, InputLabel, 
-    MenuItem, Select, Grid, Box, Typography } from "@mui/material";
+    MenuItem, Select, Grid, Typography } from "@mui/material";
 import "../scss/pages/dashboard.scss";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { VHOST } from "../vhost";
+import { passwordsObj, notesObj } from "../types/global";
 
 const Dashboard = () => {
-    const [notes, setNotes] = useState([]);
-    const [passwords, setPasswords] = useState([]);
+    const [notes, setNotes] = useState<notesObj[]>([]);
+    const [passwords, setPasswords] = useState<passwordsObj[]>([]);
     const [open, setOpen] = React.useState(false);
     const [filter, setFilter] = useState("Everything");
 
@@ -21,12 +23,16 @@ const Dashboard = () => {
     const handleChange = event => setFilter(event.target.value);
 
     //? use of modulo
-    //? const colorName = ["aqua", "blue", "green", "lime", "maroon", "navy", "olive",
-    //? "purple", "red", "silver", "teal", "white", "yellow"]
-    // useEffect(() => {
-    //     axios.post("/notes")
-    //     axios.post("/passwords")
-    // }, []);
+    const colorName = ["aqua", "blue", "green", "lime", "maroon", "navy", "olive",
+    "purple", "red", "silver", "teal", "white", "yellow"]
+    useEffect(() => {
+        axios.post(VHOST+"/api/vault/getPasswords")
+             .then(response => {
+                setPasswords(response.data.response)
+             }, (error) => {
+                console.log(error)
+             });
+    }, []);
 
 
     return (
@@ -85,19 +91,20 @@ const Dashboard = () => {
                                 <Divider variant="middle" sx={{maxWidth: 400, width: "100%"}} />
                             </div>
                         </div>
+                        {passwords && 
+                        <React.Fragment>
                         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
-                            {/* //! map Loop */}
-                            <Grid item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
-                                <PasswordCard password={{ title: "he", subheader: "Sub", link: "/", color: "red", id: 1, pswd: "HELLO", identifier: "HELLO" }} />
-                            </Grid>
-                            <Grid item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
-                                <PasswordCard password={{ title: "he", subheader: "Sub", link: "/", color: "blue", id: 2, pswd: "HEL" }} />
-                            </Grid>
+                            {passwords.map((password, index) => (
+                                <Grid key={index} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
+                                    <PasswordCard password={{ title: password.name, subheader: "Sub", color: colorName[index % colorName.length], id: 2, identifier: password.name, pswd: password.content }} />
+                                </Grid>
+                            ))}
                         </Grid>
 
                         <div className="giveMeSpace centerMe">
                             <Pagination count={10} color="primary" />
                         </div>
+                        </React.Fragment>}
                     </div>
 
                     <div className={filter === "Passwords" ? 'hidden' : undefined}>

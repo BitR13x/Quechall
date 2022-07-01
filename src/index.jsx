@@ -45,7 +45,7 @@ const theme = createTheme({
   }
 });
 
-const login = (localStorage.getItem("accessToken") || localStorage.getItem("jid") ) ? true : false
+const login = (localStorage.getItem("token") ) ? true : false;
 root.render(
   <React.StrictMode>
   <ThemeProvider theme={theme}>
@@ -58,7 +58,9 @@ root.render(
           <Route path="/create/notes" element={<Notes />} />
           <Route path="/profile" element={<ProfileSettings />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/about" element={<About />} />
           <Route path="/451121e2-f4c2-11ec-b939-0242ac120002" element={<SecretTSX />} />
+          <Route path="*" element={<NoMatch RetPath="/dashboard" />} status={404} />
         </Routes>
         :
         <Routes>

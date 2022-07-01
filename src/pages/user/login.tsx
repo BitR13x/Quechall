@@ -6,6 +6,7 @@ import { AccountCircle, Password, VisibilityOff, Visibility } from '@mui/icons-m
 import "../../scss/pages/login.scss";
 import { alertObj } from "../../types/global";
 import axios from "axios";
+import { VHOST } from "../../vhost";
 
 const LoginPage = () => {
     const UserField = React.useRef<HTMLInputElement>();
@@ -19,15 +20,17 @@ const LoginPage = () => {
     const sendData = () => {
         //? warning, success
         setOpenBackDrop(true);
-        axios.post("/api/login", {
+        axios.post(VHOST+"/api/login", {
             username: UserField.current?.value,
             password: PasswdField.current?.value
         })
             .then(response => {
                 if (response.data.message === "Success") {
-                    window.location.replace("/");
+                    localStorage.setItem("token", "LzQ1MTEyMWUyLWY0YzItMTFlYy1iOTM5LTAyNDJhYzEyMDAwMg==");
+                    window.location.replace("/dashboard");
                 }
             }, (error) => {
+                console.log(error)
                setAlert(error.response.data);
                setOpenBackDrop(false);
             })

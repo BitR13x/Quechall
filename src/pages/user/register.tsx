@@ -5,6 +5,7 @@ import { AccountCircle, Password, VisibilityOff, Visibility } from '@mui/icons-m
 import "../../scss/pages/login.scss";
 import { alertObj } from "../../types/global";
 import axios from "axios";
+import { VHOST } from "../../vhost";
 
 const RegisterPage = () => {
     let UserField = React.useRef<HTMLInputElement>();
@@ -22,7 +23,7 @@ const RegisterPage = () => {
             setAlert({ message: "Passwords don't match"})
         } else {
             setOpenBackDrop(true);
-            axios.post("/api/register", {
+            axios.post(VHOST+"/api/register", {
                 username: UserField.current?.value,
                 password: PasswdField.current?.value
             })
