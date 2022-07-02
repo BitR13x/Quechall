@@ -3,11 +3,8 @@ import { User } from "./User";
 
 @Entity()
 export class Notes extends BaseEntity {
-    @PrimaryGeneratedColumn({ type: "int" })
-    id: number;
-
-    @Column({ type: "text", unique: true })
-    link: string;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column({ type: "text", unique: false })
     name: string;

@@ -14,8 +14,7 @@ interface passwordsObj {
 }
 
 interface notesObj {
-    id: number,
-    link: string,
+    id: string,
     name: string,
     content: string,
     OwnerId: number,

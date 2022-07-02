@@ -26,12 +26,16 @@ const Dashboard = () => {
     const colorName = ["aqua", "blue", "green", "lime", "maroon", "navy", "olive",
     "purple", "red", "silver", "teal", "white", "yellow"]
     useEffect(() => {
-        axios.post(VHOST+"/api/vault/getPasswords")
-             .then(response => {
-                setPasswords(response.data.response)
-             }, (error) => {
-                console.log(error)
-             });
+        axios.all([
+          axios.post(VHOST+"/api/vault/getPasswords"), 
+          axios.post(VHOST+"/api/vault/getNotes")
+        ])
+        .then(axios.spread((response1, response2) => {
+          setPasswords(response1.data.response);
+          setNotes(response2.data.response);
+        })).catch(e => {
+            console.log(e);
+        });
     }, []);
 
 
@@ -96,7 +100,7 @@ const Dashboard = () => {
                         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
                             {passwords.map((password, index) => (
                                 <Grid key={index} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
-                                    <PasswordCard password={{ title: password.name, subheader: "Sub", color: colorName[index % colorName.length], id: 2, identifier: password.name, pswd: password.content }} />
+                                    <PasswordCard password={{ title: password.name, subheader: "Sub", color: colorName[index % colorName.length], id: password.id, identifier: password.name, pswd: password.content }} />
                                 </Grid>
                             ))}
                         </Grid>
@@ -116,16 +120,18 @@ const Dashboard = () => {
                                 <Divider variant="middle" sx={{maxWidth: 400, width: "100%"}} />
                             </div>
                         </div>
+                        {notes && <React.Fragment>
                         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
-
-                            {/* //! map Loop */}
-                            <Grid item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
-                                <NotesCard note={{ title: "he", subheader: "Sub", link: "/", color: "blue", id: 2 }} />
-                            </Grid>
+                            {notes.map((note, index) => (
+                                <Grid key={index} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
+                                    <NotesCard note={{ title: note.name, subheader: "Sub", color: colorName[index % colorName.length], id: note.id }} />
+                                </Grid>
+                            ))}
                         </Grid>
                         <div className="giveMeSpace centerMe">
                             <Pagination count={10} color="primary" />
                         </div>
+                        </React.Fragment>}
                     </div>
 
                 </Container>

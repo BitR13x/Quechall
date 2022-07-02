@@ -22,7 +22,7 @@ const NotesCard = ({ note }) => {
         <Card variant="elevation" sx={{maxWidth: 600, width: "100%"}}>
             <CardHeader title={
             <Typography variant="h4">
-                <Link className="outside-link" to={note.link}>{note.title}</Link>
+                <Link className="outside-link" to={note.id}>{note.title}</Link>
             </Typography>
             } 
             subheader={
