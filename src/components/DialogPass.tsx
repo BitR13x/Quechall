@@ -1,40 +1,15 @@
 import { Dialog, DialogTitle, DialogContent, 
     DialogContentText, TextField, DialogActions,
-     Button, InputAdornment, IconButton, Snackbar, Alert } from "@mui/material";
+     Button, InputAdornment, IconButton } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import React, { useState } from "react";
-import axios from "axios";
-import { VHOST } from "../vhost";
 
-const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="", uuid="null" }) => {
+const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="", uuid="null", handleSavePass, setOpenDialogPass }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [passValue, setPassValue] = useState(PasswdContent);
     const [identifierValue, setIdentifierValue] = useState(identifierContent);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
-    
-    const [snackBarStatus, setSnackBarStatus] = useState({open: false, message: "", severity: false});
-    const handleCloseSnacBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') return;
-        setSnackBarStatus({open: false, message: "", severity: false});
-    };
-
-    const handleSave = () => {
-        if (!passValue) {
-            setSnackBarStatus({open: true, message: "Password cannot be empty!", severity: false});
-            return;
-        };
-        axios.post(VHOST+"/api/vault/passwd-save/"+uuid, {
-            identifier: identifierValue,
-            content: passValue
-        })
-             .then(response => {
-                setSnackBarStatus({open: true, message: "Password was saved sucessfully!", severity: true});
-             }, (error) => {
-                console.log(error)
-                setSnackBarStatus({open: true, message: "Something went wrong!", severity: false});
-             });
-    };
 
     const GenerateRandomPass = () => {
         let UpperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -98,13 +73,8 @@ const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="",
                     <Button variant="contained" onClick={GenerateRandomPass}>Random Password</Button>
                     <div style={{flex: "1 0 0"}} />
                     <Button variant="contained" onClick={handleClose}>Cancel</Button>
-                    <Button variant="contained" onClick={handleSave}>Save</Button>
+                    <Button variant="contained" onClick={() => {handleSavePass(identifierValue, passValue, uuid, setOpenDialogPass)}}>Save</Button>
                 </DialogActions>
-                <Snackbar open={snackBarStatus.open} autoHideDuration={4000} onClose={handleCloseSnacBar}>
-                    <Alert onClose={handleCloseSnacBar} severity={snackBarStatus.severity ? "success" : "error"} sx={{ width: '100%' }}>
-                        {snackBarStatus.message}
-                    </Alert>
-                </Snackbar>
             </div>
         </Dialog>
     );

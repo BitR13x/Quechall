@@ -31,27 +31,28 @@ router.post('/passwd-save/:passid', isAuth, async (req: Request, res: Response) 
     let passid = String(req.params.passid);
     if (userId) {
         let {identifier, content} = req.body;
+        let PasswdCred : Passwords;
         if (passid !== "null") {
-            const PasswdCred : Passwords = await Passwords.findOneBy({id: passid});
+            PasswdCred = await Passwords.findOneBy({id: passid});
             if (!PasswdCred) {
-                return res.status(404).send({message: "This doesn't exist!"});
+                return res.status(404).send({message: "This doesn't exist!", newCard: undefined});
             } else {
                 if (PasswdCred.OwnerId === userId) {
                     PasswdCred.name = identifier;
                     PasswdCred.content = content;
                     PasswdCred.save();
-                    return res.send({message: "Success"});
+                    return res.send({message: "Success", newCard: PasswdCred});
                 } else {
                     //? You don't own this! && This doesn't exist!
-                    return res.status(401).send({message: "You don't own this!"});
+                    return res.status(401).send({message: "You don't own this!", newCard: undefined});
                 };
             };
         } else {
-            await Passwords.create({name: identifier, content: content, OwnerId: userId}).save();
-            return res.send({message: "Success"});
+            PasswdCred = await Passwords.create({name: identifier, content: content, OwnerId: userId}).save();
+            return res.send({message: "Success", newCard: PasswdCred});
         };
     } else {
-        return res.status(401).send({message: "You're not logged in"});
+        return res.status(401).send({message: "You're not logged in", newCard: undefined});
     };
 });
 
@@ -60,14 +61,14 @@ router.post('/passwd-delete/:passid', isAuth, async (req: Request, res: Response
     let userId = req.userId;
     let passid = String(req.params.passid);
     if (!userId) return res.status(401).send({message: "You're not logged in"});
-    if (!passid) return res.status(404).send({message: "This doesn't exist!"});
+    if (!passid) return res.status(404).send({message: "This doesn't exist!", delCard: undefined});
 
     const PasswdCred : Passwords = await Passwords.findOneBy({id: passid});
     if (PasswdCred && PasswdCred.OwnerId === userId ) {
         await PasswdCred.remove();
-        return res.send({message: "Success"});
+        return res.send({message: "Success", delCard: PasswdCred.id});
     } else {
-        return res.status(401).send({message: "This doesn't exist!"});
+        return res.status(401).send({message: "This doesn't exist!", delCard: undefined});
     };
 });
 

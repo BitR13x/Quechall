@@ -3,14 +3,13 @@ import DialogPass from "./DialogPass";
 import { Card, CardHeader, IconButton, Avatar, Typography, Box, Menu, MenuItem } from "@mui/material";
 import { DeleteOutlined, ContentCopy } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import React from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
-const PasswordCard = ({ password }) => {
-    const [openDialog, setOpenDialog] = React.useState(false);
-    const [openDialogPass, setOpenDialogPass] = React.useState(false);
+const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor }) => {
+    const [openDialogDel, setOpenDialogDel] = useState(false);
+    const [openDialogPass, setOpenDialogPass] = useState(false);
     //? Menu
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openMenu = Boolean(anchorEl);
 
     const handleClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
@@ -23,13 +22,8 @@ const PasswordCard = ({ password }) => {
         if (navigator.clipboard && password.pswd) navigator.clipboard.writeText(password.pswd);
     };
 
-    const handleDelete = () => {
-        axios.post("/api/vault/passwd-delete/" + password.id)
-             .then(response => console.log(response))
-    };
-
-    const handleOpenDialogDel = () => setOpenDialog(true);
-    const handleCloseDialogDel = () => setOpenDialog(false);
+    const handleOpenDialogDel = () => setOpenDialogDel(true);
+    const handleCloseDialogDel = () => setOpenDialogDel(false);
 
     const handleOpenDialogPass = () => setOpenDialogPass(true);
     const handleCloseDialogPass = () => setOpenDialogPass(false);
@@ -41,7 +35,8 @@ const PasswordCard = ({ password }) => {
                 <Link className="outside-link" to={"#"} onClick={handleOpenDialogPass}>{password.title}</Link>
                 <DialogPass 
                     PasswdContent={password.pswd} identifierContent={password.identifier} 
-                    handleClose={handleCloseDialogPass} open={openDialogPass}  
+                    handleClose={handleCloseDialogPass} open={openDialogPass}
+                    handleSavePass={handleSavePass} setOpenDialogPass={setOpenDialogPass}
                 />
             </Typography>
             } 
@@ -51,7 +46,7 @@ const PasswordCard = ({ password }) => {
             </Typography>
             } 
             avatar={
-                <Avatar variant="rounded" sx={{ bgcolor: password.color }} alt="Alias">{password.title.substring(0,2)}</Avatar>
+                <Avatar variant="rounded" sx={{ bgcolor: AvatarColor }} alt="Alias">{password.title.substring(0,2)}</Avatar>
             }  
             action={
                 <Box>
@@ -73,10 +68,10 @@ const PasswordCard = ({ password }) => {
                     <IconButton onClick={handleOpenDialogDel}>
                         <DeleteOutlined />
                     </IconButton>
-                    <DialogDelete open={openDialog} 
+                    <DialogDelete open={openDialogDel} 
                     text="this"
                     handleClose={handleCloseDialogDel} 
-                    handleDelete={handleDelete} />
+                    handleDelete={() => {handleDelete(password.id, setOpenDialogDel)}} />
                     
                 </Box>
             } />
