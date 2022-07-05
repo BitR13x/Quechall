@@ -23,6 +23,7 @@ const Dashboard = () => {
         setSnackBarStatus({open: false, message: "", severity: false});
     };
 
+    //? passwords api 
     const handleSavePass = (identifierValue: string, passValue: string, uuid: string, setOpenDialogPass: (boolean: boolean) => void) => {
         if (!passValue) {
             setSnackBarStatus({open: true, message: "Password cannot be empty!", severity: false});
@@ -48,9 +49,21 @@ const Dashboard = () => {
              .then(response => {
                 setOpenDialogDel(false);
                 setPasswords(passwords.filter(password => password.id !== id));
-                setSnackBarStatus({open: true, message: "Succesfully deleted", severity: true});
+                setSnackBarStatus({open: true, message: "Password succesfully deleted", severity: true});
             }, (error) => {
-                console.log(error)
+                console.warn("Password delete error:", error);
+            });
+    };
+
+    //? notes api
+    const handleDeleteNote = (id: string, setOpenDialogDel: (boolean: boolean) => void) => {
+        axios.post(VHOST+"/api/vault/note-delete/"+id)
+             .then(response => {
+                setOpenDialogDel(false);
+                setNotes(notes.filter(note => note.id !== id));
+                setSnackBarStatus({open: true, message: "Note succesfully deleted", severity: true});
+            }, (error) => {
+                console.warn("Note delete error:", error);
             });
     };
 
@@ -77,7 +90,7 @@ const Dashboard = () => {
         });
     }, []);
 
-    //? Pagination
+    //? Pagination Passwords
     const [currentPage, setCurrentPage] = React.useState(1);
     const [passwordsPerPage] = React.useState(6);
 
@@ -85,13 +98,29 @@ const Dashboard = () => {
     const indexOfFirstPassword = indexOfLastPassword - passwordsPerPage;
     let currentPasswords;
     let numberOfPages : number = 1;
-    if ( passwords.length ){
+    if ( passwords.length ) {
       currentPasswords = passwords.slice(indexOfFirstPassword, indexOfLastPassword);
       numberOfPages = Math.ceil(passwords.length / passwordsPerPage);
-    }
+    };
     const PaginatePass = (event: React.ChangeEvent<unknown>, page: number) => {
         setCurrentPage(page)
-    }
+    };
+
+    //? Pagination Notes
+    const [currentPageOfNotes, setCurrentPageOfNotes] = React.useState(1);
+    const [notesPerPage] = React.useState(6);
+
+    const indexOfLastNote = currentPageOfNotes * notesPerPage;
+    const indexOfFirstNote = indexOfLastNote - notesPerPage;
+    let currentNotes;
+    let numberOfPagesNotes : number = 1;
+    if ( notes.length ) {
+      currentNotes = notes.slice(indexOfFirstNote, indexOfLastNote);
+      numberOfPagesNotes = Math.ceil(notes.length / notesPerPage);
+    };
+    const PaginateNotes = (event: React.ChangeEvent<unknown>, page: number) => {
+        setCurrentPageOfNotes(page)
+    };
 
     return (
         <div className="App">
@@ -171,7 +200,7 @@ const Dashboard = () => {
                     : <div></div>}
 
                     {/* //? Starting of notes  */}
-                    {notes.length ?
+                    {currentNotes ?
                     <div className={filter === "Passwords" ? 'hidden' : undefined}>
                         <div className="giveMeSpace" style={{textAlign: "center"}}>
                             <Typography variant="h4">
@@ -182,15 +211,15 @@ const Dashboard = () => {
                             </div>
                         </div>
                         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
-                            {notes.map((note, index) => (
+                            {currentNotes.map((note, index) => (
                                 <Grid key={index} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
-                                    <NotesCard note={{ title: note.name, subheader: "Sub", color: colorName[index % colorName.length], id: note.id }} />
+                                    <NotesCard handleDelete={handleDeleteNote} note={{ title: note.name, subheader: "Sub", content: note.content, id: note.id }} />
                                 </Grid>
                             ))}
                         </Grid>
-                        <div className="giveMeSpace centerMe">
-                            <Pagination count={10} color="primary" showFirstButton showLastButton />
-                        </div>
+                        { (numberOfPagesNotes > 1) && <div className="giveMeSpace centerMe">
+                            <Pagination count={numberOfPagesNotes} color="primary" onChange={PaginateNotes} showFirstButton showLastButton />
+                        </div>}
                     </div>
                     : <div></div>}
                     {(notes.length || passwords.length) ? 

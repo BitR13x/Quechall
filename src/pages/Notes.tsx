@@ -3,18 +3,29 @@ import Markdown from "../components/Markdown";
 import MarkdownSyntax from "../components/MarkdownSyntax";
 import { Container, Button, Stack, Divider, Switch, 
     FormControlLabel, Box, TextField, Snackbar, Alert } from '@mui/material';
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
-const Notes = ({ NoteTitle = "", markdownDef = ""}) => {
+const Notes = ({NoteTitle = "", markdownDef = "", uuid="null"}) => {
+    interface noteObj {
+        NoteTitle: string,
+        markdownDef: string,
+        uuid: string
+    };
+    let RouterLocation = useLocation()
+    if (RouterLocation.state) {
+        ({ NoteTitle, markdownDef, uuid } = RouterLocation.state as noteObj);
+    };
     const [markdown, setMarkdown] = useState(markdownDef);
     const [display, setDisplay] = useState("Editor");
     const [checked, setChecked] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
-    const [openSnackBar, setOpenSnackBar] = React.useState(false);
+    const [snackBarStatus, setSnackBarStatus] = React.useState({open: false, message: "", severity: false});
     let NoteTitleField = React.useRef<HTMLInputElement>();
 
     const handleCloseSnacBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
       if (reason === 'clickaway') return;
-      setOpenSnackBar(false);
+      setSnackBarStatus({open: false, message: "", severity: false});
     };
     const handleChangeSwitch = () => {
         if (checked) {
@@ -29,10 +40,20 @@ const Notes = ({ NoteTitle = "", markdownDef = ""}) => {
             setShowAlert(true);
             return;
         } else {
-            setOpenSnackBar(true);
-            setShowAlert(false);
+            if (showAlert) {
+                setShowAlert(false);
+            };
+            axios.post("/api/vault/note-save/"+uuid, {
+                name: NoteTitleField.current?.value,
+                content: markdown
+            })
+                 .then(response => {
+                    setSnackBarStatus({open: true, message: "Note was saved sucessfully!", severity: true});
+                 }, (error) => {
+                    console.warn("Note error:", error);
+                    setSnackBarStatus({open: true, message: "Something went wrong!", severity: false});
+                 });
         };
-        //? axios post request
     };
 
     return (
@@ -42,7 +63,14 @@ const Notes = ({ NoteTitle = "", markdownDef = ""}) => {
                     "Note title" and "Note text" cannot be empty!
                 </Alert>
             </Container>}
-            
+
+            <Container>
+                <div className="centerMe giveMeSmallSpace">
+                    <TextField inputRef={NoteTitleField} sx={{ maxWidth: 600, width: "100%" }} 
+                    color="secondary" label="Note title" variant="standard" defaultValue={NoteTitle}/>
+                </div>
+            </Container>
+
             <Container>
                 <div className="giveMeSmallSpace">
                     <Stack direction="row" spacing={2}
@@ -54,13 +82,6 @@ const Notes = ({ NoteTitle = "", markdownDef = ""}) => {
                     </Stack>
                 </div>
                 
-                
-                <div className="giveMeSmallSpace">
-                    <TextField inputRef={NoteTitleField} sx={{ maxWidth: 300, width: "100%" }} 
-                    color="secondary" label="Note title" variant="standard" defaultValue={NoteTitle}/>
-                </div>
-                
-
                 { display === "Editor" && <div>
                     <FormControlLabel label="Live preview"
                         control={<Switch
@@ -91,9 +112,9 @@ const Notes = ({ NoteTitle = "", markdownDef = ""}) => {
             <Container>
                 <div className="giveMeSmallSpace centerMe">
                     <Button sx={{ maxWidth: 600, width: "100%" }} variant="contained" onClick={saveNote}>Save</Button>
-                    <Snackbar open={openSnackBar} autoHideDuration={4000} onClose={handleCloseSnacBar}>
-                      <Alert onClose={handleCloseSnacBar} severity="success" sx={{ width: '100%' }}>
-                        Note was saved sucessfully!
+                    <Snackbar open={snackBarStatus.open} autoHideDuration={4000} onClose={handleCloseSnacBar}>
+                      <Alert onClose={handleCloseSnacBar} severity={snackBarStatus.severity ? "success" : "error"} sx={{ width: '100%' }}>
+                        {snackBarStatus.message}
                       </Alert>
                     </Snackbar>
                 </div>

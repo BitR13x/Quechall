@@ -2,27 +2,19 @@ import DialogDelete from "./DialogDelete";
 import { Card, CardHeader, IconButton, Typography, Box } from "@mui/material";
 import { DeleteOutlined } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import React from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
-const NotesCard = ({ note }) => {
-    const [openDialog, setOpenDialog] = React.useState(false);
-    //? Menu
-
-    const handleDelete = () => {
-        axios.post("/delete/notes/" + note.id)
-             .then(response => console.log(response))
-    };
-
+const NotesCard = ({ note, handleDelete }) => {
+    const [openDialog, setOpenDialog] = useState(false);
     const handleOpenDialog = () => setOpenDialog(true);
     const handleCloseDialog = () => setOpenDialog(false);
-
     
     return (
         <Card variant="elevation" sx={{maxWidth: 600, width: "100%"}}>
             <CardHeader title={
             <Typography variant="h4">
-                <Link className="outside-link" to={note.id}>{note.title}</Link>
+                <Link className="outside-link" to={"/create/notes"} 
+                state={{ NoteTitle: note.title, markdownDef: note.content, uuid: note.id}}>{note.title}</Link>
             </Typography>
             } 
             subheader={
@@ -38,7 +30,7 @@ const NotesCard = ({ note }) => {
                     <DialogDelete open={openDialog}
                     text="this"
                     handleClose={handleCloseDialog} 
-                    handleDelete={handleDelete} />
+                    handleDelete={() => {handleDelete(note.id, setOpenDialog)}} />
                 </Box>
             } />
         </Card>
