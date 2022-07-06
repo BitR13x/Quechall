@@ -27,6 +27,7 @@ import VerticalNavbar from "./components/header/verticalnavbar";
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Failed to find the root element');
 const root = ReactDOM.createRoot(rootElement);
+console.info("If you will have any problem you can contact us, we will appreciate it");
 
 const theme = createTheme({
   palette: {

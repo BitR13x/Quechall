@@ -20,6 +20,9 @@ export class User extends BaseEntity {
     @Column( "int", { default: 0 })
     tokenVersion: number;
 
+    @Column("simple-json", { default: { passwdlen: 20, symbols: true, numbers: true, lowercase: true, uppercase: true } })
+    passwdGen: { passwdlen: number, symbols: boolean, numbers: boolean, lowercase: boolean, uppercase: boolean };
+
     @OneToMany(() => Passwords, passwords => passwords.user)
     @JoinColumn()
     passwords: Passwords;

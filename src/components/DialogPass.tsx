@@ -15,7 +15,7 @@ const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="",
         let UpperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         let LowerChars = "abcdefghijklmnopqrstuvwxyz";
         let numbers = "0123456789";
-        let symbols = "@#$%!?";
+        let symbols = "@#$%!?§~";
         let everything = UpperChars + LowerChars + numbers + symbols;
         let pwdLen = 24
         let randomstring = Array(pwdLen).fill(everything).map((x) => { return x[Math.floor(Math.random() * x.length)] }).join('');

@@ -3,7 +3,7 @@ import Joi from "joi";
 interface inputObject {
     username?: string;
     password?: string;
-    repeatPassword?: string;
+    newPassword?: string;
     birthYear?: number;
     email?: string;
     defaultString?: string;
@@ -20,10 +20,14 @@ export const inputValidate = ( inputObject: inputObject ) => {
         password: Joi.string()
             .min(6)
             .max(60)
-            .pattern(new RegExp('^[a-zA-Z0-9(.,#?!@&*$:)]{0,}$'))
+            .pattern(new RegExp('^[a-zA-Z0-9(.,#?!@&*$:\-§~^)]{0,}$'))
             .trim(),
     
-        repeatPassword: Joi.ref('password'),
+        newPassword: Joi.string()
+            .min(6)
+            .max(60)
+            .pattern(new RegExp('^[a-zA-Z0-9(.,#?!@&*$:\-§~^)]{0,}$'))
+            .trim(),
         
         birthYear: Joi.number()
             .integer()
@@ -37,6 +41,7 @@ export const inputValidate = ( inputObject: inputObject ) => {
     });
     
     const { error, value } = schema.validate( inputObject );
+    console.log(value)
     if (error) {
         return [ error.message, value ]
     } else {

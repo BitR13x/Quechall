@@ -1,50 +1,91 @@
 import { Grid, Container, Typography, Button, 
     Divider, Avatar, TextField, Checkbox,
-    InputAdornment, IconButton, Alert } from '@mui/material';
+    InputAdornment, IconButton, Alert, Snackbar } from '@mui/material';
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useState, useRef } from 'react';
 import axios from 'axios';
 import DialogDelete from '../../components/DialogDelete';
 import "../../scss/pages/profileSettings.scss";
+import { VHOST } from "../../vhost";
 
 const ProfileSettings = () => {
-    interface alertP {
-        show: boolean,
-        text: string
-    }
     var user = {username: "helo"}
     const [openDialog, setOpenDialog] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [AlertP, setAlertP] = useState<alertP>();
+    const [AlertP, setAlertP] = useState({ show: false, text: ""});
 
     const PasswdField = useRef<HTMLInputElement>();
     const RePasswdField = useRef<HTMLInputElement>();
     const CurrentPassword = useRef<HTMLInputElement>();
-    
+
+    const passwordLen = useRef<HTMLInputElement>();
+
     const handleDelete = () => {
-        axios.post("/delete/account")
-             .then(response => console.log(response))
+        axios.post(VHOST+"/api/profile/delete/account")
+             .then(response => {
+                setSnackBarStatus({open: true, message: "Account succesfully deleted.", severity: true});
+                localStorage.clear();
+            }, (error) => {
+                setSnackBarStatus({open: true, message: "Something went wrong.", severity: false});
+                console.warn("Delete account error:", error);
+            });
     };
 
     const changePassword = () => {
         if (!PasswdField.current?.value || !RePasswdField.current?.value || !CurrentPassword.current?.value) {
             setAlertP({show: true, text: "Password fields cannot be empty!"});
             return;
-        } else if (PasswdField.current?.value === RePasswdField.current?.value) {
+        } else if (PasswdField.current?.value !== RePasswdField.current?.value) {
             setAlertP({show: true, text: "Password not match!"});
             return;
         } else {
             setAlertP({show: false, text: ""});
-            axios.post("/change/password")
+            axios.post(VHOST+"/api/profile/change/password", {
+                oldPassword: CurrentPassword.current?.value,
+                newPassword: PasswdField.current?.value
+            }).then(response => {
+                setSnackBarStatus({open: true, message: "Password successfully changed.", severity: true});
+            }, (error) => {
+                setSnackBarStatus({open: true, message: "Something went wrong.", severity: false});
+                console.warn("Change password error:",error)
+            })
         }
     };
 
+    const saveGenPrefs = () => {
+        if (!passwordLen.current?.value) {
+            setSnackBarStatus({open: true, message: "Password length cannot be empty!", severity: false});
+            return;
+        };
+        axios.post(VHOST+"/api/profile/editGenPrefs", {
+            passwdlen: passwordLen.current?.value,
+            symbols: checkedIS,
+            numbers: checkedIN,
+            lowercase: checkedILC,
+            uppercase: checkedIUC
+        }).then(response => {
+            setSnackBarStatus({open: true, message: "Preferences successfully changed.", severity: true});
+        }, (error) => {
+            console.warn("Profile preferences errror:", error);
+        });
+    };
+
+    //? response handling snackbar
+    const [snackBarStatus, setSnackBarStatus] = useState({open: false, message: "", severity: false});
+    const handleCloseSnacBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') return;
+        setSnackBarStatus({open: false, message: "", severity: false});
+    };
+
+    //? delete dialog
     const handleOpenDialog = () => setOpenDialog(true);
     const handleCloseDialog = () => setOpenDialog(false);
 
+    //? show password
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
+    //? check fields (abbreviated naming)
     const [checkedIS, setCheckedIS] = useState(false);
     const [checkedIN, setCheckedIN] = useState(false);
     const [checkedILC, setCheckedILC] = useState(false);
@@ -57,13 +98,6 @@ const ProfileSettings = () => {
 
     return (
         <div className='App'>
-            <Container>
-                <div className="alertContainer">
-{/*                     { (alert && alert.severity && alert.message) &&
-                    // @ts-ignore
-                    <Alert sx={{ width: 600 }} severity={alert.severity}>{alert.message}</Alert>} */}
-                </div>
-            </Container>
             <div className="centerMe">
                 <Typography variant="h3">
                     Profile Settings
@@ -90,7 +124,11 @@ const ProfileSettings = () => {
                     <Container>
                         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
                             <Grid item  sx={{width: "100%", display: "flex"}} justifyContent="left" alignItems="left">
-                                <TextField fullWidth label="Password Length:" helperText="We recommend at least 16 for safety." type='number' variant='outlined' color='secondary' />
+                                <TextField inputRef={passwordLen}  fullWidth label="Password Length:" helperText="We recommend at least 16 for safety." 
+                                    type='number' variant='outlined' color='secondary'
+                                    onInput = {(e) =>{
+                                       (e.target as HTMLInputElement).value = Math.max(0, parseInt((e.target as HTMLInputElement).value) ).toString().slice(0,6);
+                                    }} />
                             </Grid>
                             
                             <Grid item sx={{width: "100%", display: "flex"}} justifyContent="space-between" alignItems="center" >
@@ -169,7 +207,7 @@ const ProfileSettings = () => {
                 //? delete account 
                 */}
             <div className="giveMeSpace centerMe">
-                <Button sx={{maxWidth: 600, width: "100%"}} variant="contained">Save preferences</Button>
+                <Button sx={{maxWidth: 600, width: "100%"}} variant="contained" onClick={saveGenPrefs}>Save preferences</Button>
             </div>
 
             <div className='centerMe'>
@@ -233,6 +271,13 @@ const ProfileSettings = () => {
                     handleDelete={handleDelete} 
                 />
             </div>
+            <Container>
+                <Snackbar open={snackBarStatus.open} autoHideDuration={4000} onClose={handleCloseSnacBar}>
+                    <Alert onClose={handleCloseSnacBar} severity={snackBarStatus.severity ? "success" : "error"} sx={{ width: '100%' }}>
+                        {snackBarStatus.message}
+                    </Alert>
+                </Snackbar>
+            </Container>
         </div>
     );
 };
