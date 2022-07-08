@@ -4,24 +4,12 @@ import { Dialog, DialogTitle, DialogContent,
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import React, { useState } from "react";
 
-const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="", uuid="null", handleSavePass, setOpenDialogPass }) => {
+const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="", uuid="null", handleSavePass, setOpenDialogPass, GenerateRandomPass }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [passValue, setPassValue] = useState(PasswdContent);
     const [identifierValue, setIdentifierValue] = useState(identifierContent);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
-
-    const GenerateRandomPass = () => {
-        let UpperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        let LowerChars = "abcdefghijklmnopqrstuvwxyz";
-        let numbers = "0123456789";
-        let symbols = "@#$%!?§~";
-        let everything = UpperChars + LowerChars + numbers + symbols;
-        let pwdLen = 24
-        let randomstring = Array(pwdLen).fill(everything).map((x) => { return x[Math.floor(Math.random() * x.length)] }).join('');
-
-        setPassValue(randomstring);
-    };
     
     return (
         <Dialog onClose={handleClose} open={open} fullWidth>
@@ -70,7 +58,7 @@ const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="",
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={GenerateRandomPass}>Random Password</Button>
+                    <Button variant="contained" onClick={() => {GenerateRandomPass(setPassValue)}}>Random Password</Button>
                     <div style={{flex: "1 0 0"}} />
                     <Button variant="contained" onClick={handleClose}>Cancel</Button>
                     <Button variant="contained" onClick={() => {handleSavePass(identifierValue, passValue, uuid, setOpenDialogPass)}}>Save</Button>

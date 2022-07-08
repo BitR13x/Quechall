@@ -3,7 +3,6 @@ import { isAuth } from '../jwtokens';
 import { User } from '../src/entity/User';
 import { Notes } from '../src/entity/Notes';
 import { Passwords } from '../src/entity/Passwords';
-import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
 
@@ -25,7 +24,6 @@ router.post('/getPasswords', isAuth, async (req: Request, res: Response) => {
 });
 
 router.post('/passwd-save/:passid', isAuth, async (req: Request, res: Response) => {
-    //? if not exist create else edit
     //@ts-ignore
     let userId = req.userId;
     let passid = String(req.params.passid);

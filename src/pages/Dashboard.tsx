@@ -9,6 +9,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { VHOST } from "../vhost";
 import { passwordsObj, notesObj } from "../types/global";
+import Base64 from 'crypto-js/enc-base64';
+import AES from "crypto-js/aes";
+//? https://www.npmjs.com/package/crypto-js
 
 const Dashboard = () => {
     const [notes, setNotes] = useState<notesObj[]>([]);
@@ -90,6 +93,33 @@ const Dashboard = () => {
         });
     }, []);
 
+    //? Generating passwords
+    const [generatePasswdState, setGeneratePasswdState] = useState({
+        upperChars: true, lowerChars: true, numbers: true, symbols: true, pwdlen: 24
+    })
+    useEffect(() => {
+        axios.post(VHOST+"/api/profile/getProfilePrefs")
+             .then(response => {
+                let res = response.data.response.passwordPrefs
+                setGeneratePasswdState({upperChars: res.uppercase, lowerChars: res.lowercase,
+                                        numbers: res.numbers, symbols: res.symbols, pwdlen: res.passwdlen });
+             }, (error) => {
+                console.warn("Profile prefs error: ", error)
+             });
+    }, []);
+
+    const GenerateRandomPass = (setPassValue: (string: string) => void) => {
+        let UpperChars = generatePasswdState.upperChars ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ" : "";
+        let LowerChars = generatePasswdState.lowerChars ? "abcdefghijklmnopqrstuvwxyz" : "";
+        let numbers = generatePasswdState.numbers ? "0123456789" : "";
+        let symbols = generatePasswdState.symbols ? "@#$%!?§~" : "";
+        let everything = UpperChars + LowerChars + numbers + symbols;
+        let pwdLen = generatePasswdState.pwdlen;
+        console.log(pwdLen)
+        let randomstring = Array(pwdLen).fill(everything).map((x) => { return x[Math.floor(Math.random() * x.length)] }).join('');
+        setPassValue(randomstring);
+    };
+
     //? Pagination Passwords
     const [currentPage, setCurrentPage] = React.useState(1);
     const [passwordsPerPage] = React.useState(6);
@@ -148,6 +178,7 @@ const Dashboard = () => {
                       handleClose={handleCloseDialog}
                       handleSavePass={handleSavePass}
                       setOpenDialogPass={setOpen}
+                      GenerateRandomPass={GenerateRandomPass}
                     />
                 </div>
                 <div className="giveMeSpace centerMe">
@@ -188,7 +219,7 @@ const Dashboard = () => {
                                 <Grid key={index} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
                                     <PasswordCard handleSavePass={handleSavePass} handleDelete={handleDeletePass}
                                     password={{ title: password.name, subheader: "Sub", id: password.id, identifier: password.name, pswd: password.content }} 
-                                    AvatarColor={colorName[index % colorName.length]} />
+                                    AvatarColor={colorName[index % colorName.length]} GenerateRandomPass={GenerateRandomPass}/>
                                 </Grid>
                             ))}
                         </Grid>

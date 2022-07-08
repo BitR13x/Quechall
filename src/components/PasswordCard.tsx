@@ -5,7 +5,7 @@ import { DeleteOutlined, ContentCopy } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 
-const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor }) => {
+const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor, GenerateRandomPass }) => {
     const [openDialogDel, setOpenDialogDel] = useState(false);
     const [openDialogPass, setOpenDialogPass] = useState(false);
     //? Menu
@@ -37,6 +37,7 @@ const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor }) =
                     PasswdContent={password.pswd} identifierContent={password.identifier} 
                     handleClose={handleCloseDialogPass} open={openDialogPass}
                     handleSavePass={handleSavePass} setOpenDialogPass={setOpenDialogPass}
+                    GenerateRandomPass={GenerateRandomPass}
                 />
             </Typography>
             } 

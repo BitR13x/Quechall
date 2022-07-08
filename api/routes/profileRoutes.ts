@@ -17,6 +17,20 @@ const PasswordChangeLimiter = rateLimit({
 })
 
 const router = express.Router();
+
+router.post('/getProfilePrefs', isAuth, async (req: Request, res: Response) => {
+  //@ts-ignore
+  let userId = req.userId;
+  if (userId) {
+      const user : User = await User.findOneBy({id: userId})
+      if (!user) return res.status(401).send({message: "Your account doesn't exist!"});
+      let ret_user = {userName: user.userName, passwordPrefs: user.passwdGen};
+      return res.send({message: "Success", response: ret_user });
+  } else {
+      return res.status(401).send({message: "You're not logged in"});
+  };
+});
+
 router.post('/change/password', PasswordChangeLimiter, isAuth, async (req: Request, res: Response) => {
     //@ts-ignore
     let userId = req.userId;

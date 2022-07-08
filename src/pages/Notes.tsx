@@ -55,7 +55,7 @@ const Notes = ({NoteTitle = "", markdownDef = "", uuid="null"}) => {
                  });
         };
     };
-
+    // TODO: https://www.markdownguide.org/basic-syntax/
     return (
         <div className="App">
             {showAlert && <Container>
