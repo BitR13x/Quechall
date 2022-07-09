@@ -11,6 +11,7 @@ import { VHOST } from "../vhost";
 import { passwordsObj, notesObj } from "../types/global";
 import Base64 from 'crypto-js/enc-base64';
 import AES from "crypto-js/aes";
+import Utf8 from "crypto-js/enc-utf8";
 //? https://www.npmjs.com/package/crypto-js
 
 const Dashboard = () => {
@@ -18,7 +19,7 @@ const Dashboard = () => {
     const [passwords, setPasswords] = useState<passwordsObj[]>([]);
     const [open, setOpen] = useState(false);
     const [filter, setFilter] = useState("Passwords");
-
+    const [masterpass ,setMasterPass] = useState("");
     //? response handling snackbar
     const [snackBarStatus, setSnackBarStatus] = useState({open: false, message: "", severity: false});
     const handleCloseSnacBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -32,6 +33,13 @@ const Dashboard = () => {
             setSnackBarStatus({open: true, message: "Password cannot be empty!", severity: false});
             return;
         };
+        let identifierWords : string = Utf8.parse(identifierValue);
+        let identifierBase64 : string = Base64.stringify(identifierWords);
+        let passWords : string = Utf8.parse(identifierValue);
+        let passBase64 : string = Base64.stringify(passWords);
+        identifierValue = AES.encrypt(identifierBase64, masterpass);
+        passValue = AES.encrypt(passBase64, masterpass);
+
         axios.post(VHOST+"/api/vault/passwd-save/"+uuid, {
             identifier: identifierValue,
             content: passValue
@@ -104,7 +112,7 @@ const Dashboard = () => {
                 setGeneratePasswdState({upperChars: res.uppercase, lowerChars: res.lowercase,
                                         numbers: res.numbers, symbols: res.symbols, pwdlen: res.passwdlen });
              }, (error) => {
-                console.warn("Profile prefs error: ", error)
+                console.warn("Profile prefs error: ", error);
              });
     }, []);
 
