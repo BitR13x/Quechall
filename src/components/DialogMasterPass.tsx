@@ -3,34 +3,32 @@ import { Dialog, DialogTitle, DialogContent,
      Button, InputAdornment, IconButton } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import React, { useState } from "react";
+import axios from "axios";
 
-const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="", uuid="null", handleSavePass, setOpenDialogPass, GenerateRandomPass }) => {
+const DialogMasterPass = ({ open, handleClose, setMasterPass }) => {
     const [showPassword, setShowPassword] = useState(false);
-    const [passValue, setPassValue] = useState(PasswdContent);
-    const [identifierValue, setIdentifierValue] = useState(identifierContent);
-    const handleClickShowPassword = () => setShowPassword(true);
-    const handleMouseDownPassword = () => setShowPassword(false);
+    const [passValue, setPassValue] = useState("");
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
     
+    const ValidateMasterPass = () => {
+        setMasterPass(passValue);
+        // axios.post("/api/account/")
+        //      .then(response => {
+        //         setMasterPass(passValue);
+        //      }, (error) => {
+        //         console.warn("Master Password error:", error);
+        //      })
+    };
+
     return (
         <Dialog onClose={handleClose} open={open} fullWidth>
             <div style={{ backgroundColor: "#131515"}}>
-                <DialogTitle>CREATE A PASSWORD</DialogTitle>
+                <DialogTitle>Enter your Master Password</DialogTitle>
                 <DialogContent dividers>
                     <DialogContentText>
 
                     </DialogContentText>
-                    <TextField
-                        autoFocus
-                        value={identifierValue}
-                        margin="dense"
-                        id="name"
-                        label="Identifier"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        color="secondary"
-                        onChange={(e) => setIdentifierValue(e.target.value)}
-                    />
                     <TextField
                         InputProps={{
                             endAdornment: (
@@ -55,17 +53,19 @@ const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="",
                         fullWidth
                         variant="standard"
                         color="secondary"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                ValidateMasterPass()
+                            }
+                        }} 
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={() => {GenerateRandomPass(setPassValue)}}>Random Password</Button>
-                    <div style={{flex: "1 0 0"}} />
-                    <Button variant="contained" onClick={handleClose}>Cancel</Button>
-                    <Button variant="contained" onClick={() => {handleSavePass(identifierValue, passValue, uuid, setOpenDialogPass)}}>Save</Button>
+                    <Button variant="contained" onClick={ValidateMasterPass}>Save</Button>
                 </DialogActions>
             </div>
         </Dialog>
     );
 }
 
-export default DialogPass;
+export default DialogMasterPass;

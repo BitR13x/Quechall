@@ -17,6 +17,9 @@ export class User extends BaseEntity {
     @Column({ type: "text" })
     hsPassword: string;
 
+    @Column({ type: "text" })
+    hsMasterPass: string;
+
     @Column( "int", { default: 0 })
     tokenVersion: number;
 

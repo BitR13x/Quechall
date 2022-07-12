@@ -7,6 +7,7 @@ interface inputObject {
     birthYear?: number;
     email?: string;
     defaultString?: string;
+    masterpass?: string;
 };
 
 
@@ -37,7 +38,11 @@ export const inputValidate = ( inputObject: inputObject ) => {
         email: Joi.string()
             .email({ minDomainSegments: 2 }),
 
-        defaultString: Joi.string()
+        masterpass: Joi.string()
+            .min(6)
+            .max(60)
+            .pattern(new RegExp('^[a-zA-Z0-9(.,#?!@&*$:\-§~^)]{0,}$'))
+            .trim(),
     });
     
     const { error, value } = schema.validate( inputObject );

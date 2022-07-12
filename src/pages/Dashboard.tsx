@@ -1,30 +1,61 @@
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { MasterPasswordContext } from "../components/Store/Store";
+import { VHOST } from "../vhost";
+import { passwordsObj, notesObj } from "../types/global";
+
 import PasswordCard from "../components/PasswordCard";
 import NotesCard from "../components/NotesCard";
 import DialogPass from "../components/DialogPass";
+import "../scss/pages/dashboard.scss";
+
 import { Pagination, Container, Button, 
     Divider, Stack, FormControl, InputLabel, 
     MenuItem, Select, Grid, Typography, Snackbar, Alert } from "@mui/material";
-import "../scss/pages/dashboard.scss";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { VHOST } from "../vhost";
-import { passwordsObj, notesObj } from "../types/global";
-import Base64 from 'crypto-js/enc-base64';
+
 import AES from "crypto-js/aes";
 import Utf8 from "crypto-js/enc-utf8";
-//? https://www.npmjs.com/package/crypto-js
 
 const Dashboard = () => {
     const [notes, setNotes] = useState<notesObj[]>([]);
     const [passwords, setPasswords] = useState<passwordsObj[]>([]);
     const [open, setOpen] = useState(false);
     const [filter, setFilter] = useState("Passwords");
-    const [masterpass ,setMasterPass] = useState("");
+    const {masterpass, setMasterPass} = useContext(MasterPasswordContext);
+
     //? response handling snackbar
     const [snackBarStatus, setSnackBarStatus] = useState({open: false, message: "", severity: false});
     const handleCloseSnacBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') return;
         setSnackBarStatus({open: false, message: "", severity: false});
+    };
+
+    //? Master Password
+    let RouterLocation = useLocation();
+    let navigation = useNavigate();
+    useEffect(() => {
+        if (!masterpass) {
+            if (RouterLocation.state) {
+                if ((RouterLocation.state as { masterpass: string }).masterpass) {
+                    setMasterPass((RouterLocation.state as { masterpass: string }).masterpass);
+                    return;
+                };
+                return;
+            };
+            navigation("/setMasterPass");
+        };
+    }, [RouterLocation.state, masterpass, navigation]);
+
+    //? functions decode / encode
+    const encryptAES = (string: string) => {
+        let encryptedObj = AES.encrypt(string, masterpass);
+        return encryptedObj.toString();
+    };
+    const decryptAES = (encrypted: string) => {
+        let decryptedObj = AES.decrypt(encrypted, masterpass);
+        return decryptedObj.toString(Utf8);
     };
 
     //? passwords api 
@@ -33,20 +64,32 @@ const Dashboard = () => {
             setSnackBarStatus({open: true, message: "Password cannot be empty!", severity: false});
             return;
         };
-        let identifierWords : string = Utf8.parse(identifierValue);
-        let identifierBase64 : string = Base64.stringify(identifierWords);
-        let passWords : string = Utf8.parse(identifierValue);
-        let passBase64 : string = Base64.stringify(passWords);
-        identifierValue = AES.encrypt(identifierBase64, masterpass);
-        passValue = AES.encrypt(passBase64, masterpass);
+        if (!masterpass) {
+            setSnackBarStatus({open: false, message: "Master Password cannot be empty!", severity: false});
+            navigation("/setMasterPass");
+            return;
+        };
 
+        let EncryptedIdentifierValue = encryptAES(identifierValue);
+        let EncryptedPassValue = encryptAES(passValue);
         axios.post(VHOST+"/api/vault/passwd-save/"+uuid, {
-            identifier: identifierValue,
-            content: passValue
+            identifier: EncryptedIdentifierValue,
+            content: EncryptedPassValue
         })
              .then(response => {
                 setOpenDialogPass(false);
-                passwords.unshift(response.data.newCard);
+                if (uuid === "null") {
+                    passwords.unshift(response.data.newCard);
+                } else {
+                    //? get object with id == uuid and change properties content and identifier
+                    for (let i=0; i<passwords.length; i++) {
+                        if (passwords[i].id === uuid) {
+                            passwords[i].name = identifierValue;
+                            passwords[i].content = passValue;
+                            break;
+                        };
+                    };
+                };
                 setPasswords(passwords);
                 setSnackBarStatus({open: true, message: "Password was saved sucessfully!", severity: true});
              }, (error) => {
@@ -85,7 +128,6 @@ const Dashboard = () => {
     //? Filter value
     const handleChange = event => setFilter(event.target.value);
 
-    //? use of modulo
     const colorName = ["aqua", "blue", "green", "lime", "maroon", "navy", "olive",
     "purple", "red", "silver", "teal", "white", "yellow"]
     useEffect(() => {
@@ -123,7 +165,6 @@ const Dashboard = () => {
         let symbols = generatePasswdState.symbols ? "@#$%!?§~" : "";
         let everything = UpperChars + LowerChars + numbers + symbols;
         let pwdLen = generatePasswdState.pwdlen;
-        console.log(pwdLen)
         let randomstring = Array(pwdLen).fill(everything).map((x) => { return x[Math.floor(Math.random() * x.length)] }).join('');
         setPassValue(randomstring);
     };
@@ -140,9 +181,7 @@ const Dashboard = () => {
       currentPasswords = passwords.slice(indexOfFirstPassword, indexOfLastPassword);
       numberOfPages = Math.ceil(passwords.length / passwordsPerPage);
     };
-    const PaginatePass = (event: React.ChangeEvent<unknown>, page: number) => {
-        setCurrentPage(page)
-    };
+    const PaginatePass = (event: React.ChangeEvent<unknown>, page: number) => setCurrentPage(page);
 
     //? Pagination Notes
     const [currentPageOfNotes, setCurrentPageOfNotes] = React.useState(1);
@@ -156,9 +195,8 @@ const Dashboard = () => {
       currentNotes = notes.slice(indexOfFirstNote, indexOfLastNote);
       numberOfPagesNotes = Math.ceil(notes.length / notesPerPage);
     };
-    const PaginateNotes = (event: React.ChangeEvent<unknown>, page: number) => {
-        setCurrentPageOfNotes(page)
-    };
+
+    const PaginateNotes = (event: React.ChangeEvent<unknown>, page: number) => setCurrentPageOfNotes(page);
 
     return (
         <div className="App">
@@ -176,7 +214,7 @@ const Dashboard = () => {
                                 Create a password
                             </Button>
 
-                            <Button sx={{ width: 250 }} href='/create/notes' variant="contained">
+                            <Button sx={{ width: 250 }} onClick={() => navigation("/create/notes")} variant="contained">
                                 Create a note
                             </Button>
                         </Stack>
@@ -223,11 +261,10 @@ const Dashboard = () => {
                         </div>
                         
                         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
-                            {currentPasswords.map((password, index) => (
+                            {currentPasswords.map((password: passwordsObj, index: number) => (
                                 <Grid key={index} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
-                                    <PasswordCard handleSavePass={handleSavePass} handleDelete={handleDeletePass}
-                                    password={{ title: password.name, subheader: "Sub", id: password.id, identifier: password.name, pswd: password.content }} 
-                                    AvatarColor={colorName[index % colorName.length]} GenerateRandomPass={GenerateRandomPass}/>
+                                    <PasswordCard decryptAES={decryptAES} handleSavePass={handleSavePass} handleDelete={handleDeletePass}
+                                    password={password} AvatarColor={colorName[index % colorName.length]} GenerateRandomPass={GenerateRandomPass}/>
                                 </Grid>
                             ))}
                         </Grid>

@@ -13,11 +13,13 @@ const Logout = () => {
             withCredentials: true
         })
              .then(response => {
-                setStatus({loading: false, message: response.data.message})
-                localStorage.clear()
+                setStatus({loading: false, message: response.data.message});
+                localStorage.clear();
+                window.location.replace("/");
              }, (error) => {
-                console.log(error)
-                setStatus({loading: false, message: error.response.data.message})
+                console.warn("Logout error:",error);
+                localStorage.clear();
+                setStatus({loading: false, message: error.response.data.message});
              });
     }, [])
     return (

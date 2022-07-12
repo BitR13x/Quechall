@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Markdown from "../components/Markdown";
 import MarkdownSyntax from "../components/MarkdownSyntax";
 import { Container, Button, Stack, Divider, Switch, 
     FormControlLabel, Box, TextField, Snackbar, Alert } from '@mui/material';
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { MasterPasswordContext } from "../components/Store/Store";
 
 const Notes = ({NoteTitle = "", markdownDef = "", uuid="null"}) => {
+    const {masterpass, setMasterPass} = useContext(MasterPasswordContext);
+    console.log(masterpass)
     interface noteObj {
         NoteTitle: string,
         markdownDef: string,

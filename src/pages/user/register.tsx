@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Grid, Box, Typography,
      InputAdornment, Alert, Container, Backdrop, CircularProgress, IconButton } from "@mui/material";
-import { AccountCircle, Password, VisibilityOff, Visibility } from '@mui/icons-material';
+import { AccountCircle, Password, VisibilityOff, Visibility, Key } from '@mui/icons-material';
 import "../../scss/pages/login.scss";
 import { alertObj } from "../../types/global";
 import axios from "axios";
@@ -11,10 +11,16 @@ const RegisterPage = () => {
     let UserField = React.useRef<HTMLInputElement>();
     let PasswdField = React.useRef<HTMLInputElement>();
     let rePasswdField = React.useRef<HTMLInputElement>();
+
     const [openBackDrop, setOpenBackDrop] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword(!showPassword);
-    const handleMouseDownPassword = () => setShowPassword(!showPassword);
+    const handleClickShowPassword = () => setShowPassword(true);
+    const handleMouseDownPassword = () => setShowPassword(false);
+
+    let MasterPassField = React.useRef<HTMLInputElement>();
+    const [showMasterPassword, setShowMasterPassword] = useState(false);
+    const handleClickShowMasterPassword = () => setShowMasterPassword(true);
+    const handleMouseDownMasterPassword = () => setShowMasterPassword(false);
 
     let [alert, setAlert] = useState<alertObj>();
     const sendData = () => {
@@ -25,7 +31,8 @@ const RegisterPage = () => {
             setOpenBackDrop(true);
             axios.post(VHOST+"/api/register", {
                 username: UserField.current?.value,
-                password: PasswdField.current?.value
+                password: PasswdField.current?.value,
+                masterpassword: MasterPassField.current?.value
             })
             .then(response => {
                 if (response.data.message === "Success") {
@@ -92,7 +99,7 @@ const RegisterPage = () => {
                                           </InputAdornment>
                                         )
                                     }} />
-                                <TextField fullWidth type={showPassword ? "text" : "password"} inputRef={rePasswdField} id="outlined-name" color="secondary" label="Password"
+                                <TextField fullWidth type={showPassword ? "text" : "password"} inputRef={rePasswdField} id="outlined-name" color="secondary" label="Verify password"
                                     variant="filled" margin="dense" helperText="Choose strong password." onKeyDown={e => {
                                         if (e.key === "Enter") {
                                             sendData();
@@ -106,6 +113,26 @@ const RegisterPage = () => {
                                         )
                                     }} />
                             </Box>
+                            <div style={{marginTop: "2vh"}}></div>
+                            <TextField fullWidth type={showMasterPassword ? "text" : "password"} inputRef={MasterPassField} id="outlined-name" color="secondary" label="Master Password"
+                                    variant="filled" margin="dense" helperText="This password is for encryption." InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <Key />
+                                            </InputAdornment>
+                                        ),
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                            <IconButton
+                                              aria-label="toggle password visibility"
+                                              onClick={handleClickShowMasterPassword}
+                                              onMouseDown={handleMouseDownMasterPassword}
+                                            >
+                                              {showMasterPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                          </InputAdornment>
+                                        )
+                                    }} />
                         </Grid>
                         
                         <Grid item xs={12} sm={6} md={3}>
