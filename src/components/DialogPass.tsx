@@ -2,15 +2,22 @@ import { Dialog, DialogTitle, DialogContent,
     DialogContentText, TextField, DialogActions,
      Button, InputAdornment, IconButton } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="", uuid="null", handleSavePass, setOpenDialogPass, GenerateRandomPass }) => {
+const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="", uuid="null", handleSavePass, setOpenDialogPass, GenerateRandomPass, decryptAES }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [passValue, setPassValue] = useState(PasswdContent);
     const [identifierValue, setIdentifierValue] = useState(identifierContent);
     const handleClickShowPassword = () => setShowPassword(true);
     const handleMouseDownPassword = () => setShowPassword(false);
     
+    useEffect(() => {
+        if (PasswdContent) {
+            setPassValue(decryptAES(PasswdContent));
+        };
+    }, [PasswdContent, decryptAES])
+    
+
     return (
         <Dialog onClose={handleClose} open={open} fullWidth>
             <div style={{ backgroundColor: "#131515"}}>

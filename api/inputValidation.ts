@@ -46,7 +46,6 @@ export const inputValidate = ( inputObject: inputObject ) => {
     });
     
     const { error, value } = schema.validate( inputObject );
-    console.log(value)
     if (error) {
         return [ error.message, value ]
     } else {

@@ -19,7 +19,9 @@ const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor, Gen
     const [openDialogDel, setOpenDialogDel] = useState(false);
     const [openDialogPass, setOpenDialogPass] = useState(false);
     const [decodedName, setDecodedName] = useState(password.name);
-
+    useEffect(() => {
+        setDecodedName(decryptAES(password.name));
+    }, [password.name, decryptAES])
     //? Menu
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openMenu = Boolean(anchorEl);
@@ -50,6 +52,7 @@ const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor, Gen
                     handleClose={handleCloseDialogPass} open={openDialogPass}
                     handleSavePass={handleSavePass} setOpenDialogPass={setOpenDialogPass}
                     GenerateRandomPass={GenerateRandomPass} uuid={password.id}
+                    decryptAES={decryptAES}
                 />
             </Typography>
             } 

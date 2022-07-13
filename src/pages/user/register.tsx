@@ -32,7 +32,7 @@ const RegisterPage = () => {
             axios.post(VHOST+"/api/register", {
                 username: UserField.current?.value,
                 password: PasswdField.current?.value,
-                masterpassword: MasterPassField.current?.value
+                masterpass: MasterPassField.current?.value
             })
             .then(response => {
                 if (response.data.message === "Success") {

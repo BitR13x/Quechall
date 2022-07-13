@@ -58,7 +58,7 @@ router.post('/register', createAccountLimiter, async (req: Request, res: Respons
   var username: string = req.body.username;
   var password: string = req.body.password;
   var masterpass : string = req.body.masterpass;
-  if (!username || !password) return res.status(401).send({message: "You must specify username and password!"})
+  if (!username || !password || !masterpass) return res.status(401).send({message: "You must specify username, password and master password!"});
   var [ message, value ] = inputValidate({
     username: username,
     password: password,
@@ -73,37 +73,28 @@ router.post('/register', createAccountLimiter, async (req: Request, res: Respons
     masterpass = value.masterpass;
     let userTest_user : User = await User.findOneBy({ userName: username }) as User;
     if (userTest_user) return res.status(403).send({ message: "User already exist" });
-    
-    let hsMasterPass : string;
-    let hsPassword : string;
-    bcrypt.hash(password, saltRounds, (err, hash: string) => {
+
+    bcrypt.hash(masterpass, saltRounds, (err, hsMasterPass: string) => {
       if (err) {
-        console.log(err);
+        console.warn(err);
+        return res.status(422).send({ message: "Something went wrong!"});
       } else {
-        hsPassword = hash
+        bcrypt.hash(password, saltRounds, (err, hsPassword: string) => {
+          if (err) {
+            console.warn(err);
+            return res.status(422).send({ message: "Something went wrong!"});
+          } else {
+            User.create({
+              role: "user",
+              userName: username,
+              hsPassword: hsPassword,
+              hsMasterPass: hsMasterPass
+            }).save();
+            return res.status(200).send({ message: "Success" });
+          };
+        });
       }
     });
-
-    bcrypt.hash(masterpass, saltRounds, (err, hash: string) => {
-      if (err) {
-        console.log(err);
-      } else {
-        hsMasterPass = hash
-      }
-    });
-    if (hsMasterPass && hsPassword) {
-      User.create({
-        role: "user",
-        userName: username,
-        hsPassword: hsPassword,
-        hsMasterPass: hsMasterPass
-      }).save();
-
-      return res.status(200).send({ message: "Success" });
-    } else {
-      return res.status(422).send({ message: "Something went wrong!"})
-    }
-
   };
 });
 
@@ -114,16 +105,17 @@ router.post("/checkMasterPass", isAuth, async (req: Request, res: Response) => {
   if (!userId) {
     return res.status(401).send({ message: "You're not logged in!" });
   } else {
+    if (!masterpass) return res.status(422).send({ message: "Master password cannot be empty!"});
     let [ message, value ] = inputValidate({
       masterpass: masterpass,
     });
     if (message) {
-      return res.status(422).send({ message: message })
+      return res.status(422).send({ message: message });
     } else {
-      let user : User = await User.findOneBy({ userName: value.username }) as User;
-      const isValid = await bcrypt.compare(value.password, user.hsPassword);
-      if (!isValid) return res.status(403).send({ message: "Incorrect Master Password!"})
-      return res.status(200).send({ message: "Success" })
+      let user : User = await User.findOneBy({ id: userId }) as User;
+      const isValid = await bcrypt.compare(value.masterpass, user.hsMasterPass);
+      if (!isValid) return res.status(403).send({ message: "Incorrect Master Password!"});
+      return res.status(200).send({ message: "Success" });
     };
   };
 });

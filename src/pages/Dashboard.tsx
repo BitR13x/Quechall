@@ -9,11 +9,12 @@ import { passwordsObj, notesObj } from "../types/global";
 import PasswordCard from "../components/PasswordCard";
 import NotesCard from "../components/NotesCard";
 import DialogPass from "../components/DialogPass";
+import StackBarResponseHandling from "../components/StackBarResponseHandling";
 import "../scss/pages/dashboard.scss";
 
 import { Pagination, Container, Button, 
     Divider, Stack, FormControl, InputLabel, 
-    MenuItem, Select, Grid, Typography, Snackbar, Alert } from "@mui/material";
+    MenuItem, Select, Grid, Typography } from "@mui/material";
 
 import AES from "crypto-js/aes";
 import Utf8 from "crypto-js/enc-utf8";
@@ -27,10 +28,6 @@ const Dashboard = () => {
 
     //? response handling snackbar
     const [snackBarStatus, setSnackBarStatus] = useState({open: false, message: "", severity: false});
-    const handleCloseSnacBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') return;
-        setSnackBarStatus({open: false, message: "", severity: false});
-    };
 
     //? Master Password
     let RouterLocation = useLocation();
@@ -46,7 +43,7 @@ const Dashboard = () => {
             };
             navigation("/setMasterPass");
         };
-    }, [RouterLocation.state, masterpass, navigation]);
+    }, [RouterLocation.state, masterpass, setMasterPass, navigation]);
 
     //? functions decode / encode
     const encryptAES = (string: string) => {
@@ -129,7 +126,7 @@ const Dashboard = () => {
     const handleChange = event => setFilter(event.target.value);
 
     const colorName = ["aqua", "blue", "green", "lime", "maroon", "navy", "olive",
-    "purple", "red", "silver", "teal", "white", "yellow"]
+    "purple", "red", "silver", "teal", "white", "yellow"];
     useEffect(() => {
         axios.all([
           axios.post(VHOST+"/api/vault/getPasswords"), 
@@ -225,6 +222,7 @@ const Dashboard = () => {
                       handleSavePass={handleSavePass}
                       setOpenDialogPass={setOpen}
                       GenerateRandomPass={GenerateRandomPass}
+                      decryptAES={decryptAES}
                     />
                 </div>
                 <div className="giveMeSpace centerMe">
@@ -308,11 +306,8 @@ const Dashboard = () => {
                     </div> }
                     
                     {/*//? response handling  */}
-                    <Snackbar open={snackBarStatus.open} autoHideDuration={4000} onClose={handleCloseSnacBar}>
-                        <Alert onClose={handleCloseSnacBar} severity={snackBarStatus.severity ? "success" : "error"} sx={{ width: '100%' }}>
-                            {snackBarStatus.message}
-                        </Alert>
-                    </Snackbar>
+                    <StackBarResponseHandling setSnackBarStatus={setSnackBarStatus} 
+                                              snackBarStatus={snackBarStatus} />
                 </Container>
             </div>
 
