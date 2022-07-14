@@ -18,10 +18,15 @@ interface Props {
 const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor, GenerateRandomPass, decryptAES}: Props) => {
     const [openDialogDel, setOpenDialogDel] = useState(false);
     const [openDialogPass, setOpenDialogPass] = useState(false);
-    const [decodedName, setDecodedName] = useState(password.name);
+    const [decryptedName, setDecryptedName] = useState(password.name);
+
     useEffect(() => {
-        setDecodedName(decryptAES(password.name));
+        let decryptedNameTest : string = decryptAES(password.name);
+        if (decryptedNameTest) {
+            setDecryptedName(decryptedNameTest);
+        };
     }, [password.name, decryptAES])
+
     //? Menu
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openMenu = Boolean(anchorEl);
@@ -46,9 +51,9 @@ const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor, Gen
         <Card variant="elevation" sx={{ maxWidth: 600, width: "100%" }}>
             <CardHeader title={
             <Typography variant="h4">
-                <Link className="outside-link" to={"#"} onClick={handleOpenDialogPass}>{decodedName}</Link>
+                <Link className="outside-link" to={"#"} onClick={handleOpenDialogPass}>{decryptedName}</Link>
                 <DialogPass 
-                    PasswdContent={password.content} identifierContent={decodedName} 
+                    PasswdContent={password.content} identifierContent={password.name} 
                     handleClose={handleCloseDialogPass} open={openDialogPass}
                     handleSavePass={handleSavePass} setOpenDialogPass={setOpenDialogPass}
                     GenerateRandomPass={GenerateRandomPass} uuid={password.id}
@@ -62,7 +67,7 @@ const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor, Gen
             // </Typography>
             // } 
             avatar={
-                <Avatar variant="rounded" sx={{ bgcolor: AvatarColor }} alt="Alias">{decodedName.substring(0,2)}</Avatar>
+                <Avatar variant="rounded" sx={{ bgcolor: AvatarColor }} alt="Alias">{decryptedName.substring(0,2)}</Avatar>
             }  
             action={
                 <Box>

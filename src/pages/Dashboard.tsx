@@ -47,13 +47,23 @@ const Dashboard = () => {
 
     //? functions decode / encode
     const encryptAES = (string: string) => {
-        let encryptedObj = AES.encrypt(string, masterpass);
-        return encryptedObj.toString();
+        if (string) {
+            console.log(masterpass)
+            let encryptedObj = AES.encrypt(string, masterpass);
+            return encryptedObj.toString();
+        } else {
+            return "";
+        }
     };
-    const decryptAES = (encrypted: string) => {
-        let decryptedObj = AES.decrypt(encrypted, masterpass);
-        return decryptedObj.toString(Utf8);
-    };
+    const decryptAES = React.useCallback((encrypted: string) => {
+        if (encrypted) {
+            console.log(masterpass)
+            let decryptedObj = AES.decrypt(encrypted, masterpass);
+            return decryptedObj.toString(Utf8);
+        } else {
+            return "";
+        };
+    }, [masterpass]);
 
     //? passwords api 
     const handleSavePass = (identifierValue: string, passValue: string, uuid: string, setOpenDialogPass: (boolean: boolean) => void) => {
@@ -285,9 +295,12 @@ const Dashboard = () => {
                             </div>
                         </div>
                         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
-                            {currentNotes.map((note, index) => (
+                            {currentNotes.map((note: notesObj, index: number) => (
                                 <Grid key={index} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
-                                    <NotesCard handleDelete={handleDeleteNote} note={{ title: note.name, subheader: "Sub", content: note.content, id: note.id }} />
+                                    <NotesCard handleDelete={handleDeleteNote} 
+                                               decryptAES={decryptAES}
+                                               note={note}
+                                    />
                                 </Grid>
                             ))}
                         </Grid>

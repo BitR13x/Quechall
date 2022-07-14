@@ -13,9 +13,18 @@ const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="",
     
     useEffect(() => {
         if (PasswdContent) {
-            setPassValue(decryptAES(PasswdContent));
+            let decodedPasswd : string = decryptAES(PasswdContent);
+            if (decodedPasswd) {
+                setPassValue(decryptAES(PasswdContent));
+            };
         };
-    }, [PasswdContent, decryptAES])
+        if (identifierContent) {
+            let decodedIdentifier : string = decryptAES(identifierContent);
+            if (decodedIdentifier) {
+                setIdentifierValue(decodedIdentifier);
+            }
+        };
+    }, [PasswdContent, identifierContent, decryptAES])
     
 
     return (

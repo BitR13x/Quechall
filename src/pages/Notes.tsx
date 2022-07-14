@@ -1,23 +1,44 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Markdown from "../components/Markdown";
 import MarkdownSyntax from "../components/MarkdownSyntax";
 import { Container, Button, Stack, Divider, Switch, 
     FormControlLabel, Box, TextField, Snackbar, Alert } from '@mui/material';
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MasterPasswordContext } from "../components/Store/Store";
 
-const Notes = ({NoteTitle = "", markdownDef = "", uuid="null"}) => {
-    const {masterpass, setMasterPass} = useContext(MasterPasswordContext);
-    console.log(masterpass)
-    interface noteObj {
+import AES from "crypto-js/aes";
+import Utf8 from "crypto-js/enc-utf8";
+
+const Notes = ({ NoteTitle = "", markdownDef = "", uuid="null" }) => {
+    const { masterpass } = useContext(MasterPasswordContext);
+    //? functions decode / encode
+    const encryptAES = (string: string) => {
+        if (string) {
+            let encryptedObj = AES.encrypt(string, masterpass);
+            return encryptedObj.toString();
+        } else {
+            return "";
+        }
+    };
+
+    const decryptAES = React.useCallback((encrypted: string) => {
+        if (encrypted) {
+            let decryptedObj = AES.decrypt(encrypted, masterpass);
+            return decryptedObj.toString(Utf8);
+        } else {
+            return "";
+        };
+    }, [masterpass]);
+
+    interface StateObj {
         NoteTitle: string,
         markdownDef: string,
-        uuid: string
+        uuid: string,
     };
     let RouterLocation = useLocation()
     if (RouterLocation.state) {
-        ({ NoteTitle, markdownDef, uuid } = RouterLocation.state as noteObj);
+        ({ NoteTitle, markdownDef, uuid } = RouterLocation.state as StateObj);
     };
     const [markdown, setMarkdown] = useState(markdownDef);
     const [display, setDisplay] = useState("Editor");
@@ -25,6 +46,20 @@ const Notes = ({NoteTitle = "", markdownDef = "", uuid="null"}) => {
     const [showAlert, setShowAlert] = useState(false);
     const [snackBarStatus, setSnackBarStatus] = React.useState({open: false, message: "", severity: false});
     let NoteTitleField = React.useRef<HTMLInputElement>();
+    
+    let navigation = useNavigate();
+    useEffect(() => {
+        if (!masterpass) {
+            navigation("/setMasterPass");
+            return;
+        };
+        if (markdownDef) {
+            let decryptedContent : string = decryptAES(markdownDef);
+            if (decryptedContent) {
+                setMarkdown(decryptedContent);
+            };
+        };
+    }, [masterpass, markdownDef, navigation, decryptAES]);
 
     const handleCloseSnacBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
       if (reason === 'clickaway') return;
@@ -46,9 +81,12 @@ const Notes = ({NoteTitle = "", markdownDef = "", uuid="null"}) => {
             if (showAlert) {
                 setShowAlert(false);
             };
+            let encryptedTitle = encryptAES(NoteTitleField.current?.value);
+            let encryptedContent = encryptAES(markdown);
+            console.log(encryptedContent)
             axios.post("/api/vault/note-save/"+uuid, {
-                name: NoteTitleField.current?.value,
-                content: markdown
+                name: encryptedTitle,
+                content: encryptedContent
             })
                  .then(response => {
                     setSnackBarStatus({open: true, message: "Note was saved sucessfully!", severity: true});
