@@ -26,6 +26,14 @@ Builds the app for production to the build folder.
 RUN `npm start && yarn start`<br/>
 This will run express.
 
+## bcrypt error
+if you cannot find bcrypt module
+```bash
+$ cd node_modules/bcrypt
+$ node-pre-gyp install --fallback-to-build
+
+$ npm i node-gyp
+```
 
 # LICENCE
 MIT.

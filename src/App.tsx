@@ -1,19 +1,24 @@
 import './scss/App.scss';
 import FeatureCard from "./components/FeatureCard";
 import CirclesAnimation from "./components/animation/circles";
-import { Grid, Container, Button, Stack, Divider } from '@mui/material';
+import { Grid, Container, Button, Stack, Divider, Typography } from '@mui/material';
 
 const App = () => {
   return (
     <div className="App">
+      <Container>
       <div className='AppCenter'>
         <h1 className='AppName'>QueChall</h1>
         <div className='AppDescription'>
-          <p>Challange your self and have a better passwords</p>
+          <p>Challange your self and have better passwords</p>
         </div>
         
-        <div style={{ paddingTop: "7vh" }}>
-          <Container>
+        <div className="giveMeSpace centerMe">
+          <Divider variant="middle" sx={{maxWidth: 800, width: "100%"}} />
+        </div>
+
+        <div>
+          <Container className="giveMeSpace">
             <Stack direction="row" spacing={2}
             divider={<Divider orientation="vertical" flexItem />} 
             alignItems="center" justifyContent="center">
@@ -23,21 +28,26 @@ const App = () => {
           </Container>
         </div>
 
-        <div className='features'>
-          <h3>Simple registration, We don't sell any data, secure</h3>
+        <div className="giveMeSpace">
+          <Typography variant="h5">
+            keep your passwords and notes sync and safe.
+          </Typography>
         </div>
       </div>
       
-      <Container>
+      <Container className='giveMeSpace'>
         <Grid container direction="row" justifyContent="center" alignItems="center" spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "he", subheader: "Sub", content: "HELLO" }} />
+            <FeatureCard feature={{ title: "Sync with diffrent devices", subheader: "Sub", content: "" }} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "Secured", subheader: "Sub", content: "HELLO" }}/>
+            <FeatureCard feature={{ title: "Simple registration", subheader: "Sub", content: "" }}/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "Home", subheader: "Sub", content: "HELLO" }}/>
+            <FeatureCard feature={{ title: "Only you can see your data", subheader: "Sub", content: "" }}/>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <FeatureCard feature={{ title: "Generate your own secure password", subheader: "Sub", content: "" }}/>
           </Grid>
         </Grid>
       </Container>
@@ -45,6 +55,7 @@ const App = () => {
       <div className='giveMeSpace centerMe'>
           <Button sx={{ maxWidth: 300, width: "100%", marginTop: "2vh" }} variant="contained" href='/about'>About</Button>
       </div>
+      </Container>
       <CirclesAnimation/>
     </div>
   );

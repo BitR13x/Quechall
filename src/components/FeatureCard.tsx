@@ -1,15 +1,15 @@
-import { Card, CardHeader, CardContent, Typography } from "@mui/material";
+import { Card, CardHeader } from "@mui/material";
 import React from "react";
 
 const FeatureCard = ({ feature }) => {
     return (
-        <Card variant="outlined">
-            <CardHeader title={feature.title} subheader={feature.subheader} />
-            <CardContent>
+        <Card variant="elevation" sx={{height: 110}}>
+            <CardHeader title={feature.title} />
+            {/* <CardContent>
                 <Typography>
                     {feature.content}
                 </Typography>
-            </CardContent>
+            </CardContent> */}
         </Card>
     );
 };
