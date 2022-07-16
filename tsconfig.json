@@ -9,9 +9,11 @@
       "outDir": "./build",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
+      "jsx": "react-jsx",
       "sourceMap": true
    },
    "include": [
       "./api/**/**/*.ts",
+      "./src/**/**/*.tsx"
    ]
 }
