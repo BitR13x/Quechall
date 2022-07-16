@@ -24,6 +24,11 @@ const RegisterPage = () => {
 
     let [alert, setAlert] = useState<alertObj>();
     const sendData = () => {
+        if (!UserField.current?.value || !PasswdField.current?.value || !MasterPassField.current?.value) {
+            setAlert({ message: "These fields are required: Username, Password, Master password"});
+            return;
+        };
+
         //? warning, success
         if (PasswdField.current?.value !== rePasswdField.current?.value) {
             setAlert({ message: "Passwords don't match"})
@@ -132,7 +137,7 @@ const RegisterPage = () => {
                                             </IconButton>
                                           </InputAdornment>
                                         )
-                                    }} />
+                                    }}  onKeyDown={e => {if (e.key === "Enter") {sendData();}}} />
                         </Grid>
                         
                         <Grid item xs={12} sm={6} md={3}>

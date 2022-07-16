@@ -58,6 +58,7 @@ root.render(
         <NavbarComponent login={login} />
           {login ?
           <Routes>
+            <Route exact path="/" element={<App login={login} />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/setMasterPass" element={<SetMasterPass />} />
             <Route path="/question" element={<Question />} />

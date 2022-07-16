@@ -7,6 +7,16 @@
   position: fixed;
   bottom: 20px;
   left: 20px;
+
+  a {
+    text-decoration: none;
+    color: whitesmoke;
+  }
+
+  a:hover {
+    text-decoration: none;
+    color: rgba(whitesmoke, 0.6);
+  }
 }
 .menu:hover {
   pointer-events: all;

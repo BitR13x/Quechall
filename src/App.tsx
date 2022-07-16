@@ -3,7 +3,7 @@ import FeatureCard from "./components/FeatureCard";
 import CirclesAnimation from "./components/animation/circles";
 import { Grid, Container, Button, Stack, Divider, Typography } from '@mui/material';
 
-const App = () => {
+const App = ({login=false}) => {
   return (
     <div className="App">
       <Container>
@@ -17,7 +17,7 @@ const App = () => {
           <Divider variant="middle" sx={{maxWidth: 800, width: "100%"}} />
         </div>
 
-        <div>
+        {!login && <div>
           <Container className="giveMeSpace">
             <Stack direction="row" spacing={2}
             divider={<Divider orientation="vertical" flexItem />} 
@@ -26,7 +26,7 @@ const App = () => {
               <Button sx={{ width: 200 }} variant="contained" href='/register'>Sign up</Button>
             </Stack>
           </Container>
-        </div>
+        </div>}
 
         <div className="giveMeSpace">
           <Typography variant="h5">
@@ -38,16 +38,16 @@ const App = () => {
       <Container className='giveMeSpace'>
         <Grid container direction="row" justifyContent="center" alignItems="center" spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "Sync with diffrent devices", subheader: "Sub", content: "" }} />
+            <FeatureCard feature={{ title: "Sync with diffrent devices", content: "" }} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "Simple registration", subheader: "Sub", content: "" }}/>
+            <FeatureCard feature={{ title: "Simple registration", content: "" }}/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "Only you can see your data", subheader: "Sub", content: "" }}/>
+            <FeatureCard feature={{ title: "Private and secure", content: "hello" }}/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "Generate your own secure password", subheader: "Sub", content: "" }}/>
+            <FeatureCard feature={{ title: "Generate your own secure password", content: "" }}/>
           </Grid>
         </Grid>
       </Container>

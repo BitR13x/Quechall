@@ -31,11 +31,11 @@ const NotesCard = ({ note, handleDelete, decryptAES }: Props) => {
                 state={{ NoteTitle: decryptedName, markdownDef: note.content, uuid: note.id }}>{decryptedName}</Link>
             </Typography>
             } 
-            subheader={
-            <Typography>
-                {note.content.substring(0, 10)}
-            </Typography>
-            }
+            // subheader={
+            // <Typography>
+            //     {note.content.substring(0, 10)}
+            // </Typography>
+            // }
             action={
                 <Box>
                     <IconButton onClick={handleOpenDialog}>
