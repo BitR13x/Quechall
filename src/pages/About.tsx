@@ -8,7 +8,7 @@ const About = () => (
                 What we are doing?
             </Typography>
             <div style={{textAlign: "center"}}>
-                <p>We want freedom and privacy to be the number one</p>
+                <p>We want freedom and privacy to be a top priority</p>
             </div>
             <div className="giveMeSpace centerMe">
                 <Divider variant="middle" sx={{maxWidth: 800, width: "100%"}} />
@@ -45,7 +45,15 @@ const About = () => (
             </Container>
             <Container className='giveMeSpace'>
                 <Typography variant='h4' color="#17a2b8">
-                    #4: AES encryption and Master password
+                    #4: Client-side encryption
+                </Typography>
+                <Typography marginLeft="1vw" variant='subtitle1'>
+                    We are using client-side encryption meaning you can see in the source code, how we encrypt your data and that is not everything you can encrypt your data by yourself and send it to our endpoint.
+                </Typography>
+            </Container>
+            <Container className='giveMeSpace'>
+                <Typography variant='h4' color="#17a2b8">
+                    #5: AES encryption and Master password
                 </Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>
                     We you AES encryption for securing your data, AES is a symmetric-key algorithm, meaning the same key is used for both encryption and decryption, that means in short, only you can decrypt your data with "Master password" if you lose your "Master password" you will lose all notes and passwords that you encrypt with your "Master password".
@@ -53,7 +61,7 @@ const About = () => (
             </Container>
             <Container className='giveMeSpace'>
                 <Typography variant='h4' color="#17a2b8">
-                    #5: Security
+                    #6: Security
                 </Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>
                     Be careful if you have strong password that does not mean you are completly safe, there are a lot of different attacks like phishing that do not need to decrypt password hash.
@@ -62,7 +70,7 @@ const About = () => (
             </Container>
             <Container className='giveMeSpace'>
                 <Typography variant='h4' color="#17a2b8">
-                    #6: Creation of strong password
+                    #7: Creation of strong password
                 </Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>1. Do not include your birth year or birth month/day in your password.</Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>2. Use a combination of at least eight letters, numbers, and symbols.</Typography>

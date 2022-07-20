@@ -30,7 +30,7 @@ const App = ({login=false}) => {
 
         <div className="giveMeSpace">
           <Typography variant="h5">
-            keep your passwords and notes sync and safe.
+            Keep your passwords and notes sync and safe.
           </Typography>
         </div>
       </div>
@@ -38,16 +38,16 @@ const App = ({login=false}) => {
       <Container className='giveMeSpace'>
         <Grid container direction="row" justifyContent="center" alignItems="center" spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "Sync with diffrent devices", content: "" }} />
+            <FeatureCard feature={{ title: "Take it anywhere", content: "Sync with diffrent devices." }} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "Simple registration", content: "" }}/>
+            <FeatureCard feature={{ title: "Simple registration", content: "No additional information needed." }}/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "Private and secure", content: "hello" }}/>
+            <FeatureCard feature={{ title: "Private and secure", content: "Only you can see content of your notes or passwords." }}/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "Generate your own secure password", content: "" }}/>
+            <FeatureCard feature={{ title: "Generate your password", content: "Easily generated just with one click and safe to use." }}/>
           </Grid>
         </Grid>
       </Container>

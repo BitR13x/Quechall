@@ -61,7 +61,7 @@ root.render(
             <Route exact path="/" element={<App login={login} />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/setMasterPass" element={<SetMasterPass />} />
-            <Route path="/question" element={<Question />} />
+            <Route path="/Questions" element={<Question />} />
             <Route path="/create/notes" element={<Notes />} />
             <Route path="/profile" element={<ProfileSettings />} />
             <Route path="/logout" element={<Logout />} />
@@ -75,6 +75,7 @@ root.render(
             <Route path="/login" element={<LoginPage  />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/about" element={<About />} />
+            <Route path="/Questions" element={<Question />} />
             <Route path="/451121e2-f4c2-11ec-b939-0242ac120002" element={<SecretTSX />} />
             <Route path="*" element={<NoMatch />} status={404} />
           </Routes>}

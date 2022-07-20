@@ -10,6 +10,7 @@ import PasswordCard from "../components/PasswordCard";
 import NotesCard from "../components/NotesCard";
 import DialogPass from "../components/DialogPass";
 import StackBarResponseHandling from "../components/StackBarResponseHandling";
+import SearchBar from "../components/searchBar";
 import "../scss/pages/dashboard.scss";
 
 import { Pagination, Container, Button, 
@@ -25,6 +26,8 @@ const Dashboard = () => {
     const [open, setOpen] = useState(false);
     const [filter, setFilter] = useState("Passwords");
     const {masterpass, setMasterPass} = useContext(MasterPasswordContext);
+    //? SearchBar
+    const [query, setQuery] = useState("")
 
     //? response handling snackbar
     const [snackBarStatus, setSnackBarStatus] = useState({open: false, message: "", severity: false});
@@ -209,8 +212,8 @@ const Dashboard = () => {
         <div className="App">
             <div className="DashboardMain">
                 <div className="DashboardText">
-                    <Typography variant="h3">Welcome!</Typography>
-                    <p>Create your highly secure password or note</p>
+                    <Typography fontFamily='"Courier New", Courier, monospace' variant="h2">Welcome!</Typography>
+                    <p>Create your own secure password or note</p>
                 </div>
                 <div style={{ paddingTop: "7vh" }}>
                     <Container>
@@ -257,10 +260,10 @@ const Dashboard = () => {
 
                 <Container>
                     {/* //? Starting of passwords  */}
-                    {currentPasswords ? 
-                    <div className={filter === "Notes" ? 'hidden' : undefined}>
+                    {(currentPasswords && filter === "Passwords") ? 
+                    <div>
                         <div className="giveMeSpace" style={{textAlign: "center"}}>
-                            <Typography variant="h4">
+                            <Typography fontFamily='"Courier New", Courier, monospace' variant="h4">
                                 Passwords
                             </Typography>
                             <div className="centerMe">
@@ -284,10 +287,10 @@ const Dashboard = () => {
                     : <div></div>}
 
                     {/* //? Starting of notes  */}
-                    {currentNotes ?
-                    <div className={filter === "Passwords" ? 'hidden' : undefined}>
+                    {(currentNotes && filter === "Notes") ?
+                    <div>
                         <div className="giveMeSpace" style={{textAlign: "center"}}>
-                            <Typography variant="h4">
+                            <Typography fontFamily='"Courier New", Courier, monospace' variant="h4">
                                 Notes
                             </Typography>
                             <div className="centerMe">

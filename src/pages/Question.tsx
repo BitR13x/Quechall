@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Divider, Typography } from "@mui/material";
 
 const Question = () => {
     let Questionfield = React.useRef<HTMLInputElement>();
@@ -14,13 +14,17 @@ const Question = () => {
     }
 
     return (
-        <React.Fragment>
+        <div className="App">
             <div style={{ textAlign: "center" }}>
-                <header>
-                    <h1>Dashboard</h1>
-                </header>
+                <Typography fontFamily='"Courier New", Courier, monospace' variant="h2">
+                    Questions
+                </Typography>
+                <p>if you want to ask us something, we will try to answer as soon as posible</p>
+                <div className="giveMeSpace centerMe">
+                  <Divider variant="middle" sx={{maxWidth: 800, width: "100%"}} />
+                </div>
                 <main style={{ padding: "1rem 0" }}>
-                    Hello This is Dashboard
+                    
                     
                     <div>
                         <TextField inputRef={Questionfield} id="outlined-name" color="secondary" label="Your question?"
@@ -31,7 +35,7 @@ const Question = () => {
                     </Button>
                 </main>
             </div>
-        </React.Fragment>
+        </div>
     );
 };
 
