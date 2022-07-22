@@ -2,30 +2,25 @@ import { Dialog, DialogTitle, DialogContent,
     DialogContentText, TextField, DialogActions,
      Button, InputAdornment, IconButton } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { decryptAES } from "../encryption";
 
-const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="", uuid="null", handleSavePass, setOpenDialogPass, GenerateRandomPass, decryptAES }) => {
+const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="", uuid="null", handleSavePass, setOpenDialogPass, GenerateRandomPass=undefined, setDecodedContent=undefined, masterpass="" }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [passValue, setPassValue] = useState(PasswdContent);
     const [identifierValue, setIdentifierValue] = useState(identifierContent);
     const handleClickShowPassword = () => setShowPassword(true);
     const handleMouseDownPassword = () => setShowPassword(false);
-    
+
     useEffect(() => {
         if (PasswdContent) {
-            let decodedPasswd : string = decryptAES(PasswdContent);
-            if (decodedPasswd) {
-                setPassValue(decryptAES(PasswdContent));
+            let decodedContentTEMP = decryptAES(PasswdContent, masterpass);
+            if (decodedContentTEMP) {
+                setDecodedContent(decodedContentTEMP);
+                setPassValue(decodedContentTEMP);
             };
         };
-        if (identifierContent) {
-            let decodedIdentifier : string = decryptAES(identifierContent);
-            if (decodedIdentifier) {
-                setIdentifierValue(decodedIdentifier);
-            }
-        };
-    }, [PasswdContent, identifierContent, decryptAES])
-    
+    }, [PasswdContent, masterpass, setDecodedContent]);
 
     return (
         <Dialog onClose={handleClose} open={open} fullWidth>

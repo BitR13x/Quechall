@@ -2,35 +2,16 @@ import React, { useState, useContext, useEffect } from "react";
 import Markdown from "../components/Markdown";
 import MarkdownSyntax from "../components/MarkdownSyntax";
 import { Container, Button, Stack, Divider, Switch, 
-    FormControlLabel, Box, TextField, Snackbar, Alert } from '@mui/material';
+    FormControlLabel, Box, TextField, Snackbar, Alert, 
+    Tooltip, IconButton } from '@mui/material';
+import { Info } from '@mui/icons-material';
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MasterPasswordContext } from "../components/Store/Store";
-
-import AES from "crypto-js/aes";
-import Utf8 from "crypto-js/enc-utf8";
+import { decryptAES, encryptAES } from "../encryption";
 
 const Notes = ({ NoteTitle = "", markdownDef = "", uuid="null" }) => {
     const { masterpass } = useContext(MasterPasswordContext);
-    //? functions decode / encode
-    const encryptAES = (string: string) => {
-        if (string) {
-            let encryptedObj = AES.encrypt(string, masterpass);
-            return encryptedObj.toString();
-        } else {
-            return "";
-        }
-    };
-
-    const decryptAES = React.useCallback((encrypted: string) => {
-        if (encrypted) {
-            let decryptedObj = AES.decrypt(encrypted, masterpass);
-            return decryptedObj.toString(Utf8);
-        } else {
-            return "";
-        };
-    }, [masterpass]);
-
     interface StateObj {
         NoteTitle: string,
         markdownDef: string,
@@ -54,12 +35,12 @@ const Notes = ({ NoteTitle = "", markdownDef = "", uuid="null" }) => {
             return;
         };
         if (markdownDef) {
-            let decryptedContent : string = decryptAES(markdownDef);
+            let decryptedContent : string = decryptAES(markdownDef, masterpass);
             if (decryptedContent) {
                 setMarkdown(decryptedContent);
             };
         };
-    }, [masterpass, markdownDef, navigation, decryptAES]);
+    }, [masterpass, markdownDef, navigation]);
 
     const handleCloseSnacBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
       if (reason === 'clickaway') return;
@@ -81,8 +62,8 @@ const Notes = ({ NoteTitle = "", markdownDef = "", uuid="null" }) => {
             if (showAlert) {
                 setShowAlert(false);
             };
-            let encryptedTitle = encryptAES(NoteTitleField.current?.value);
-            let encryptedContent = encryptAES(markdown);
+            let encryptedTitle = encryptAES(NoteTitleField.current?.value, masterpass);
+            let encryptedContent = encryptAES(markdown, masterpass);
             console.log(encryptedContent)
             axios.post("/api/vault/note-save/"+uuid, {
                 name: encryptedTitle,
@@ -96,7 +77,6 @@ const Notes = ({ NoteTitle = "", markdownDef = "", uuid="null" }) => {
                  });
         };
     };
-    // TODO: https://www.markdownguide.org/basic-syntax/
     return (
         <div className="App">
             {showAlert && <Container>
@@ -108,7 +88,12 @@ const Notes = ({ NoteTitle = "", markdownDef = "", uuid="null" }) => {
             <Container>
                 <div className="centerMe giveMeSmallSpace">
                     <TextField inputRef={NoteTitleField} sx={{ maxWidth: 600, width: "100%" }} 
-                    color="secondary" label="Note title" variant="standard" defaultValue={NoteTitle}/>
+                    color="secondary" label="Note title" variant="outlined" defaultValue={NoteTitle}/>
+                    <Tooltip title={"Here you can learn how to write better notes \n \n https://www.markdownguide.org/basic-syntax/"} arrow>
+                        <IconButton onClick={() => window.open("https://www.markdownguide.org/basic-syntax/", "_blank")}>
+                            <Info/>
+                        </IconButton>
+                    </Tooltip>
                 </div>
             </Container>
 

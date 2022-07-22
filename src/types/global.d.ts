@@ -20,3 +20,8 @@ interface notesObj {
     OwnerId: number,
     createdAt: string
 }
+
+// interface StoreFetchContextTypes { 
+//     VaultStorage: [passwordsObj[], notesObj[]],
+//     setVaultStorage: any
+// }

@@ -2,14 +2,16 @@ import { Grid, Container, Typography, Button,
     Divider, Avatar, TextField, Checkbox,
     InputAdornment, IconButton, Alert, Snackbar } from '@mui/material';
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
 import axios from 'axios';
 import DialogDelete from '../../components/DialogDelete';
+import { ProfilePrefsContext } from "../../components/Store/Store";
 import "../../scss/pages/profileSettings.scss";
 import { VHOST } from "../../vhost";
 
 const ProfileSettings = () => {
     var user = {username: "helo"}
+    const { setGeneratePasswdPrefs } = useContext(ProfilePrefsContext)
     const [openDialog, setOpenDialog] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [AlertP, setAlertP] = useState({ show: false, text: ""});
@@ -65,6 +67,8 @@ const ProfileSettings = () => {
             uppercase: checkedIUC
         }).then(response => {
             setSnackBarStatus({open: true, message: "Preferences successfully changed.", severity: true});
+            setGeneratePasswdPrefs({upperChars: checkedIUC, lowerChars: checkedILC, numbers: checkedIN,
+                                    symbols: checkedIS, pwdlen: passwordLen.current?.value})
         }, (error) => {
             console.warn("Profile preferences errror:", error);
         });

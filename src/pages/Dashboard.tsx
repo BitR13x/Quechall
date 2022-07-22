@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { MasterPasswordContext } from "../components/Store/Store";
+import { MasterPasswordContext, StoreFetchContext, ProfilePrefsContext } from "../components/Store/Store";
 import { VHOST } from "../vhost";
 import { passwordsObj, notesObj } from "../types/global";
 
@@ -10,61 +10,32 @@ import PasswordCard from "../components/PasswordCard";
 import NotesCard from "../components/NotesCard";
 import DialogPass from "../components/DialogPass";
 import StackBarResponseHandling from "../components/StackBarResponseHandling";
-import SearchBar from "../components/searchBar";
+import { decryptAES, encryptAES } from "../encryption";
 import "../scss/pages/dashboard.scss";
 
-import { Pagination, Container, Button, 
-    Divider, Stack, FormControl, InputLabel, 
-    MenuItem, Select, Grid, Typography } from "@mui/material";
+import { Pagination, Container, Button,
+    Divider, Stack, FormControl, InputLabel,
+    MenuItem, Select, Grid, Typography, TextField,
+    InputAdornment } from "@mui/material";
 
-import AES from "crypto-js/aes";
-import Utf8 from "crypto-js/enc-utf8";
+import { Search } from '@mui/icons-material';
 
 const Dashboard = () => {
-    const [notes, setNotes] = useState<notesObj[]>([]);
-    const [passwords, setPasswords] = useState<passwordsObj[]>([]);
+    interface StoreFetchContextTypes {notes: notesObj[], setNotes: any, passwords: passwordsObj[], setPasswords: any};
+    const { notes, setNotes, passwords, setPasswords } = useContext<StoreFetchContextTypes>(StoreFetchContext);
     const [open, setOpen] = useState(false);
     const [filter, setFilter] = useState("Passwords");
-    const {masterpass, setMasterPass} = useContext(MasterPasswordContext);
+    const { masterpass } = useContext(MasterPasswordContext);
     //? SearchBar
     const [query, setQuery] = useState("")
-
     //? response handling snackbar
     const [snackBarStatus, setSnackBarStatus] = useState({open: false, message: "", severity: false});
 
     //? Master Password
-    let RouterLocation = useLocation();
     let navigation = useNavigate();
     useEffect(() => {
         if (!masterpass) {
-            if (RouterLocation.state) {
-                if ((RouterLocation.state as { masterpass: string }).masterpass) {
-                    setMasterPass((RouterLocation.state as { masterpass: string }).masterpass);
-                    return;
-                };
-                return;
-            };
-            navigation("/setMasterPass");
-        };
-    }, [RouterLocation.state, masterpass, setMasterPass, navigation]);
-
-    //? functions decode / encode
-    const encryptAES = (string: string) => {
-        if (string) {
-            console.log(masterpass)
-            let encryptedObj = AES.encrypt(string, masterpass);
-            return encryptedObj.toString();
-        } else {
-            return "";
-        }
-    };
-    const decryptAES = React.useCallback((encrypted: string) => {
-        if (encrypted) {
-            console.log(masterpass)
-            let decryptedObj = AES.decrypt(encrypted, masterpass);
-            return decryptedObj.toString(Utf8);
-        } else {
-            return "";
+            document.location.replace("/setMasterPass")
         };
     }, [masterpass]);
 
@@ -80,8 +51,8 @@ const Dashboard = () => {
             return;
         };
 
-        let EncryptedIdentifierValue = encryptAES(identifierValue);
-        let EncryptedPassValue = encryptAES(passValue);
+        let EncryptedIdentifierValue = encryptAES(identifierValue, masterpass);
+        let EncryptedPassValue = encryptAES(passValue, masterpass);
         axios.post(VHOST+"/api/vault/passwd-save/"+uuid, {
             identifier: EncryptedIdentifierValue,
             content: EncryptedPassValue
@@ -89,7 +60,9 @@ const Dashboard = () => {
              .then(response => {
                 setOpenDialogPass(false);
                 if (uuid === "null") {
-                    passwords.unshift(response.data.newCard);
+                    passwords.unshift({name: identifierValue, content: passValue,
+                                       OwnerId: response.data.newCard.OwnerId, id: response.data.newCard.id, 
+                                       createdAt: response.data.newCard.createdAt });
                 } else {
                     //? get object with id == uuid and change properties content and identifier
                     for (let i=0; i<passwords.length; i++) {
@@ -141,40 +114,57 @@ const Dashboard = () => {
     const colorName = ["aqua", "blue", "green", "lime", "maroon", "navy", "olive",
     "purple", "red", "silver", "teal", "white", "yellow"];
     useEffect(() => {
-        axios.all([
-          axios.post(VHOST+"/api/vault/getPasswords"), 
-          axios.post(VHOST+"/api/vault/getNotes")
-        ])
-        .then(axios.spread((response1, response2) => {
-          setPasswords(response1.data.response.reverse());
-          setNotes(response2.data.response.reverse());
-        })).catch(e => {
-            console.log(e);
-        });
-    }, []);
-
+        if (passwords.length || notes.length) {
+            return;
+        } else {
+            axios.all([
+                axios.post(VHOST+"/api/vault/getPasswords"), 
+                axios.post(VHOST+"/api/vault/getNotes")
+              ])
+              .then(axios.spread((response1, response2) => {
+                let decodedIdentifier : string;
+                for (let i=0; i<response1.data.response.length; i++) {
+                    decodedIdentifier = decryptAES(response1.data.response[i].name, masterpass); 
+                    if (decodedIdentifier) {
+                        response1.data.response[i].name = decodedIdentifier;
+                    }
+                };
+                for (let i=0; i<response2.data.response.length; i++) {
+                    decodedIdentifier = decryptAES(response2.data.response[i].name, masterpass); 
+                    if (decodedIdentifier) {
+                        response2.data.response[i].name = decodedIdentifier;
+                    }
+                };
+                
+                setPasswords(response1.data.response.reverse());
+                setNotes(response2.data.response.reverse());
+              })).catch(e => {
+                  console.log(e);
+              });
+        }
+    }, [notes.length, passwords.length, setNotes, setPasswords, masterpass]);
     //? Generating passwords
-    const [generatePasswdState, setGeneratePasswdState] = useState({
-        upperChars: true, lowerChars: true, numbers: true, symbols: true, pwdlen: 24
-    })
+    const { generatePasswdPrefs, setGeneratePasswdPrefs } = useContext(ProfilePrefsContext);
     useEffect(() => {
-        axios.post(VHOST+"/api/profile/getProfilePrefs")
-             .then(response => {
-                let res = response.data.response.passwordPrefs
-                setGeneratePasswdState({upperChars: res.uppercase, lowerChars: res.lowercase,
-                                        numbers: res.numbers, symbols: res.symbols, pwdlen: res.passwdlen });
-             }, (error) => {
-                console.warn("Profile prefs error: ", error);
-             });
+        if (!generatePasswdPrefs) {
+            axios.post(VHOST+"/api/profile/getProfilePrefs")
+            .then(response => {
+               let res = response.data.response.passwordPrefs;
+               setGeneratePasswdPrefs({upperChars: res.uppercase, lowerChars: res.lowercase,
+                                       numbers: res.numbers, symbols: res.symbols, pwdlen: res.passwdlen });
+            }, (error) => {
+               console.warn("Profile prefs error: ", error);
+            });
+        }
     }, []);
 
     const GenerateRandomPass = (setPassValue: (string: string) => void) => {
-        let UpperChars = generatePasswdState.upperChars ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ" : "";
-        let LowerChars = generatePasswdState.lowerChars ? "abcdefghijklmnopqrstuvwxyz" : "";
-        let numbers = generatePasswdState.numbers ? "0123456789" : "";
-        let symbols = generatePasswdState.symbols ? "@#$%!?§~" : "";
+        let UpperChars = generatePasswdPrefs.upperChars ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ" : "";
+        let LowerChars = generatePasswdPrefs.lowerChars ? "abcdefghijklmnopqrstuvwxyz" : "";
+        let numbers = generatePasswdPrefs.numbers ? "0123456789" : "";
+        let symbols = generatePasswdPrefs.symbols ? "@#$%!?§~" : "";
         let everything = UpperChars + LowerChars + numbers + symbols;
-        let pwdLen = generatePasswdState.pwdlen;
+        let pwdLen = generatePasswdPrefs.pwdlen;
         let randomstring = Array(pwdLen).fill(everything).map((x) => { return x[Math.floor(Math.random() * x.length)] }).join('');
         setPassValue(randomstring);
     };
@@ -235,7 +225,6 @@ const Dashboard = () => {
                       handleSavePass={handleSavePass}
                       setOpenDialogPass={setOpen}
                       GenerateRandomPass={GenerateRandomPass}
-                      decryptAES={decryptAES}
                     />
                 </div>
                 <div className="giveMeSpace centerMe">
@@ -257,24 +246,63 @@ const Dashboard = () => {
                         </FormControl>
                     </div>
                 </Container>
-
                 <Container>
-                    {/* //? Starting of passwords  */}
-                    {(currentPasswords && filter === "Passwords") ? 
-                    <div>
-                        <div className="giveMeSpace" style={{textAlign: "center"}}>
-                            <Typography fontFamily='"Courier New", Courier, monospace' variant="h4">
-                                Passwords
-                            </Typography>
-                            <div className="centerMe">
-                                <Divider variant="middle" sx={{maxWidth: 400, width: "100%"}} />
-                            </div>
+                    {/* //? title of the Vault */}
+                    <div style={{textAlign: "center", marginTop: "5vh"}}>
+                    {/* //? here could be that filter directly (but could introduce security hole) */}
+                    {filter === "Passwords" ? 
+                        <Typography fontFamily='"Courier New", Courier, monospace' variant="h4">
+                            Passwords
+                        </Typography> : 
+                        <Typography fontFamily='"Courier New", Courier, monospace' variant="h4">
+                            Notes
+                        </Typography>
+                    }
+                        <div className="centerMe">
+                            <Divider variant="middle" sx={{maxWidth: 400, width: "100%"}} />
                         </div>
-                        
+                    </div>
+                    {/* //? searchbar */}
+                    <div className="centerMe">
+                        <TextField fullWidth color="secondary" label="Search..." sx={{maxWidth: 600, width: "100%"}}
+                                   onChange={event => setQuery(event.target.value)} variant="filled" margin="dense" InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <Search />
+                                                </InputAdornment>
+                                            )
+                                        }} />
+                    </div>
+                    {query && filter === "Passwords" && passwords.filter(password => {
+                        if (password.name.toLowerCase().includes(query.toLowerCase())) {
+                            return password;
+                        }
+                    }).map((password: passwordsObj, index: number) => (
+                        <Grid key={password.id} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
+                            <PasswordCard decryptAES={decryptAES} handleSavePass={handleSavePass} handleDelete={handleDeletePass} masterpass={masterpass}
+                            password={password} AvatarColor={colorName[index % colorName.length]} GenerateRandomPass={GenerateRandomPass}/>
+                        </Grid>
+                    ))}
+
+                    {query && filter === "Notes" && notes.filter(note => {
+                        if (note.name.toLowerCase().includes(query.toLowerCase())) {
+                            return note;
+                        }
+                    }).map((note: notesObj) => (
+                        <Grid key={note.id} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
+                            <NotesCard handleDelete={handleDeleteNote}
+                                       note={note}
+                            />
+                        </Grid>
+                    ))}
+
+                    {/* //? Starting of passwords  */}
+                    {(currentPasswords && filter === "Passwords" && !query) ? 
+                    <div className="giveMeSpace">
                         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
                             {currentPasswords.map((password: passwordsObj, index: number) => (
-                                <Grid key={index} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
-                                    <PasswordCard decryptAES={decryptAES} handleSavePass={handleSavePass} handleDelete={handleDeletePass}
+                                <Grid key={password.id} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
+                                    <PasswordCard decryptAES={decryptAES} handleSavePass={handleSavePass} handleDelete={handleDeletePass} masterpass={masterpass}
                                     password={password} AvatarColor={colorName[index % colorName.length]} GenerateRandomPass={GenerateRandomPass}/>
                                 </Grid>
                             ))}
@@ -283,27 +311,15 @@ const Dashboard = () => {
                         { (numberOfPages > 1) && <div className="giveMeSpace centerMe">
                             <Pagination count={numberOfPages} color="primary" onChange={PaginatePass} showFirstButton showLastButton />
                         </div>}
-                    </div>
-                    : <div></div>}
+                    </div> : <div></div>}
 
                     {/* //? Starting of notes  */}
-                    {(currentNotes && filter === "Notes") ?
-                    <div>
-                        <div className="giveMeSpace" style={{textAlign: "center"}}>
-                            <Typography fontFamily='"Courier New", Courier, monospace' variant="h4">
-                                Notes
-                            </Typography>
-                            <div className="centerMe">
-                                <Divider variant="middle" sx={{maxWidth: 400, width: "100%"}} />
-                            </div>
-                        </div>
+                    {(currentNotes && filter === "Notes" && !query) ?
+                    <div className="giveMeSpace">
                         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
-                            {currentNotes.map((note: notesObj, index: number) => (
-                                <Grid key={index} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
-                                    <NotesCard handleDelete={handleDeleteNote} 
-                                               decryptAES={decryptAES}
-                                               note={note}
-                                    />
+                            {currentNotes.map((note: notesObj) => (
+                                <Grid key={note.id} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
+                                    <NotesCard handleDelete={handleDeleteNote} note={note} />
                                 </Grid>
                             ))}
                         </Grid>
@@ -312,15 +328,13 @@ const Dashboard = () => {
                         </div>}
                     </div>
                     : <div></div>}
-                    {(notes.length || passwords.length) ? 
-                    <div></div> :
+
+                    { !notes.length && !passwords.length ? 
                     <div className="giveMeSpace">
-                        <Typography variant="h4" textAlign={"center"}>
-                            It's empty here, fill the space.
-                        </Typography>
-                        
-                    </div> }
-                    
+                      <Typography variant="h4" textAlign={"center"}>
+                          It's empty here, fill the space.
+                      </Typography>
+                    </div> : <div></div>}
                     {/*//? response handling  */}
                     <StackBarResponseHandling setSnackBarStatus={setSnackBarStatus} 
                                               snackBarStatus={snackBarStatus} />

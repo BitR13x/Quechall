@@ -3,7 +3,7 @@ import DialogPass from "./DialogPass";
 import { Card, CardHeader, IconButton, Avatar, Typography, Box, Menu, MenuItem } from "@mui/material";
 import { DeleteOutlined, ContentCopy } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { passwordsObj } from "../types/global";
 
 interface Props {
@@ -11,21 +11,15 @@ interface Props {
     handleSavePass: any,
     handleDelete: any,
     GenerateRandomPass: any,
-    decryptAES: (encrypted: string) => string,
+    decryptAES: (encrypted: string, masterpass: string) => string,
+    masterpass: string,
     AvatarColor: string,
 }
 
-const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor, GenerateRandomPass, decryptAES}: Props) => {
+const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor, GenerateRandomPass, masterpass}: Props) => {
     const [openDialogDel, setOpenDialogDel] = useState(false);
     const [openDialogPass, setOpenDialogPass] = useState(false);
-    const [decryptedName, setDecryptedName] = useState(password.name);
-
-    useEffect(() => {
-        let decryptedNameTest : string = decryptAES(password.name);
-        if (decryptedNameTest) {
-            setDecryptedName(decryptedNameTest);
-        };
-    }, [password.name, decryptAES])
+    const [decodedContent, setDecodedContent] = useState("");
 
     //? Menu
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -38,7 +32,7 @@ const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor, Gen
         if (navigator.clipboard && password.name) navigator.clipboard.writeText(password.name);
     };
     const handleCopyPswd = () => {
-        if (navigator.clipboard && password.content) navigator.clipboard.writeText(password.content);
+        if (navigator.clipboard && decodedContent) navigator.clipboard.writeText(decodedContent);
     };
 
     const handleOpenDialogDel = () => setOpenDialogDel(true);
@@ -51,13 +45,13 @@ const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor, Gen
         <Card variant="elevation" sx={{ maxWidth: 600, width: "100%" }}>
             <CardHeader title={
             <Typography variant="h4">
-                <Link className="outside-link" to={"#"} onClick={handleOpenDialogPass}>{decryptedName}</Link>
+                <Link className="outside-link" to={"#"} onClick={handleOpenDialogPass}>{password.name}</Link>
                 <DialogPass 
                     PasswdContent={password.content} identifierContent={password.name} 
                     handleClose={handleCloseDialogPass} open={openDialogPass}
                     handleSavePass={handleSavePass} setOpenDialogPass={setOpenDialogPass}
-                    GenerateRandomPass={GenerateRandomPass} uuid={password.id}
-                    decryptAES={decryptAES}
+                    GenerateRandomPass={GenerateRandomPass} uuid={password.id} setDecodedContent={setDecodedContent}
+                    masterpass={masterpass}
                 />
             </Typography>
             } 
@@ -67,7 +61,7 @@ const PasswordCard = ({ password, handleSavePass, handleDelete, AvatarColor, Gen
             // </Typography>
             // } 
             avatar={
-                <Avatar variant="rounded" sx={{ bgcolor: AvatarColor }} alt="Alias">{decryptedName.substring(0,2)}</Avatar>
+                <Avatar variant="rounded" sx={{ bgcolor: AvatarColor }} alt="Alias">{password.name.substring(0,2)}</Avatar>
             }  
             action={
                 <Box>
