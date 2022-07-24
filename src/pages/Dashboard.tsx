@@ -146,17 +146,17 @@ const Dashboard = () => {
     //? Generating passwords
     const { generatePasswdPrefs, setGeneratePasswdPrefs } = useContext(ProfilePrefsContext);
     useEffect(() => {
-        if (!generatePasswdPrefs) {
+        if (!generatePasswdPrefs.isUpdated) {
             axios.post(VHOST+"/api/profile/getProfilePrefs")
             .then(response => {
                let res = response.data.response.passwordPrefs;
                setGeneratePasswdPrefs({upperChars: res.uppercase, lowerChars: res.lowercase,
-                                       numbers: res.numbers, symbols: res.symbols, pwdlen: res.passwdlen });
+                                       numbers: res.numbers, symbols: res.symbols, pwdlen: res.passwdlen, isUpdated: true });
             }, (error) => {
                console.warn("Profile prefs error: ", error);
             });
         }
-    }, []);
+    }, [generatePasswdPrefs, setGeneratePasswdPrefs]);
 
     const GenerateRandomPass = (setPassValue: (string: string) => void) => {
         let UpperChars = generatePasswdPrefs.upperChars ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ" : "";
@@ -195,9 +195,7 @@ const Dashboard = () => {
       currentNotes = notes.slice(indexOfFirstNote, indexOfLastNote);
       numberOfPagesNotes = Math.ceil(notes.length / notesPerPage);
     };
-
     const PaginateNotes = (event: React.ChangeEvent<unknown>, page: number) => setCurrentPageOfNotes(page);
-
     return (
         <div className="App">
             <div className="DashboardMain">
@@ -273,26 +271,21 @@ const Dashboard = () => {
                                             )
                                         }} />
                     </div>
-                    {query && filter === "Passwords" && passwords.filter(password => {
-                        if (password.name.toLowerCase().includes(query.toLowerCase())) {
-                            return password;
-                        }
-                    }).map((password: passwordsObj, index: number) => (
+                    
+                    {query && filter === "Passwords" && passwords.filter(password => 
+                        password.name.toLowerCase().includes(query.toLowerCase())
+                    ).map((password: passwordsObj, index: number) => (
                         <Grid key={password.id} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
                             <PasswordCard decryptAES={decryptAES} handleSavePass={handleSavePass} handleDelete={handleDeletePass} masterpass={masterpass}
                             password={password} AvatarColor={colorName[index % colorName.length]} GenerateRandomPass={GenerateRandomPass}/>
                         </Grid>
                     ))}
 
-                    {query && filter === "Notes" && notes.filter(note => {
-                        if (note.name.toLowerCase().includes(query.toLowerCase())) {
-                            return note;
-                        }
-                    }).map((note: notesObj) => (
+                    {query && filter === "Notes" && notes.filter(note =>
+                        note.name.toLowerCase().includes(query.toLowerCase())
+                    ).map((note: notesObj) => (
                         <Grid key={note.id} item sx={{width: "100%", display: "flex"}} justifyContent="center" alignItems="center" >
-                            <NotesCard handleDelete={handleDeleteNote}
-                                       note={note}
-                            />
+                            <NotesCard handleDelete={handleDeleteNote} note={note} />
                         </Grid>
                     ))}
 

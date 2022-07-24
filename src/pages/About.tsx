@@ -19,7 +19,7 @@ const About = () => (
                 </Typography>
             </Container>
             <Container className='giveMeSpace'>
-                <Typography variant='h4' color="#17a2b8">
+                <Typography variant='h4' color="#8A75E6">
                     #1: We respect privacy
                 </Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>
@@ -28,7 +28,7 @@ const About = () => (
                 </Typography>
             </Container>
             <Container className='giveMeSpace'>
-                <Typography variant='h4' color="#17a2b8">
+                <Typography variant='h4' color="#8A75E6">
                     #2: Sync with diffrent devices
                 </Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>
@@ -36,7 +36,7 @@ const About = () => (
                 </Typography>
             </Container>
             <Container className='giveMeSpace'>
-                <Typography variant='h4' color="#17a2b8">
+                <Typography variant='h4' color="#8A75E6">
                     #3: Simple registration
                 </Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>
@@ -44,7 +44,7 @@ const About = () => (
                 </Typography>
             </Container>
             <Container className='giveMeSpace'>
-                <Typography variant='h4' color="#17a2b8">
+                <Typography variant='h4' color="#8A75E6">
                     #4: Client-side encryption
                 </Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>
@@ -52,7 +52,7 @@ const About = () => (
                 </Typography>
             </Container>
             <Container className='giveMeSpace'>
-                <Typography variant='h4' color="#17a2b8">
+                <Typography variant='h4' color="#8A75E6">
                     #5: AES encryption and Master password
                 </Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>
@@ -60,7 +60,7 @@ const About = () => (
                 </Typography>
             </Container>
             <Container className='giveMeSpace'>
-                <Typography variant='h4' color="#17a2b8">
+                <Typography variant='h4' color="#8A75E6">
                     #6: Security
                 </Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>
@@ -69,7 +69,7 @@ const About = () => (
                 </Typography>
             </Container>
             <Container className='giveMeSpace'>
-                <Typography variant='h4' color="#17a2b8">
+                <Typography variant='h4' color="#8A75E6">
                     #7: Creation of strong password
                 </Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>1. Do not include your birth year or birth month/day in your password.</Typography>

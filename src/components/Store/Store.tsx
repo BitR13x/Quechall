@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 export const MasterPasswordContext = React.createContext({masterpass: "", setMasterPass: undefined});
 export const StoreFetchContext = React.createContext({notes: [], setNotes: undefined, passwords: [], setPasswords: undefined});
-export const ProfilePrefsContext = React.createContext({generatePasswdPrefs: {upperChars: true, lowerChars: true, numbers: true, symbols: true, pwdlen: 24},
+export const ProfilePrefsContext = React.createContext({generatePasswdPrefs: {upperChars: true, lowerChars: true, numbers: true, symbols: true, pwdlen: 24, isUpdated: false},
                                                         setGeneratePasswdPrefs: undefined})
 //? useContext
 //? User here would be good
@@ -11,7 +11,7 @@ const Store = ({children}) => {
     const [notes, setNotes] = useState([]);
     const [passwords, setPasswords] = useState([]);
     const [generatePasswdPrefs, setGeneratePasswdPrefs] = useState({
-        upperChars: true, lowerChars: true, numbers: true, symbols: true, pwdlen: 24
+        upperChars: true, lowerChars: true, numbers: true, symbols: true, pwdlen: 24, isUpdated: false
     });
     const providedValue = useMemo(() => ({masterpass, setMasterPass}), 
                                          [masterpass, setMasterPass])

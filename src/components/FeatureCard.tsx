@@ -1,12 +1,11 @@
 import { Card, CardContent } from "@mui/material";
-import React from "react";
 
 const FeatureCard = ({ feature }) => {
     return (
-        <Card variant="elevation" sx={{height: 140}}>
+        <Card variant="elevation" sx={{height: 150}}>
             {/* <CardHeader title={feature.title} /> */}
             <CardContent>
-                <p style={{fontSize: "2.5rem", color: "#17a2b8"}}>
+                <p style={{fontSize: "2.5rem", color: "#8A75E6"}}>
                     {feature.title}
                 </p>
                 <div style={{marginTop: "0.75rem"}}></div>

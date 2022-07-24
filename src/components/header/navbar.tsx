@@ -11,7 +11,8 @@ const NavbarComponent = ({ login }) => {
     return (
         <header className='App-header'>
             <div className='logo'>
-                <Link to="/"><img src={logo} className="headerIcon" alt="logo" /></Link>
+                {login ? <Link to="/dashboard"><img src={logo} className="headerIcon" alt="logo" /></Link> : 
+                <Link to="/"><img src={logo} className="headerIcon" alt="logo" /></Link>}
             </div>
             <div>
             <nav id="nav" className="togglebar">

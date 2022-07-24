@@ -29,9 +29,8 @@ router.post('/passwd-save/:passid', isAuth, async (req: Request, res: Response) 
     let passid = String(req.params.passid);
     if (userId) {
         let {identifier, content} = req.body;
-        let PasswdCred : Passwords;
         if (passid !== "null") {
-            PasswdCred = await Passwords.findOneBy({id: passid});
+            const PasswdCred : Passwords = await Passwords.findOneBy({id: passid});
             if (!PasswdCred) {
                 return res.status(404).send({message: "This doesn't exist!", newCard: undefined});
             } else {
@@ -46,7 +45,7 @@ router.post('/passwd-save/:passid', isAuth, async (req: Request, res: Response) 
                 };
             };
         } else {
-            PasswdCred = await Passwords.create({name: identifier, content: content, OwnerId: userId}).save();
+            const PasswdCred : Passwords = await Passwords.create({name: identifier, content: content, OwnerId: userId}).save();
             return res.send({message: "Success", newCard: PasswdCred});
         };
     } else {
@@ -59,14 +58,14 @@ router.post('/passwd-delete/:passid', isAuth, async (req: Request, res: Response
     let userId = req.userId;
     let passid = String(req.params.passid);
     if (!userId) return res.status(401).send({message: "You're not logged in"});
-    if (!passid) return res.status(404).send({message: "This doesn't exist!", delCard: undefined});
+    if (!passid) return res.status(404).send({message: "This doesn't exist!"});
 
     const PasswdCred : Passwords = await Passwords.findOneBy({id: passid});
     if (PasswdCred && PasswdCred.OwnerId === userId ) {
         await PasswdCred.remove();
-        return res.send({message: "Success", delCard: PasswdCred.id});
+        return res.send({message: "Success"});
     } else {
-        return res.status(401).send({message: "This doesn't exist!", delCard: undefined});
+        return res.status(401).send({message: "This doesn't exist!"});
     };
 });
 
@@ -90,26 +89,26 @@ router.post('/note-save/:noteid', isAuth, async (req: Request, res: Response) =>
     if (userId) {
         let {name, content} = req.body;
         if (noteid !== "null") {
-            const NotesVault : Notes = await Notes.findOneBy({id: noteid});
-            if (!NotesVault) {
-                return res.status(404).send({message: "This doesn't exist!"});
+            const NoteVault : Notes = await Notes.findOneBy({id: noteid});
+            if (!NoteVault) {
+                return res.status(404).send({message: "This doesn't exist!", newCard: undefined});
             } else {
-                if (NotesVault.OwnerId === userId) {
-                    NotesVault.name = name;
-                    NotesVault.content = content;
-                    NotesVault.save();
-                    return res.send({message: "Success"});
+                if (NoteVault.OwnerId === userId) {
+                    NoteVault.name = name;
+                    NoteVault.content = content;
+                    NoteVault.save();
+                    return res.send({message: "Success", newCard: NoteVault});
                 } else {
                     //? You don't own this! && This doesn't exist!
-                    return res.status(401).send({message: "You don't own this!"});
+                    return res.status(401).send({message: "You don't own this!", newCard: undefined});
                 };
             };
         } else {
-            await Notes.create({name: name, content: content, OwnerId: userId}).save();
-            return res.send({message: "Success"});
+            const NoteVault : Notes = await Notes.create({name: name, content: content, OwnerId: userId}).save();
+            return res.send({message: "Success", newCard: NoteVault});
         };
     } else {
-        return res.status(401).send({message: "You're not logged in"});
+        return res.status(401).send({message: "You're not logged in", newCard: undefined});
     };
 });
 

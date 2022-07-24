@@ -7,11 +7,12 @@ import { Container, Button, Stack, Divider, Switch,
 import { Info } from '@mui/icons-material';
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { MasterPasswordContext } from "../components/Store/Store";
+import { MasterPasswordContext, StoreFetchContext } from "../components/Store/Store";
 import { decryptAES, encryptAES } from "../encryption";
 
 const Notes = ({ NoteTitle = "", markdownDef = "", uuid="null" }) => {
     const { masterpass } = useContext(MasterPasswordContext);
+    const { notes, setNotes } = useContext(StoreFetchContext);
     interface StateObj {
         NoteTitle: string,
         markdownDef: string,
@@ -64,13 +65,28 @@ const Notes = ({ NoteTitle = "", markdownDef = "", uuid="null" }) => {
             };
             let encryptedTitle = encryptAES(NoteTitleField.current?.value, masterpass);
             let encryptedContent = encryptAES(markdown, masterpass);
-            console.log(encryptedContent)
+            //? updating state in global storage
             axios.post("/api/vault/note-save/"+uuid, {
                 name: encryptedTitle,
                 content: encryptedContent
             })
                  .then(response => {
                     setSnackBarStatus({open: true, message: "Note was saved sucessfully!", severity: true});
+                    if (uuid === "null") {
+                        notes.unshift({name: NoteTitleField.current?.value, content: markdown,
+                                           OwnerId: response.data.newCard.OwnerId, id: response.data.newCard.id, 
+                                           createdAt: response.data.newCard.createdAt });
+                    } else {
+                        //? get object with id == uuid and change properties content and identifier
+                        for (let i=0; i<notes.length; i++) {
+                            if (notes[i].id === uuid) {
+                                notes[i].name = NoteTitleField.current?.value;
+                                notes[i].content = markdown;
+                                break;
+                            };
+                        };
+                    };
+                    setNotes(notes);
                  }, (error) => {
                     console.warn("Note error:", error);
                     setSnackBarStatus({open: true, message: "Something went wrong!", severity: false});

@@ -68,7 +68,7 @@ const ProfileSettings = () => {
         }).then(response => {
             setSnackBarStatus({open: true, message: "Preferences successfully changed.", severity: true});
             setGeneratePasswdPrefs({upperChars: checkedIUC, lowerChars: checkedILC, numbers: checkedIN,
-                                    symbols: checkedIS, pwdlen: passwordLen.current?.value})
+                                    symbols: checkedIS, pwdlen: Number(passwordLen.current?.value), isUpdated: true})
         }, (error) => {
             console.warn("Profile preferences errror:", error);
         });
@@ -206,9 +206,7 @@ const ProfileSettings = () => {
             </div>
 
             {/*
-                //? change password pref generation
-                //? change password for user
-                //? delete account 
+                //? own client side encryption
                 */}
             <div className="giveMeSpace centerMe">
                 <Button sx={{maxWidth: 600, width: "100%"}} variant="contained" onClick={saveGenPrefs}>Save preferences</Button>

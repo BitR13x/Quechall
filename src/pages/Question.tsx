@@ -17,7 +17,7 @@ const Question = () => {
         <div className="App">
             <div style={{ textAlign: "center" }}>
                 <Typography fontFamily='"Courier New", Courier, monospace' variant="h2">
-                    Questions
+                    Contact
                 </Typography>
                 <p>if you want to ask us something, we will try to answer as soon as posible</p>
                 <div className="giveMeSpace centerMe">
