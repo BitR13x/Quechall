@@ -6,7 +6,7 @@ const VerticalNavbar = () => {
         <div className="menu">
             <div className="label">Hover Me</div>
             <div className="spacer"></div>
-            <div className="item"><Link to="/Questions"><span>Questions</span></Link></div>
+            <div className="item"><Link to="/Feedback"><span>Feedback</span></Link></div>
             <div className="item"><Link to="/PrivacyPolicy"><span>Policy Privacy</span></Link></div>
             <div className="item"><Link to="/about"><span>About</span></Link></div>
         </div>

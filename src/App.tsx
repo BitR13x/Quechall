@@ -48,7 +48,7 @@ const App = ({login=false}) => {
             <FeatureCard feature={{ title: "Take it anywhere", content: "Sync with diffrent devices." }} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <FeatureCard feature={{ title: "Simple registration", content: "No additional information needed." }}/>
+            <FeatureCard feature={{ title: "Simple registration", content: "No additional information needed, register only with username and password." }}/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <FeatureCard feature={{ title: "Private and secure", content: "Only you can see content of your notes or passwords." }}/>

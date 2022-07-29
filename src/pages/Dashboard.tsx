@@ -329,8 +329,10 @@ const Dashboard = () => {
                       </Typography>
                     </div> : <div></div>}
                     {/*//? response handling  */}
-                    <StackBarResponseHandling setSnackBarStatus={setSnackBarStatus} 
-                                              snackBarStatus={snackBarStatus} />
+                    <StackBarResponseHandling 
+                        setSnackBarStatus={setSnackBarStatus} 
+                        snackBarStatus={snackBarStatus} 
+                    />
                 </Container>
             </div>
 

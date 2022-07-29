@@ -26,13 +26,13 @@ const LoginPage = () => {
         })
             .then(response => {
                 if (response.data.message === "Success") {
-                    localStorage.setItem("token", "LzQ1MTEyMWUyLWY0YzItMTFlYy1iOTM5LTAyNDJhYzEyMDAwMg==");
+                    localStorage.setItem("token", "MmIwNGIwNjItNGE2Yi00Nzg2LWEwYTktMzQ5ZDcxMjE3NWM3");
                     window.location.replace("/dashboard");
                 }
             }, (error) => {
-                console.log(error)
-               setAlert(error.response.data);
-               setOpenBackDrop(false);
+                console.log("Login error: ", error);
+                setAlert(error.response.data);
+                setOpenBackDrop(false);
             })
     };
 

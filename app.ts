@@ -10,7 +10,7 @@ const cookieParser = require("cookie-parser");
 const hpp = require('hpp');
 
 import { accountRoutes } from "./api/routes/accountRoutes";
-import { questionRoutes } from "./api/routes/questionRoutes";
+import { feebackRoutes } from "./api/routes/feedbackRoutes";
 import { VaultRoutes } from "./api/routes/vaultRoutes";
 import { profileRoutes } from "./api/routes/profileRoutes";
 const { HOST, PORT } = require('./config.json');
@@ -28,7 +28,7 @@ app.use(helmet());
 app.use(hpp());
 app.use(compression())
 app.use("/api", accountRoutes);
-app.use("/api/question", questionRoutes);
+app.use("/api/feedback", feebackRoutes);
 app.use("/api/vault", VaultRoutes);
 app.use("/api/profile", profileRoutes)
 

@@ -115,7 +115,7 @@ $header-text-color: whitesmoke;
 }
 
 .headerIcon {
-  width: 50px;
+  width: auto;
   height: 50px;
   -webkit-clip-path: url(#shape);
   clip-path: url(#shape);
@@ -129,7 +129,7 @@ $header-text-color: whitesmoke;
   -ms-flex: 0 0 20%;
   flex: 0 0 20%;
   max-width: 20%;
-  margin-left: 1vw;
+  margin: 1vw;
 }
 
 @media (prefers-reduced-motion: no-preference) {

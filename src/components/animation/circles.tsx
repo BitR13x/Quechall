@@ -5,7 +5,7 @@ const CirclesAnimation = () => {
     return (
         <React.Fragment>
             <div className="bubbles-container">
-                { [...Array(20)].map((_, i) => 
+                { [...Array(25)].map((_, i) => 
                 <div className="circle-container" key={i}>
                     <div className="circle"></div>
                 </div> )}

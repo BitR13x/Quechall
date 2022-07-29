@@ -16,7 +16,7 @@
 }
 
 .circle-container {
-  $particleNum: 200;
+  $particleNum: 25;
   $particleColor: hsl(180, 100%, 80%);
 
   position: absolute;
@@ -30,8 +30,8 @@
     border-radius: 50%;
     mix-blend-mode: screen;
     background-image: radial-gradient(
-      hsl(180, 100%, 80%),
-      hsl(180, 100%, 80%) 10%,
+      $particleColor,
+      $particleColor 10%,
       hsla(180, 100%, 80%, 0) 56%
     );
 

@@ -1,4 +1,5 @@
 import { Container, Divider, Typography } from '@mui/material';
+import CirclesAnimation from '../components/animation/circles';
 import "../scss/pages/about.scss";
 
 const About = () => (
@@ -78,6 +79,7 @@ const About = () => (
                 <Typography marginLeft="1vw" variant='subtitle1'>4. Do not reuse your passwords.</Typography>
             </Container>
         </Container>
+        <CirclesAnimation/>
       </div>
 );
 
