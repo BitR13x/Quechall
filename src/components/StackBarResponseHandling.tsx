@@ -1,9 +1,9 @@
 import { Snackbar, Alert } from "@mui/material";
 
-const StackBarResponseHandling = ({snackBarStatus, setSnackBarStatus}) => {
+const StackBarResponseHandling = ({ snackBarStatus, setSnackBarStatus }) => {
     const handleCloseSnacBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') return;
-        setSnackBarStatus({open: false, message: "", severity: false});
+        setSnackBarStatus({ open: false, message: "", severity: false });
     };
 
     return (
@@ -13,6 +13,6 @@ const StackBarResponseHandling = ({snackBarStatus, setSnackBarStatus}) => {
             </Alert>
         </Snackbar>
     );
-}
+};
 
 export default StackBarResponseHandling;

@@ -9,7 +9,7 @@ const MarkdownSyntax = ({ markdown }) => {
     return (
         <div>
             <SyntaxHighlighter
-                lineProps={{style: {wordBreak: 'break-all', whiteSpace: 'pre-wrap'}}}
+                lineProps={{ style: { wordBreak: 'break-all', whiteSpace: 'pre-wrap' } }}
                 wrapLines={true}
                 showLineNumbers={true}
                 children={String(markdown).replace(/\n$/, '')}

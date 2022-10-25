@@ -1,4 +1,4 @@
-import DialogMasterPass from "../components/DialogMasterPass";
+import DialogMasterPass from "../components/Dialogs/MasterPass";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { MasterPasswordContext } from "../components/Store/Store";

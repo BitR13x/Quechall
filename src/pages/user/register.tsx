@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { TextField, Button, Grid, Box, Typography,
-     InputAdornment, Alert, Container, Backdrop, CircularProgress, IconButton } from "@mui/material";
+import {
+    TextField, Button, Grid, Box, Typography,
+    InputAdornment, Alert, Container, Backdrop, CircularProgress, IconButton
+} from "@mui/material";
 import { AccountCircle, Password, VisibilityOff, Visibility, Key } from '@mui/icons-material';
 import "../../scss/pages/login.scss";
 import { alertObj } from "../../types/global";
@@ -25,37 +27,37 @@ const RegisterPage = () => {
     let [alert, setAlert] = useState<alertObj>();
     const sendData = () => {
         if (!UserField.current?.value || !PasswdField.current?.value || !MasterPassField.current?.value) {
-            setAlert({ message: "These fields are required: Username, Password, Master password"});
+            setAlert({ message: "These fields are required: Username, Password, Master password" });
             return;
         };
 
         //? warning, success
         if (PasswdField.current?.value !== rePasswdField.current?.value) {
-            setAlert({ message: "Passwords don't match"})
+            setAlert({ message: "Passwords don't match" })
         } else {
             setOpenBackDrop(true);
-            axios.post(VHOST+"/api/register", {
+            axios.post(VHOST + "/api/register", {
                 username: UserField.current?.value,
                 password: PasswdField.current?.value,
                 masterpass: MasterPassField.current?.value
             })
-            .then(response => {
-                if (response.data.message === "Success") {
-                    window.location.replace("/login");
-                }
-            }, (error) => {
-               setAlert(error.response.data);
-               setOpenBackDrop(false);
-            })
+                .then(response => {
+                    if (response.data.message === "Success") {
+                        window.location.replace("/login");
+                    }
+                }, (error) => {
+                    setAlert(error.response.data);
+                    setOpenBackDrop(false);
+                })
         };
     };
     return (
         <React.Fragment>
             <Container>
                 <div className="alertContainer">
-                    { (alert && alert.message) &&
-                    // @ts-ignore
-                    <Alert sx={{ width: 600 }} severity="warning">{alert.message}</Alert>}
+                    {(alert && alert.message) &&
+                        // @ts-ignore
+                        <Alert sx={{ width: 600 }} severity="warning">{alert.message}</Alert>}
                 </div>
             </Container>
             <div className="Main">
@@ -66,9 +68,9 @@ const RegisterPage = () => {
                     <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
                         <Grid item xs={12} sm={6} md={3}>
                             <Box sx={{
-                                    width: 350,
-                                    maxWidth: '100%',
-                                }}>
+                                width: 350,
+                                maxWidth: '100%',
+                            }}>
                                 <TextField fullWidth inputRef={UserField} id="outlined-name" color="secondary" label="Username"
                                     variant="filled" margin="dense" InputProps={{
                                         startAdornment: (
@@ -82,9 +84,9 @@ const RegisterPage = () => {
 
                         <Grid item xs={12} sm={6} md={3}>
                             <Box sx={{
-                                    width: 350,
-                                    maxWidth: '100%',
-                                }}>
+                                width: 350,
+                                maxWidth: '100%',
+                            }}>
                                 <TextField fullWidth type={showPassword ? "text" : "password"} inputRef={PasswdField} id="outlined-name" color="secondary" label="Password"
                                     variant="filled" margin="dense" InputProps={{
                                         startAdornment: (
@@ -94,21 +96,22 @@ const RegisterPage = () => {
                                         ),
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                            <IconButton
-                                              aria-label="toggle password visibility"
-                                              onClick={handleClickShowPassword}
-                                              onMouseDown={handleMouseDownPassword}
-                                            >
-                                              {showPassword ? <Visibility /> : <VisibilityOff />}
-                                            </IconButton>
-                                          </InputAdornment>
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
                                         )
                                     }} />
                                 <TextField fullWidth type={showPassword ? "text" : "password"} inputRef={rePasswdField} id="outlined-name" color="secondary" label="Verify password"
                                     variant="filled" margin="dense" helperText="Choose strong password." onKeyDown={e => {
                                         if (e.key === "Enter") {
                                             sendData();
-                                        }}
+                                        }
+                                    }
                                     }
                                     InputProps={{
                                         startAdornment: (
@@ -118,36 +121,36 @@ const RegisterPage = () => {
                                         )
                                     }} />
                             </Box>
-                            <div style={{marginTop: "2vh"}}></div>
+                            <div style={{ marginTop: "2vh" }}></div>
                             <TextField fullWidth type={showMasterPassword ? "text" : "password"} inputRef={MasterPassField} id="outlined-name" color="secondary" label="Master Password"
-                                    variant="filled" margin="dense" helperText="This password is for encryption." InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <Key />
-                                            </InputAdornment>
-                                        ),
-                                        endAdornment: (
-                                            <InputAdornment position="end">
+                                variant="filled" margin="dense" helperText="This password is for encryption." InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Key />
+                                        </InputAdornment>
+                                    ),
+                                    endAdornment: (
+                                        <InputAdornment position="end">
                                             <IconButton
-                                              aria-label="toggle password visibility"
-                                              onClick={handleClickShowMasterPassword}
-                                              onMouseDown={handleMouseDownMasterPassword}
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowMasterPassword}
+                                                onMouseDown={handleMouseDownMasterPassword}
                                             >
-                                              {showMasterPassword ? <Visibility /> : <VisibilityOff />}
+                                                {showMasterPassword ? <Visibility /> : <VisibilityOff />}
                                             </IconButton>
-                                          </InputAdornment>
-                                        )
-                                    }}  onKeyDown={e => {if (e.key === "Enter") {sendData();}}} />
+                                        </InputAdornment>
+                                    )
+                                }} onKeyDown={e => { if (e.key === "Enter") { sendData(); } }} />
                         </Grid>
-                        
+
                         <Grid item xs={12} sm={6} md={3}>
-                            <Button sx={{ width: 350, maxWidth: '100%' }} 
+                            <Button sx={{ width: 350, maxWidth: '100%' }}
                                 variant="contained" color="primary" onClick={sendData}>
                                 Register
                             </Button>
                             <Backdrop
-                              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                              open={openBackDrop}
+                                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                                open={openBackDrop}
                             >
                                 <CircularProgress color="inherit" />
                             </Backdrop>

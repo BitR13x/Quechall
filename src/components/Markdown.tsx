@@ -1,4 +1,3 @@
-import React from "react";
 import "../scss/pages/markdown.scss";
 
 import ReactMarkdown from 'react-markdown';
@@ -21,32 +20,32 @@ SyntaxHighlighter.registerLanguage('json', json);
 
 const Markdown = ({ markdown, checked }) => {
     return (
-        <div className={ checked ? "MarkdownApp editorSmallWidth" : "MarkdownApp editorBigWidth"}>
-            { markdown ? <ReactMarkdown
+        <div className={checked ? "MarkdownApp editorSmallWidth" : "MarkdownApp editorBigWidth"}>
+            {markdown ? <ReactMarkdown
                 components={{
-                code({node, inline, className, children, ...props}) {
-                    const match = /language-(\w+)/.exec(className || '')
-                    return !inline && match ? (
-                    <SyntaxHighlighter
-                        children={String(children).replace(/\n$/, '')}
-                        style={oneDark}
-                        className="highlighter"
-                        language={match[1]}
-                        PreTag="div"
-                        {...props}
-                    />
-                    ) : (
-                    <code className={className} {...props}>
-                        {children}
-                    </code>
-                    )
-                }
+                    code({ node, inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || '')
+                        return !inline && match ? (
+                            <SyntaxHighlighter
+                                children={String(children).replace(/\n$/, '')}
+                                style={oneDark}
+                                className="highlighter"
+                                language={match[1]}
+                                PreTag="div"
+                                {...props}
+                            />
+                        ) : (
+                            <code className={className} {...props}>
+                                {children}
+                            </code>
+                        )
+                    }
                 }}
-           >{markdown}</ReactMarkdown> :
-            <div>
-                Markdown document will be generated here.
-            </div>
-           }
+            >{markdown}</ReactMarkdown> :
+                <div>
+                    Markdown document will be generated here.
+                </div>
+            }
         </div>
     );
 };

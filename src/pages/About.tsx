@@ -3,16 +3,16 @@ import CirclesAnimation from '../components/animation/circles';
 import "../scss/pages/about.scss";
 
 const About = () => (
-      <div className="App">
+    <div className="App">
         <Container>
             <Typography variant="h2" textAlign="center">
                 What we are doing?
             </Typography>
-            <div style={{textAlign: "center"}}>
+            <div style={{ textAlign: "center" }}>
                 <p>We want freedom and privacy to be a top priority</p>
             </div>
             <div className="giveMeSpace centerMe">
-                <Divider variant="middle" sx={{maxWidth: 800, width: "100%"}} />
+                <Divider variant="middle" sx={{ maxWidth: 800, width: "100%" }} />
             </div>
             <Container className='giveMeSpace'>
                 <Typography marginLeft="1vw" variant='subtitle1'>
@@ -41,7 +41,7 @@ const About = () => (
                     #3: Simple registration
                 </Typography>
                 <Typography marginLeft="1vw" variant='subtitle1'>
-                    As it was mentioned in the introduction, you can register only with password and username. 
+                    As it was mentioned in the introduction, you can register only with password and username.
                 </Typography>
             </Container>
             <Container className='giveMeSpace'>
@@ -79,8 +79,8 @@ const About = () => (
                 <Typography marginLeft="1vw" variant='subtitle1'>4. Do not reuse your passwords.</Typography>
             </Container>
         </Container>
-        <CirclesAnimation/>
-      </div>
+        <CirclesAnimation />
+    </div>
 );
 
 export default About;

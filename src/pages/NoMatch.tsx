@@ -3,7 +3,7 @@ import { Container, Button, Divider } from "@mui/material";
 import "../scss/pages/NoMatch.scss";
 import { useNavigate } from "react-router-dom";
 
-const NoMatch = ({ RetPath="/" }) => {
+const NoMatch = ({ RetPath = "/" }) => {
     let navigation = useNavigate();
     return (
         <React.Fragment>
@@ -14,11 +14,11 @@ const NoMatch = ({ RetPath="/" }) => {
                             <h1 className="glitch-text">404 NOT FOUND</h1>
                         </span>
                     </div>
-                    <br/>
+                    <br />
                     <h4 className="glitch-text">Here is nothing.</h4>
                 </Container>
                 <div className="giveMeSpace container">
-                    <Divider variant="middle" sx={{width: 800}} />
+                    <Divider variant="middle" sx={{ width: 800 }} />
                 </div>
                 <div className="giveMeSpace">
                     <Button variant="outlined" color="secondary" onClick={() => navigation(RetPath)}>Return Home</Button>

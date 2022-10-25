@@ -1,11 +1,13 @@
-import { Dialog, DialogTitle, DialogContent, 
+import {
+    Dialog, DialogTitle, DialogContent,
     DialogContentText, TextField, DialogActions,
-     Button, InputAdornment, IconButton } from "@mui/material";
+    Button, InputAdornment, IconButton
+} from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import React, { useState } from "react";
 import axios from "axios";
-import StackBarResponseHandling from "./StackBarResponseHandling";
-import { VHOST } from "../vhost";
+import StackBarResponseHandling from "../StackBarResponseHandling";
+import { VHOST } from "../../vhost";
 
 const DialogMasterPass = ({ open, handleClose, setMasterPass }) => {
     const [showPassword, setShowPassword] = useState(false);
@@ -14,27 +16,27 @@ const DialogMasterPass = ({ open, handleClose, setMasterPass }) => {
     const handleMouseDownPassword = () => setShowPassword(false);
 
     //? response handling with imported module
-    const [snackBarStatus, setSnackBarStatus] = useState({open: false, message: "", severity: false});
+    const [snackBarStatus, setSnackBarStatus] = useState({ open: false, message: "", severity: false });
 
     const ValidateMasterPass = () => {
-        axios.post(VHOST+"/api/checkMasterPass", {
+        axios.post(VHOST + "/api/checkMasterPass", {
             masterpass: passValue
         })
-        .then(response => {
-           setMasterPass(passValue);
-        }, (error) => {
-           console.warn("Master Password error:", error);
-           if (error.response.status === 403) {
-                setSnackBarStatus({open: true, message: "Your master password is incorrect.", severity: false});
-           } else if (error.response.status === 422) {
-                setSnackBarStatus({open: true, message: error.response.data.message, severity: false});
-           };
-        });
+            .then(response => {
+                setMasterPass(passValue);
+            }, (error) => {
+                console.warn("Master Password error:", error);
+                if (error.response.status === 403) {
+                    setSnackBarStatus({ open: true, message: "Your master password is incorrect.", severity: false });
+                } else if (error.response.status === 422) {
+                    setSnackBarStatus({ open: true, message: error.response.data.message, severity: false });
+                };
+            });
     };
 
     return (
         <Dialog onClose={handleClose} open={open} fullWidth>
-            <div style={{ backgroundColor: "#131515"}}>
+            <div style={{ backgroundColor: "#131515" }}>
                 <DialogTitle>Enter your Master Password</DialogTitle>
                 <DialogContent dividers>
                     <DialogContentText>
@@ -44,14 +46,14 @@ const DialogMasterPass = ({ open, handleClose, setMasterPass }) => {
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                <IconButton
-                                  aria-label="toggle password visibility"
-                                  onClick={handleClickShowPassword}
-                                  onMouseDown={handleMouseDownPassword}
-                                >
-                                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                              </InputAdornment>
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                    >
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
                             )
                         }}
                         value={passValue}
@@ -60,7 +62,7 @@ const DialogMasterPass = ({ open, handleClose, setMasterPass }) => {
                         margin="dense"
                         id="name"
                         label="Password"
-                        type={showPassword ? "text" :  "password"}
+                        type={showPassword ? "text" : "password"}
                         fullWidth
                         variant="standard"
                         color="secondary"
@@ -68,14 +70,14 @@ const DialogMasterPass = ({ open, handleClose, setMasterPass }) => {
                             if (e.key === "Enter") {
                                 ValidateMasterPass()
                             }
-                        }} 
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" onClick={ValidateMasterPass}>Save</Button>
                 </DialogActions>
                 <StackBarResponseHandling setSnackBarStatus={setSnackBarStatus}
-                                          snackBarStatus={snackBarStatus} />
+                    snackBarStatus={snackBarStatus} />
             </div>
         </Dialog>
     );

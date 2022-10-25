@@ -1,11 +1,13 @@
-import { Dialog, DialogTitle, DialogContent, 
+import {
+    Dialog, DialogTitle, DialogContent,
     DialogContentText, TextField, DialogActions,
-     Button, InputAdornment, IconButton } from "@mui/material";
+    Button, InputAdornment, IconButton
+} from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useState, useEffect } from "react";
-import { decryptAES } from "../encryption";
+import { decryptAES } from "../../encryption";
 
-const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="", uuid="null", handleSavePass, setOpenDialogPass, GenerateRandomPass=undefined, setDecodedContent=undefined, masterpass="" }) => {
+const DialogPass = ({ open, handleClose, PasswdContent = "", identifierContent = "", uuid = "null", handleSavePass, setOpenDialogPass, GenerateRandomPass = undefined, setDecodedContent = undefined, masterpass = "" }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [passValue, setPassValue] = useState(PasswdContent);
     const [identifierValue, setIdentifierValue] = useState(identifierContent);
@@ -24,7 +26,7 @@ const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="",
 
     return (
         <Dialog onClose={handleClose} open={open} fullWidth>
-            <div style={{ backgroundColor: "#131515"}}>
+            <div style={{ backgroundColor: "#131515" }}>
                 <DialogTitle>CREATE A PASSWORD</DialogTitle>
                 <DialogContent dividers>
                     <DialogContentText>
@@ -46,14 +48,14 @@ const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="",
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                <IconButton
-                                  aria-label="toggle password visibility"
-                                  onClick={handleClickShowPassword}
-                                  onMouseDown={handleMouseDownPassword}
-                                >
-                                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                              </InputAdornment>
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                    >
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
                             )
                         }}
                         value={passValue}
@@ -62,17 +64,17 @@ const DialogPass = ({ open, handleClose, PasswdContent="", identifierContent="",
                         margin="dense"
                         id="name"
                         label="Password"
-                        type={showPassword ? "text" :  "password"}
+                        type={showPassword ? "text" : "password"}
                         fullWidth
                         variant="standard"
                         color="secondary"
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={() => {GenerateRandomPass(setPassValue)}}>Random Password</Button>
-                    <div style={{flex: "1 0 0"}} />
+                    <Button variant="contained" onClick={() => { GenerateRandomPass(setPassValue) }}>Random Password</Button>
+                    <div style={{ flex: "1 0 0" }} />
                     <Button variant="contained" onClick={handleClose}>Cancel</Button>
-                    <Button variant="contained" onClick={() => {handleSavePass(identifierValue, passValue, uuid, setOpenDialogPass)}}>Save</Button>
+                    <Button variant="contained" onClick={() => { handleSavePass(identifierValue, passValue, uuid, setOpenDialogPass) }}>Save</Button>
                 </DialogActions>
             </div>
         </Dialog>
