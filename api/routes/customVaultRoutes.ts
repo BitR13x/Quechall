@@ -18,8 +18,7 @@ router.post('/generate-passwd', isAuth, async (req: Request, res: Response) => {
     if (!Number(length) || Number(length) > 80) {
         length = 16;
     };
-    console.log(req.body)
-    console.log(name, length, userId)
+
     let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%!?§~";
     let content = Array(Number(length)).fill(letters).map((x) => { return x[Math.floor(Math.random() * x.length)] }).join('');
     let password = customPasswords.create({name: name, content: content, OwnerId: userId});
