@@ -6,7 +6,7 @@ services:
       [
         sh,
         -c,
-        "cd /app && npm run build && npm start"
+        "cd /app && npm run build && npm run start-production"
       ]
     ports:
       - "8000:8000"
