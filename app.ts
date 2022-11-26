@@ -13,6 +13,8 @@ import { accountRoutes } from "./api/routes/accountRoutes";
 import { feebackRoutes } from "./api/routes/feedbackRoutes";
 import { VaultRoutes } from "./api/routes/vaultRoutes";
 import { profileRoutes } from "./api/routes/profileRoutes";
+import { customVaultRoutes } from "./api/routes/customVaultRoutes";
+
 const { HOST, PORT } = require('./config.json');
 
 const app = express();
@@ -30,7 +32,8 @@ app.use(compression())
 app.use("/api", accountRoutes);
 app.use("/api/feedback", feebackRoutes);
 app.use("/api/vault", VaultRoutes);
-app.use("/api/profile", profileRoutes)
+app.use("/api/custom", customVaultRoutes);
+app.use("/api/profile", profileRoutes);
 
 //? custom 404 not found
 app.get('*', (_req: Request, res: Response) => {
