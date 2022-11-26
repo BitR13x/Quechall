@@ -68,7 +68,7 @@ $ createdb development_db_name
 POST /api/custom/generate-passwd
 curl example:
 ```bash
-curl -X POST HOST/api/custom/generate-password -H 'Cookie: jid=yourJID; accessToken=yourAcessToken' -d '{ "length": "", "name": "" }'
+curl -X POST HOST/api/custom/generate-passwd -H "Content-Type: application/json" -H 'Cookie: jid=yourJID; accessToken=yourAcessToken' -d '{ "length": "", "name": "" }'
 ```
 If you don't provide anything, length will be default 16 and name will be random generated uuid.
 Response:
@@ -83,7 +83,7 @@ Response:
 POST /api/custom/getPasswdByName/:name
 curl example:
 ```bash
-curl -X POST HOST/api/custom/getPasswdByName/$YourPasswordName -H 'Cookie: jid=yourJID; accessToken=yourAcessToken'
+curl -X POST HOST/api/custom/getPasswdByName/$YourPasswordName -H "Content-Type: application/json" -H 'Cookie: jid=yourJID; accessToken=yourAcessToken'
 ```
 
 Response:
@@ -97,7 +97,7 @@ Response:
 POST /api/custom/get-passwds
 curl example:
 ```bash
-curl -X POST HOST/api/custom/get-passwds -H 'Cookie: jid=yourJID; accessToken=yourAcessToken' -d '{ "count": "HowMany"}'
+curl -X POST HOST/api/custom/get-passwds -H "Content-Type: application/json" -H 'Cookie: jid=yourJID; accessToken=yourAcessToken' -d '{ "count": "HowMany"}'
 ```
 If you won't specify "count", it will return everything.
 
@@ -113,7 +113,7 @@ Response:
 POST /api/custom/create-passwd
 curl example:
 ```bash
-curl -X POST HOST/api/custom/create-passwd -H 'Cookie: jid=yourJID; accessToken=yourAcessToken' -d '{ "name": "", "content": ""}'
+curl -X POST HOST/api/custom/create-passwd -H "Content-Type: application/json" -H 'Cookie: jid=yourJID; accessToken=yourAcessToken' -d '{ "name": "", "content": ""}'
 ```
 If you won't specify "name" or "content", it will give you error with status 401 and message.
 
@@ -128,7 +128,7 @@ Response:
 POST /api/custom/delete-passwd/:id
 curl example:
 ```bash
-curl -X POST HOST/api/custom/delete-passwd/$PasswordID -H 'Cookie: jid=yourJID; accessToken=yourAcessToken'
+curl -X POST HOST/api/custom/delete-passwd/$PasswordID -H "Content-Type: application/json" -H 'Cookie: jid=yourJID; accessToken=yourAcessToken'
 ```
 
 Response:

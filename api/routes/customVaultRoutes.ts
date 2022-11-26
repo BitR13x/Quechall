@@ -12,11 +12,16 @@ router.post('/generate-passwd', isAuth, async (req: Request, res: Response) => {
     if (!userId) return res.status(401).send({message: "You didn't specified token!"});
 
     let { name, length } = req.body;
-    if (!name) name = uuidv4();
-    if (!length) length = 16;
-
+    if (!name) {
+        name = uuidv4();
+    };
+    if (!Number(length) || Number(length) > 80) {
+        length = 16;
+    };
+    console.log(req.body)
+    console.log(name, length, userId)
     let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%!?§~";
-    let content = Array(length).fill(letters).map((x) => { return x[Math.floor(Math.random() * x.length)] }).join('');
+    let content = Array(Number(length)).fill(letters).map((x) => { return x[Math.floor(Math.random() * x.length)] }).join('');
     let password = customPasswords.create({name: name, content: content, OwnerId: userId});
     if (await password.save()) {
         return res.send({message: "Success!", passwordContent: password});
@@ -35,7 +40,7 @@ router.post('/getPasswdByName/:name', isAuth, async (req: Request, res: Response
     if (!name) return res.status(401).send({message: "You didn't specified token!"});
 
     let password = await customPasswords.findBy({ OwnerId: userId, name: name })
-    if (password) {
+    if (password.length) {
         return res.send({message: "Success!", password: password});
     } else {
         return res.send({message: "Error!", password: null});
@@ -50,8 +55,8 @@ router.post('/get-passwds', isAuth, async (req: Request, res: Response) => {
 
     let { count } = req.body;
     let passwords = null
-    if (count) {
-        passwords = await customPasswords.find({ where: {OwnerId: userId}, take: count});
+    if (Number(count)) {
+        passwords = await customPasswords.find({ where: {OwnerId: userId}, take: Number(count)});
     } else {
         passwords = await customPasswords.findBy({ OwnerId: userId });
     };

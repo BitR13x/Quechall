@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import nodemailer from "nodemailer";
 import rateLimit from 'express-rate-limit';
+const { mailUser, mailPass } = require('../../config.json');
 const router = express.Router();
 
 const FeedbackLimiter = rateLimit({
@@ -17,8 +18,8 @@ router.post('/submit', FeedbackLimiter, async (req: Request, res: Response) => {
         host: "smtp.mailtrap.io",
         port: 2525,
         auth: {
-            user: "cac58191fc3071",
-            pass: "92540798556515"
+            user: mailUser,
+            pass: mailPass
         }
     });
 
