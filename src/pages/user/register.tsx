@@ -46,7 +46,11 @@ const RegisterPage = () => {
                         window.location.replace("/login");
                     }
                 }, (error) => {
-                    setAlert(error.response.data);
+                    if (error.response.data?.message) {
+                        setAlert({ message: error.response.data.message });
+                    } else {
+                        setAlert({ message: error.response.message })
+                    }
                     setOpenBackDrop(false);
                 })
         };

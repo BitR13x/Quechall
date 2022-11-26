@@ -33,7 +33,12 @@ const LoginPage = () => {
                 }
             }, (error) => {
                 console.log("Login error: ", error);
-                setAlert({ message: error.response.data });
+                if (error.response.data?.message) {
+                    setAlert({ message: error.response.data.message });
+                } else {
+                    setAlert({ message: error.response.message })
+                }
+
                 setOpenBackDrop(false);
             })
     };
@@ -68,6 +73,10 @@ const LoginPage = () => {
                                                 <AccountCircle />
                                             </InputAdornment>
                                         )
+                                    }} onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            sendData();
+                                        }
                                     }} />
                             </Box>
                         </Grid>

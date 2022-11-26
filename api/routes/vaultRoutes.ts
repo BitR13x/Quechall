@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import { isAuth } from '../jwtokens';
-import { User } from '../src/entity/User';
 import { Notes } from '../src/entity/Notes';
 import { Passwords } from '../src/entity/Passwords';
 
