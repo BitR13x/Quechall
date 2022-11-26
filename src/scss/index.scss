@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
-$primary-color: #525dce;
-$primary-background: rgb(48, 47, 47);
+$primary-color: #141E30;
+$primary-background: linear-gradient(to left top, #050538 0%, #020217 50%, #050538 100%), linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+$secondary-background: #050123;
 
 $dark: #343a40;
 $info: #17a2b8;
@@ -11,20 +12,25 @@ $danger: #dc3545;
 $color-light: #fff;
 $color-dark: #111;
 
-html, body {
+html,
+body {
     min-height: 100vh;
     font-size: medium;
     //overflow: auto;
-    
+
 }
 
 html {
-    font-size: 62.5%;
+    font-size: 70%;
     line-height: 1;
     font-family: 'Ubuntu Mono', monospace;
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
     font-family: 'Courier New', Courier, monospace;
 }
 
@@ -35,19 +41,32 @@ body {
     color: whitesmoke;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(to left top, #050538 0%,#020217 50%,#050538 100% ), linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
-    background-color: #020217;
+    background: $primary-color;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #243B55, #141E30);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #243B55, #141E30);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 *,
 *::before,
 *::after {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.foreGround {
+    background-color: #ffffff10;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 2.5rem;
+    margin-bottom: 5vh;
+    border-radius: 2.5rem;
 }
 
 .App-link {

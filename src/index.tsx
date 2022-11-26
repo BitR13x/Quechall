@@ -82,6 +82,7 @@ root.render(
               {/* 
             //@ts-ignore */}
               <Route exact path="/" element={<App />} />
+              <Route path="/create/notes" element={<Notes />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/about" element={<About />} />

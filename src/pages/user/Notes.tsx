@@ -105,19 +105,17 @@ const Notes = ({ NoteTitle = "", markdownDef = "", uuid = "null" }) => {
                 </Alert>
             </Container>}
 
-            <Container>
+            <Container className="foreGround">
                 <div className="centerMe giveMeSmallSpace">
                     <TextField inputRef={NoteTitleField} sx={{ maxWidth: 600, width: "100%" }}
                         color="secondary" label="Note title" variant="outlined" defaultValue={NoteTitle} />
-                    <Tooltip title={"Here you can learn how to write better notes \n \n https://www.markdownguide.org/basic-syntax/"} arrow>
+                    <Tooltip title={"We are supporting markdown. If you want, here you can learn how you can improve your notes. \n \n https://www.markdownguide.org/basic-syntax/"} arrow>
                         <IconButton onClick={() => window.open("https://www.markdownguide.org/basic-syntax/", "_blank")}>
                             <Info />
                         </IconButton>
                     </Tooltip>
                 </div>
-            </Container>
 
-            <Container>
                 <div className="giveMeSmallSpace">
                     <Stack direction="row" spacing={2}
                         divider={<Divider orientation="vertical" flexItem />}
@@ -153,9 +151,7 @@ const Notes = ({ NoteTitle = "", markdownDef = "", uuid = "null" }) => {
 
                 {display === "Syntax" && <MarkdownSyntax markdown={markdown} />}
                 {display === "Preview" && <Markdown markdown={markdown} checked={false} />}
-            </Container>
 
-            <Container>
                 <div className="giveMeSmallSpace centerMe">
                     <Button sx={{ maxWidth: 600, width: "100%" }} variant="contained" onClick={saveNote}>Save</Button>
                     <Snackbar open={snackBarStatus.open} autoHideDuration={4000} onClose={handleCloseSnacBar}>

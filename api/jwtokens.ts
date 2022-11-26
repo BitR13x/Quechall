@@ -20,7 +20,7 @@ export const jwtCreateRefreshToken = (user: User) => {
         tokenVersion: user.tokenVersion
     }
 
-    return sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: "8hr" })
+    return sign(payload, REFRESH_TOKEN_SECRET)
 };
 
 export const isAuth = (req: Request, res: Response, next: NextFunction) => {
@@ -82,13 +82,5 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
         } catch {
             return next()            
         }
-
-    } 
-    // finally {
-    //     if (!payload) {
-    //         return res.status(401);
-    //     } else {
-    //         return res.status(200);
-    //     }
-    // }
+    }
 };

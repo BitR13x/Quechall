@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Button, Divider, Typography, Tooltip, IconButton } from "@mui/material";
+import { Button, Divider, Typography, Tooltip, IconButton, Container } from "@mui/material";
 import { Info } from '@mui/icons-material';
 import CirclesAnimation from "../components/animation/circles";
 import StackBarResponseHandling from "../components/StackBarResponseHandling";
@@ -22,38 +22,40 @@ const FeedbackPage = () => {
 
     return (
         <div className="App">
-            <div style={{ textAlign: "center" }}>
-                <Typography fontFamily='"Courier New", Courier, monospace' variant="h2">
-                    Feedback
-                    <Tooltip title={"if you'd like to be reached, please add a contact"} arrow>
-                        <IconButton>
-                            <Info />
-                        </IconButton>
-                    </Tooltip>
-                </Typography>
-                <p>Give us your feedback, we will appreciate anything</p>
+            <Container className="foreGround">
+                <div style={{ textAlign: "center" }}>
+                    <Typography fontFamily='"Courier New", Courier, monospace' variant="h2">
+                        Feedback
+                        <Tooltip title={"if you'd like to be reached, please add a contact"} arrow>
+                            <IconButton>
+                                <Info />
+                            </IconButton>
+                        </Tooltip>
+                    </Typography>
+                    <p>Give us your feedback, we will appreciate anything</p>
 
-                <div className="giveMeSmallSpace centerMe">
-                    <Divider variant="middle" sx={{ maxWidth: 800, width: "100%" }} />
-                </div>
-
-                <main style={{ padding: "1rem 0" }}>
-                    <div>
-                        <textarea
-                            style={{ maxWidth: 800, width: "80%" }}
-                            spellCheck="false"
-                            className="editor"
-                            value={textarea}
-                            placeholder={"You can type here ..."}
-                            onChange={e => setTextArea(e.target.value)}
-                        ></textarea>
+                    <div className="giveMeSmallSpace centerMe">
+                        <Divider variant="middle" sx={{ maxWidth: 800, width: "100%" }} />
                     </div>
-                    <Button disabled={snackBarStatus.severity ? true : false} sx={{ maxWidth: 800, width: "80%" }}
-                        variant="contained" color="primary" onClick={sendData}>
-                        Submit
-                    </Button>
-                </main>
-            </div>
+
+                    <main style={{ padding: "1rem 0" }}>
+                        <div>
+                            <textarea
+                                style={{ maxWidth: 800, width: "80%" }}
+                                spellCheck="false"
+                                className="editor"
+                                value={textarea}
+                                placeholder={"You can type here ..."}
+                                onChange={e => setTextArea(e.target.value)}
+                            ></textarea>
+                        </div>
+                        <Button disabled={snackBarStatus.severity ? true : false} sx={{ maxWidth: 800, width: "80%" }}
+                            variant="contained" color="primary" onClick={sendData}>
+                            Submit
+                        </Button>
+                    </main>
+                </div>
+            </Container>
             <CirclesAnimation />
             {/*//? response handling  */}
             <StackBarResponseHandling

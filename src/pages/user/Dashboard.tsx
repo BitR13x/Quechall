@@ -203,8 +203,8 @@ const Dashboard = () => {
     };
     const PaginateNotes = (event: React.ChangeEvent<unknown>, page: number) => setCurrentPageOfNotes(page);
     return (
-        <div className="App">
-            <div className="DashboardMain">
+        <div className="App DashboardMain">
+            <Container className="foreGround">
                 <div className="DashboardText">
                     <Typography fontFamily='"Courier New", Courier, monospace' variant="h2">Welcome!</Typography>
                     <p>Create your own secure password or note</p>
@@ -340,7 +340,7 @@ const Dashboard = () => {
                         snackBarStatus={snackBarStatus}
                     />
                 </Container>
-            </div>
+            </Container>
 
         </div>
     );

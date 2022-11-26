@@ -33,7 +33,7 @@ const LoginPage = () => {
                 }
             }, (error) => {
                 console.log("Login error: ", error);
-                setAlert(error.response.data);
+                setAlert({ message: error.response.data });
                 setOpenBackDrop(false);
             })
     };
