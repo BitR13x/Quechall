@@ -6,4 +6,4 @@ COPY . .
 RUN npm install
 RUN npm run build
 CMD ["npm", "run", "start-production"]
-EXPOSE 8000
+EXPOSE 6500

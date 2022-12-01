@@ -31,7 +31,7 @@ const About = () => {
                 </Container>
                 <Container className='giveMeSpace'>
                     <Typography variant='h4' color={color}>
-                        #2: Sync with diffrent devices
+                        #2: Sync with different devices
                     </Typography>
                     <Typography marginLeft="1vw" variant='subtitle1'>
                         If you need to sync with your mobile and computer, you do not need to do something special or hard, just create a password or note directly on the site and log in with your mobile or computer.
@@ -78,6 +78,15 @@ const About = () => {
                     <Typography marginLeft="1vw" variant='subtitle1'>2. Use a combination of at least eight letters, numbers, and symbols.</Typography>
                     <Typography marginLeft="1vw" variant='subtitle1'>3. Combine different unrelated words in your password or passphrase.</Typography>
                     <Typography marginLeft="1vw" variant='subtitle1'>4. Do not reuse your passwords.</Typography>
+                </Container>
+                <Container className='giveMeSpace'>
+                    <Typography variant='h4' color={color}>
+                        #8: Use our beta API
+                    </Typography>
+                    <Typography marginLeft="1vw" variant='subtitle1'>
+                        You can create your password directly within our API.
+                    </Typography>
+                    <a href="/docs" style={{ marginLeft: "1vw" }} className="outside-link">Learn more here.</a>
                 </Container>
             </Container>
             <CirclesAnimation />

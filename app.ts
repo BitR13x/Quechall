@@ -14,6 +14,7 @@ import { feebackRoutes } from "./api/routes/feedbackRoutes";
 import { VaultRoutes } from "./api/routes/vaultRoutes";
 import { profileRoutes } from "./api/routes/profileRoutes";
 import { customVaultRoutes } from "./api/routes/customVaultRoutes";
+import { env } from "process";
 
 const { HOST, PORT } = require('./config.json');
 
@@ -34,6 +35,12 @@ app.use("/api/feedback", feebackRoutes);
 app.use("/api/vault", VaultRoutes);
 app.use("/api/custom", customVaultRoutes);
 app.use("/api/profile", profileRoutes);
+
+// //? status monitor /status
+// if (!env.production) {
+//   app.use(require('express-status-monitor')());
+// };
+
 
 //? custom 404 not found
 app.get('*', (_req: Request, res: Response) => {

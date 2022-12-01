@@ -49,7 +49,7 @@ const App = ({ login = false }) => (
         <Container className='giveMeSpace'>
           <Grid container direction="row" justifyContent="center" alignItems="center" spacing={3}>
             <Grid item xs={12} sm={6} md={3}>
-              <FeatureCard feature={{ title: "Take it anywhere", content: "Sync with diffrent devices." }} />
+              <FeatureCard feature={{ title: "Take it anywhere", content: "Synchronize with different devices." }} />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <FeatureCard feature={{ title: "Simple registration", content: "No additional information needed, register only with username and password." }} />

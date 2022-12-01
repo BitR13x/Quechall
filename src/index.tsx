@@ -8,6 +8,7 @@ import {
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import App from './App';
+import APIPage from "./pages/api";
 import Dashboard from "./pages/user/Dashboard";
 import Feedback from "./pages/Feedback";
 import About from './pages/About';
@@ -32,9 +33,8 @@ const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Failed to find the root element');
 const root = ReactDOM.createRoot(rootElement);
 console.info("If you will have any problem you can contact us, we will appreciate it");
-if (document.location.hostname === "localhost" || document.location.hostname === "quechall.com") {
-} else {
-  document.location.replace("http://localhost:8000/")
+if (document.location.hostname !== "localhost" && document.location.hostname !== "quechall.space") {
+  document.location.replace("https://quechall.space");
 }
 
 const theme = createTheme({
@@ -73,6 +73,7 @@ root.render(
               <Route path="/profile" element={<ProfileSettings />} />
               <Route path="/logout" element={<Logout />} />
               <Route path="/about" element={<About />} />
+              <Route path="/docs" element={<APIPage />} />
               <Route path="/451121e2-f4c2-11ec-b939-0242ac120002" element={<SecretTSX />} />
               <Route path="/2b04b062-4a6b-4786-a0a9-349d712175c7" element={<Secret2TSX />} />
               <Route path="*" element={<NoMatch RetPath="/dashboard" />} />
@@ -85,6 +86,7 @@ root.render(
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/about" element={<About />} />
+              <Route path="/docs" element={<APIPage />} />
               <Route path="/Feedback" element={<Feedback />} />
               <Route path="/451121e2-f4c2-11ec-b939-0242ac120002" element={<SecretTSX />} />
               <Route path="*" element={<NoMatch />} />

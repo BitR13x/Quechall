@@ -9,7 +9,7 @@ services:
         "cd /app && npm run build && npm run start-production"
       ]
     ports:
-      - "8000:8000"
+      - "6500:6500"
     links:
       - pg_db
     volumes:

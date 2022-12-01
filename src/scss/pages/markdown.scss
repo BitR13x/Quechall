@@ -2,8 +2,9 @@ code {
     transform: translateZ(0);
     min-width: 100%;
     float: left;
-    & > span {
-      display: block;
+
+    &>span {
+        display: block;
     }
 }
 
@@ -24,7 +25,9 @@ code {
     margin: 0.5em 0px;
 }
 
-span.linenumber { display: none; }
+span.linenumber {
+    display: none;
+}
 
 .MarkdownApp {
     background: rgb(40, 44, 52) none repeat scroll 0% 0%;
@@ -63,7 +66,7 @@ span.linenumber { display: none; }
     background: rgb(40, 44, 52) none repeat scroll 0% 0%;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-         box-sizing: border-box;
+    box-sizing: border-box;
 
     color: rgb(197, 200, 198);
     text-shadow: rgba(0, 0, 0, 0.3) 0px 1px;
@@ -101,4 +104,14 @@ span.linenumber { display: none; }
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+
+.ApiDocs {
+    font-family: "Roboto",
+        "Helvetica",
+        "Arial",
+        sans-serif;
+    font-size: 20;
+    line-height: 1.75;
 }

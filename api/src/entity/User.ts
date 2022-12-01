@@ -8,6 +8,9 @@ export class User extends BaseEntity {
     @PrimaryGeneratedColumn({ type: "int" })
     id: number;
 
+    // @PrimaryGeneratedColumn("uuid")
+    // APIkey: string;
+
     @Column({ type: "text" })
     role: string;
 

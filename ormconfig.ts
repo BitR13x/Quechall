@@ -5,10 +5,10 @@ export const MyDataSource = new DataSource({
     "host": "pg_db",
     "port": 5432,
     "username": "postgres",
-    "password": "5C#z975DmJ6!MF#9k@GD",
+    "password": "5zoiXDH8NQRP",
     "database": "QueChall",
     "synchronize": true,
-    "logging": true,
+    "logging": false,
     "entities": [
        "api/src/entity/**/*.ts"
     ],
