@@ -45,7 +45,7 @@ $ npm i node-gyp
 Before usage you should change default things in `config.json`, to not put your self in danger.
 And if using own domain change `src/vhost.js` file.
 
-mailUser and mailPass doesn't matter in case of public hosting, its for feedback route.
+mailUser and mailPass from mailtrap doesn't matter in case of private hosting, its for feedback route.
 
 You can use any secret for a refresh and access token, just change it.
 
