@@ -1,6 +1,12 @@
-# React template
-Basic template for react with express, typeorm and typescript
+# Quechall
+[Quechall](https://quechall.space) is a password manager and note taking app.
 
+## Functions
+- Open-source AES encryption on client-side.
+- API endpoint for a quick saving.
+- No need of usage of email.
+- Password generator.
+- Note taking and supporting MD (markdown) syntax.
 
 ## File structre
 ./api -- express middlewares, typeorm src<br/>
@@ -17,13 +23,13 @@ If you want also typeorm functional you will need to edit ormconfig.ts by your n
 RUN `npm install && yarn install`<br/>
 This will install both run-time project dependencies and developer tools listed in package.json file.
 
-RUN `npm start-client && yarn start-client` <br/>
-Runs the app in the development mode.
+RUN `npm start-client` <br/>
+Runs the app front-end in the development mode.
 
-RUN `npm run build && yarn build`<br/>
+RUN `npm run build`<br/>
 Builds the app for production to the build folder.
 
-RUN `npm start && yarn start`<br/>
+RUN `npm start`<br/>
 This will run express.
 
 ## bcrypt error
@@ -35,125 +41,26 @@ $ node-pre-gyp install --fallback-to-build
 $ npm i node-gyp
 ```
 
-## Config.json layout
+## Self-Host
+Before usage you should change default things in `config.json`, to not put your self in danger.
+And if using own domain change `src/vhost.js` file.
+
+mailUser and mailPass doesn't matter in case of public hosting, its for feedback route.
+
+You can use any secret for a refresh and access token, just change it.
+
 ```json
 {
-   "HOST": "",
-   "PORT": 8000,
-   "REFRESH_TOKEN_SECRET": "",
-   "ACCESS_TOKEN_SECRET": "",
+   "HOST": "0.0.0.0",
+   "PORT": 6500,
+   "REFRESH_TOKEN_SECRET": "string",
+   "ACCESS_TOKEN_SECRET": "string",
    "saltRounds": 10,
-   "production":
+   "production": false,
+   "mailUser": "string",
+   "mailPass": "string"
 }
 ```
 
-## Postgresql
-```bash
-$ sudo service postgresql start
-$ sudo -u postgres psql
-```
-```postgres
-$ ALTER USER postgres PASSWORD 'myPassword';
-$ CREATE DATABASE "hoffi-web";
+Note: "Don't worry the creds for my email are resetted and tokens are already swapped on the public hosting."
 
-$ \c hoffi-web -- connect
-$ \d user -- show table
-$ select * from public.user; -- show data from table
-
-$ dropdb development_db_name -- remove db
-$ createdb development_db_name
-```
-
-## API endpoints for custom passwords
-POST /api/custom/generate-passwd
-curl example:
-```bash
-curl -X POST HOST/api/custom/generate-passwd -H "Content-Type: application/json" -H 'Cookie: jid=yourJID; accessToken=yourAcessToken' -d '{ "length": "", "name": "" }'
-```
-If you don't provide anything, length will be default 16 and name will be random generated uuid.
-Response:
-```JSON
-{
-   "message": "Success! || Error!", 
-   "name": "name || uuid", 
-   "content": "content"
-}
-```
-
-POST /api/custom/getPasswdByName/:name
-curl example:
-```bash
-curl -X POST HOST/api/custom/getPasswdByName/$YourPasswordName -H "Content-Type: application/json" -H 'Cookie: jid=yourJID; accessToken=yourAcessToken'
-```
-
-Response:
-```JSON
-{
-   "message": "Success! || Error!", 
-   "password": "password || null"
-}
-```
-
-POST /api/custom/get-passwds
-curl example:
-```bash
-curl -X POST HOST/api/custom/get-passwds -H "Content-Type: application/json" -H 'Cookie: jid=yourJID; accessToken=yourAcessToken' -d '{ "count": "HowMany"}'
-```
-If you won't specify "count", it will return everything.
-
-Response:
-```JSON
-{
-   "message": "Success! || Error!", 
-   "passwords": "passwords || null"
-}
-```
-
-
-POST /api/custom/create-passwd
-curl example:
-```bash
-curl -X POST HOST/api/custom/create-passwd -H "Content-Type: application/json" -H 'Cookie: jid=yourJID; accessToken=yourAcessToken' -d '{ "name": "", "content": ""}'
-```
-If you won't specify "name" or "content", it will give you error with status 401 and message.
-
-Response:
-```JSON
-{
-   "message": "Success! || Error!", 
-   "password": "password || null"
-}
-```
-
-POST /api/custom/delete-passwd/:id
-curl example:
-```bash
-curl -X POST HOST/api/custom/delete-passwd/$PasswordID -H "Content-Type: application/json" -H 'Cookie: jid=yourJID; accessToken=yourAcessToken'
-```
-
-Response:
-```JSON
-{
-   "message": "Success! || Error!", 
-   "deleted": "id || undefined"
-}
-```
-
-### Docker
-*display all images*
-docker images list -a
-
-*display all containers*
-docker container ls -a
-
-*container to image*
-docker commit <container_id>
-
-*rename image*
-docker image tag <image_id> hoffiweb
-
-*run container*
-docker run -itp 8000:8000 <container_id> /bin/bash
-
-# LICENCE
-MIT.
